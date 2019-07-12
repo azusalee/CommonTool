@@ -10,6 +10,14 @@
 
 @interface NSString (ALHelper)
 
+//獲取md5(返回的是小寫的)
+- (NSString *)azl_md5String;
+
+//base64字符串
+- (NSString *)azl_base64String;
+
+//base64轉utf8字符串，自身是base64的字符串才有效
+- (NSString *)azl_utf8StringFromBase64;
 
 - (NSString *)al_urlEncodeString;
 

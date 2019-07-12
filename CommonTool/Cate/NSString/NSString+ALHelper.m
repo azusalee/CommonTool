@@ -7,8 +7,32 @@
 //
 
 #import "NSString+ALHelper.h"
+#import <CommonCrypto/CommonCrypto.h>
 
 @implementation NSString (ALHelper)
+
+- (NSString *)azl_md5String{
+    
+    const char *cStr = self.UTF8String;
+    unsigned char result[CC_MD5_DIGEST_LENGTH];
+    CC_MD5(cStr, (CC_LONG)strlen(cStr), result);
+    
+    NSMutableString *md5Str = [NSMutableString string];
+    for (int i = 0; i < CC_MD5_DIGEST_LENGTH; ++i) {
+        [md5Str appendFormat:@"%02x", result[i]];
+    }
+    return [md5Str copy];
+}
+
+- (NSString *)azl_base64String{
+    NSData *base64Data = [self dataUsingEncoding:NSUTF8StringEncoding];
+    return [base64Data base64EncodedStringWithOptions:0];
+}
+
+- (NSString *)azl_utf8StringFromBase64{
+    NSData *base64Data = [[NSData alloc] initWithBase64EncodedString:self options:0];
+    return [[NSString alloc] initWithData:base64Data encoding:NSUTF8StringEncoding];
+}
 
 - (NSString *)al_urlEncodeString{
     NSMutableCharacterSet *charSet = [NSMutableCharacterSet alphanumericCharacterSet];

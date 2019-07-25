@@ -10,7 +10,7 @@
 
 @implementation UIView (ALInController)
 
-- (UIViewController *)al_inViewController{
+- (nullable UIViewController *)al_inViewController{
     for (UIView* next = [self superview]; next; next = next.superview) {
         UIResponder *nextResponder = [next nextResponder];
         if ([nextResponder isKindOfClass:[UIViewController class]]) {

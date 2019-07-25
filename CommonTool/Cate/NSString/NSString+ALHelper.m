@@ -12,7 +12,6 @@
 @implementation NSString (ALHelper)
 
 - (NSString *)azl_md5String{
-    
     const char *cStr = self.UTF8String;
     unsigned char result[CC_MD5_DIGEST_LENGTH];
     CC_MD5(cStr, (CC_LONG)strlen(cStr), result);
@@ -45,7 +44,7 @@
     }
     NSMutableArray *ranges = [[NSMutableArray alloc] init];
     NSRange range = NSMakeRange(0, 0);
-    NSUInteger nextStartIndex = range.location+range.length;
+    NSUInteger nextStartIndex = 0;
     while (1) {
         nextStartIndex = range.location+range.length;
         range = [self rangeOfString:subString options:NSCaseInsensitiveSearch range:NSMakeRange(nextStartIndex, self.length-nextStartIndex)];

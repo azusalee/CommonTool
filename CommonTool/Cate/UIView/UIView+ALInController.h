@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UIView (ALInController)
 
 /// 获取视图所在的controller
-- (UIViewController *)al_inViewController;
+- (nullable UIViewController *)al_inViewController;
 
 @end
 

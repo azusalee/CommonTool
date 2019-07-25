@@ -13,10 +13,8 @@
 
 //实例方法交换
 + (void)al_swizzingInstanceOriginSel:(SEL)originSel swizzledSel:(SEL)swizzingSel{
-    
     Method originMethod = class_getInstanceMethod(self, originSel);
     Method swizzingMethod = class_getInstanceMethod(self, swizzingSel);
-    
     
     BOOL isAdd = class_addMethod(self, originSel, method_getImplementation(swizzingMethod), method_getTypeEncoding(swizzingMethod));
     if (isAdd) {
@@ -24,9 +22,7 @@
     }else{
         method_exchangeImplementations(originMethod, swizzingMethod);
     }
-    
 }
-
 
 //类方法交换
 + (void)al_swizzingClassOriginSel:(SEL)originSel swizzledSel:(SEL)swizzingSel{
@@ -36,14 +32,12 @@
     Method originMethod = class_getClassMethod(cls, originSel);
     Method swizzingMethod = class_getClassMethod(cls, swizzingSel);
     
-    
     BOOL isAdd = class_addMethod(cls, originSel, method_getImplementation(swizzingMethod), method_getTypeEncoding(swizzingMethod));
     if (isAdd) {
         class_replaceMethod(cls, swizzingSel, method_getImplementation(originMethod), method_getTypeEncoding(originMethod));
     }else{
         method_exchangeImplementations(originMethod, swizzingMethod);
     }
-    
 }
 
 

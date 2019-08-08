@@ -21,4 +21,7 @@ bool isPalindrome(int x);
 // 有效括号{} [] () https://leetcode-cn.com/problems/valid-parentheses/submissions/
 bool isVaildBrackets(char *s);
 
+// +1 https://leetcode-cn.com/problems/plus-one/submissions/
+int* plusOne(int* digits, int digitsSize, int* returnSize);
+
 #endif /* LeetCodeC_h */

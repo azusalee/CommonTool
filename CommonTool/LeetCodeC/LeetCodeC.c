@@ -8,6 +8,7 @@
 
 #include "LeetCodeC.h"
 #include <string.h>
+#include <stdlib.h>
 
 /*
  字符          数值
@@ -93,4 +94,31 @@ bool isVaildBrackets(char *s) {
     }
     
     return typeLen==0;
+}
+
+// +1
+int* plusOne(int* digits, int digitsSize, int* returnSize){
+    bool needIncrease = true;
+    for (int i = 0; i < digitsSize; ++i) {
+        int num = digits[digitsSize-i-1];
+        num += 1;
+        if (num > 9) {
+            digits[digitsSize-i-1] = 0;
+        }else{
+            digits[digitsSize-i-1] = num;
+            needIncrease = false;
+            break;
+        }
+    }
+    
+    if (needIncrease) {
+        int *result = malloc(sizeof(int)*(digitsSize+1));
+        result[0] = 1;
+        memset(result+1, 0, sizeof(int)*digitsSize);
+        *returnSize = digitsSize+1;
+        return result;
+    }else{
+        *returnSize = digitsSize;
+        return digits;
+    }
 }

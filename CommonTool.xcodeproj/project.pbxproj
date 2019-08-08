@@ -20,6 +20,7 @@
 		8CE4571022D87113002EA4CF /* UIView+AZLXibExtend.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE4570E22D87113002EA4CF /* UIView+AZLXibExtend.m */; };
 		8CE4571422D871DE002EA4CF /* NSURL+AZLProcess.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE4571222D871DE002EA4CF /* NSURL+AZLProcess.m */; };
 		8CE4571822D87331002EA4CF /* UINavigationController+AZLPop.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE4571722D87331002EA4CF /* UINavigationController+AZLPop.m */; };
+		8CF75FEA22FBDD5F002E9CCE /* LeetCodeC.c in Sources */ = {isa = PBXBuildFile; fileRef = 8CF75FE922FBDD5F002E9CCE /* LeetCodeC.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,8 @@
 		8CE4571322D871DE002EA4CF /* NSURL+AZLProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+AZLProcess.h"; sourceTree = "<group>"; };
 		8CE4571622D87331002EA4CF /* UINavigationController+AZLPop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+AZLPop.h"; sourceTree = "<group>"; };
 		8CE4571722D87331002EA4CF /* UINavigationController+AZLPop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+AZLPop.m"; sourceTree = "<group>"; };
+		8CF75FE822FBDD5F002E9CCE /* LeetCodeC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LeetCodeC.h; sourceTree = "<group>"; };
+		8CF75FE922FBDD5F002E9CCE /* LeetCodeC.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = LeetCodeC.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +82,7 @@
 		8CC0ABA522BCBBAB001BB84D /* CommonTool */ = {
 			isa = PBXGroup;
 			children = (
+				8CF75FE722FBDD25002E9CCE /* LeetCodeC */,
 				8CE456FD22D86776002EA4CF /* Cate */,
 				8CC0ABA622BCBBAB001BB84D /* AppDelegate.h */,
 				8CC0ABA722BCBBAB001BB84D /* AppDelegate.m */,
@@ -162,6 +166,15 @@
 			path = UINavigationController;
 			sourceTree = "<group>";
 		};
+		8CF75FE722FBDD25002E9CCE /* LeetCodeC */ = {
+			isa = PBXGroup;
+			children = (
+				8CF75FE822FBDD5F002E9CCE /* LeetCodeC.h */,
+				8CF75FE922FBDD5F002E9CCE /* LeetCodeC.c */,
+			);
+			path = LeetCodeC;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -242,6 +255,7 @@
 				8CE4571022D87113002EA4CF /* UIView+AZLXibExtend.m in Sources */,
 				8CE4571422D871DE002EA4CF /* NSURL+AZLProcess.m in Sources */,
 				8CC0ABA822BCBBAB001BB84D /* AppDelegate.m in Sources */,
+				8CF75FEA22FBDD5F002E9CCE /* LeetCodeC.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

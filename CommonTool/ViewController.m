@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import <CoreLocation/CoreLocation.h>
+#import "LeetCodeC.h"
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
@@ -24,7 +25,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    
+    romanToInt("IV");
     
 }
 

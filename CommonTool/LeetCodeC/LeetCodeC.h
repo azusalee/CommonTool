@@ -12,13 +12,13 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-/// 罗马数字转整数(1~3999)
+/// 罗马数字转整数(1~3999) https://leetcode-cn.com/problems/roman-to-integer/
 int romanToInt(char * s);
 
-/// 回文数
+/// 回文数 https://leetcode-cn.com/problems/palindrome-number/
 bool isPalindrome(int x);
 
-// 有效括号{} [] ()
+// 有效括号{} [] () https://leetcode-cn.com/problems/valid-parentheses/submissions/
 bool isVaildBrackets(char *s);
 
 #endif /* LeetCodeC_h */

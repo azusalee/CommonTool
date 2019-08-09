@@ -27,4 +27,7 @@
 /// 强制解析为utf8（会把能解析为utf8的地方以utf8显示，不能则用latin来显示）
 + (NSString *)al_forceDecodeUtf8Data:(NSData *)data;
 
+// 根据url，query字符串返回
+- (NSDictionary *)azl_queryDict;
+
 @end

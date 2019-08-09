@@ -21,7 +21,7 @@
  M             1000
  */
 /// 罗马数字转整数(1~3999)
-int romanToInt(char * s){
+int romanToInt(char * s) {
     int result = 0, lastIncrease = 0, curIncrease = 0, i = 0;
     while (1) {
         switch (s[i++]) {
@@ -44,10 +44,10 @@ int romanToInt(char * s){
 }
 
 /// 回文数
-bool isPalindrome(int x){
+bool isPalindrome(int x) {
     if (x < 0) {
         return false;
-    }else{
+    } else {
         int tmpX = x;
         long result = 0;
         while (tmpX != 0) {
@@ -104,7 +104,7 @@ int* plusOne(int* digits, int digitsSize, int* returnSize){
         num += 1;
         if (num > 9) {
             digits[digitsSize-i-1] = 0;
-        }else{
+        } else {
             digits[digitsSize-i-1] = num;
             needIncrease = false;
             break;
@@ -117,8 +117,114 @@ int* plusOne(int* digits, int digitsSize, int* returnSize){
         memset(result+1, 0, sizeof(int)*digitsSize);
         *returnSize = digitsSize+1;
         return result;
-    }else{
+    } else {
         *returnSize = digitsSize;
         return digits;
     }
+}
+
+/// 字符串转换整数 (atoi)
+int myAtoi(char * str){
+    int i = 0;
+    long result = 0;
+    bool flag = false, minus = false;
+    while (1) {
+        char c = str[i++];
+        if (c >= '0' && c <= '9') {
+            if (flag == false) flag = true;
+            result = result*10+c-'0';
+        } else if (c == ' ') {
+            if (flag) {
+                if (minus) return (int)(-result);
+                else return (int)result;
+            }
+            continue;
+        } else if (c == '+') {
+            if (flag == false) {
+                flag = true;
+            } else {
+                if (minus) return (int)(-result);
+                else return (int)result;
+            }
+            continue;
+        } else if (c == '-') {
+            if (flag == false) {
+                flag = true;
+                minus = true;
+            } else {
+                if (minus) return (int)(-result);
+                else return (int)result;
+            }
+            continue;
+        } else if (c == '\0') {
+            if (minus) return (int)(-result);
+            else return (int)result;
+        } else {
+            if (flag) {
+                if (minus) return (int)(-result);
+                else return (int)result;
+            } else {
+                return 0;
+            }
+        }
+        if (result >= 2147483647) {
+            if (minus == false) return 2147483647;
+            else if (result >= 2147483648) return -2147483648;
+        }
+    }
+}
+
+/// 删除链表中倒数第n个数
+struct ListNode* removeNthFromEnd(struct ListNode* head, int n){
+    if (n > 0) {
+        struct ListNode *tmp = head;
+        while (--n) {
+            tmp = tmp->next;
+        }
+        
+        if (tmp->next == NULL) {
+            return head->next;
+        }else{
+            tmp = tmp->next;
+        }
+        
+        struct ListNode *tmp2 = head;
+        while (tmp->next != NULL) {
+            tmp = tmp->next;
+            tmp2 = tmp2->next;
+        }
+        
+        tmp2->next = tmp2->next->next;
+        
+        return head;
+    }
+    return head;
+}
+
+/// Z 字形变换
+char * convertZ(char * s, int numRows){
+    // 以numRows为4做例子
+    // 0  6         (numRows*2-2)*n
+    // 1 57         (numRows*2-2)*n-1, (numRows+2)*n+1
+    // 24 8         (numRows*2-2)*n-2, (numRows+2)*n+2
+    // 3  9         (numRows*2-2)*n+3, (numRows*2-2)*n-3
+    
+    if (numRows < 2) return s;
+    unsigned long len = strlen(s);
+    if (len <= 2) return s;
+    int loopLen = numRows*2-2, row = 0, i = loopLen, j = 1;
+    char *result = malloc(sizeof(char)*(len+1));
+    result[0] = s[0];
+    while (1) {
+        if (i >= len) {
+            if (++row == numRows) break;
+            i = row;
+            continue;
+        }
+        result[j++] = s[i];
+        if (row != 0 && row != numRows-1 && i+loopLen-row*2 < len) result[j++] = s[i+loopLen-row*2];
+        i += loopLen;
+    }
+    result[j] = '\0';
+    return result;
 }

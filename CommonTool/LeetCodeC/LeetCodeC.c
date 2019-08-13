@@ -228,3 +228,112 @@ char * convertZ(char * s, int numRows){
     result[j] = '\0';
     return result;
 }
+
+int strStr(char * haystack, char * needle){
+    if (*needle == '\0') return 0;
+    int i = 0, j = 0, location = 0;
+    while (haystack[i] != '\0') {
+        if (needle[j] == haystack[i]) {
+            location = i;
+            while (1) {
+                if (needle[++j] == '\0') return location;
+                if (haystack[++i] == '\0') return -1;
+                if (needle[j] != haystack[i]) {
+                    i = location;
+                    j = 0;
+                    break;
+                }
+            }
+        }
+        ++i;
+    }
+    return -1;
+}
+
+char * longestCommonPrefix(char ** strs, int strsSize){
+    if (strsSize == 0) return "";
+    if (strsSize == 1) return strs[0];
+    char *str1 = strs[0];
+    if (str1[0] == '\0') return "";
+    int j = 0;
+    while (1) {
+        for (int i = 1; i < strsSize; ++i) {
+            if (str1[j] != strs[i][j]) {
+                str1[j] = '\0';
+                return str1;
+            }
+        }
+        if (str1[++j] == '\0') break;
+    }
+    return str1;
+}
+//快排代码
+void quickSort(int* nums,int first,int end){
+    int temp,l,r;
+    if(first>=end)return;
+    temp=nums[first];
+    l=first;r=end;
+    while(l<r){
+        while(l<r && nums[r]>=temp)r--;
+        if(l<r)nums[l]=nums[r];
+        while(l<r && nums[l]<=temp)l++;
+        if(l<r)nums[r]=nums[l];
+    }
+    nums[l]=temp;
+    quickSort(nums,first,l-1);
+    quickSort(nums,l+1,end);
+}
+
+int** threeSum(int* nums, int numsSize, int* returnSize, int** returnColumnSizes){
+    quickSort(nums, 0, numsSize-1);
+    
+    int sum, i, j, k;
+    int length = 0;
+    int oneGroupSize = 3*sizeof(int);
+
+    int pre_alloc_size = 16;
+    int *block = (int *)malloc(pre_alloc_size*oneGroupSize);
+    
+    for (i = 0; i < numsSize-2; ++i) {
+        if (nums[i] > 0) break;
+        if (i >= 1 && nums[i] == nums[i-1]) continue;
+        //双指针
+        j = i + 1;
+        k = numsSize - 1;
+        while (j < k) {
+            sum = nums[i] + nums[j] + nums[k];
+            if (sum == 0) {
+                if (length == pre_alloc_size) {
+                    // 动态增长
+                    pre_alloc_size *= 2;
+                    block = (int *)realloc(block, (pre_alloc_size)*oneGroupSize);
+                }
+                
+                block[length*3] = nums[i];
+                block[length*3+1] = nums[j];
+                block[length*3+2] = nums[k];
+                ++length;
+                
+                while (j < k && nums[j] == nums[j+1]) ++j;
+                while (j < k && nums[k] == nums[k-1]) --k;
+                ++j;
+                --k;
+            } else if (sum < 0) {
+                while (j < k && nums[j] == nums[j+1]) ++j;
+                ++j;
+            } else {
+                while (j < k &&  nums[k] == nums[k-1]) --k;
+                --k;
+            }
+        }
+    }
+    
+    *returnColumnSizes = (int *)malloc(sizeof(int) * length);
+    int **result = (int **)malloc(sizeof(int *) * length);
+    for (int i = 0; i < length; ++i) {
+        (*returnColumnSizes)[i] = 3;
+        result[i] = block+i*3;
+    }
+    *returnSize = length;
+    return result;
+}

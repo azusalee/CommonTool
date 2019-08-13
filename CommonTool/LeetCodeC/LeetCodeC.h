@@ -39,4 +39,13 @@ struct ListNode* removeNthFromEnd(struct ListNode* head, int n);
 /// Z 字形变换 https://leetcode-cn.com/problems/zigzag-conversion/submissions/
 char * convertZ(char * s, int numRows);
 
+/// 获取字符串所在的位置 https://leetcode-cn.com/problems/implement-strstr/submissions/
+int strStr(char * haystack, char * needle);
+
+/// 最长公共前缀 https://leetcode-cn.com/problems/longest-common-prefix/
+char * longestCommonPrefix(char ** strs, int strsSize);
+
+// 三数之和 https://leetcode-cn.com/problems/3sum/submissions/
+int** threeSum(int* nums, int numsSize, int* returnSize, int** returnColumnSizes);
+
 #endif /* LeetCodeC_h */

@@ -2,7 +2,7 @@
 //  LeetCodeC.c
 //  CommonTool
 //
-//  Created by yangming on 2019/8/8.
+//  Created by lizihong on 2019/8/8.
 //  Copyright © 2019 AL. All rights reserved.
 //
 
@@ -336,4 +336,116 @@ int** threeSum(int* nums, int numsSize, int* returnSize, int** returnColumnSizes
     }
     *returnSize = length;
     return result;
+}
+
+int removeDuplicates(int* nums, int numsSize){
+    if (numsSize < 1) return 0;
+    int setCount = 1;
+    for (int i = 0; i < numsSize-1; ++i) {
+        if (nums[i] != nums[i+1]) nums[setCount++] = nums[i+1];
+    }
+    
+    return setCount;
+}
+
+struct ListNode* mergeTwoLists(struct ListNode* l1, struct ListNode* l2){
+    if (l1 == NULL) return l2;
+    if (l2 == NULL) return l1;
+    
+    struct ListNode *tmpNode;
+    if (l2->val < l1->val) {
+        tmpNode = l1;
+        l1 = l2;
+        l2 = tmpNode;
+    }
+    
+    struct ListNode *minNode = l1;
+    
+    while (l1->next != NULL && l2 != NULL) {
+        if (l1->next->val > l2->val) {
+            tmpNode = l1->next;
+            l1->next = l2;
+            l2 = l2->next;
+            l1->next->next = tmpNode;
+        }else{
+            l1 = l1->next;
+        }
+    }
+    if (l1->next == NULL) l1->next = l2;
+
+    return minNode;
+}
+
+int searchInsert(int* nums, int numsSize, int target){
+    // 历遍
+    for (int i = 0; i < numsSize; ++i) {
+        if (nums[i] >= target) return i;
+    }
+    return numsSize;
+    
+    // 二分法
+//    int left = 0, right = numsSize - 1, mid; // 注意
+//    while(left <= right) { // 注意
+//        mid = (left + right) / 2; // 注意
+//        if(nums[mid] == target) { // 注意
+//            // 相关逻辑
+//            return mid;
+//        } else if(nums[mid] < target) {
+//            left = mid + 1; // 注意
+//        } else {
+//            right = mid - 1; // 注意
+//        }
+//    }
+//    // 相关返回值
+//    if (nums[mid] > target) {
+//        return mid;
+//    }else{
+//        return mid+1;
+//    }
+}
+
+int maxSubArray(int* nums, int numsSize){
+    int sum = nums[0], lastMaxSum = nums[0];
+    for (int i = 1; i < numsSize; ++i) {
+        sum = sum<0?nums[i]:(sum+nums[i]);
+        if (sum > lastMaxSum) lastMaxSum = sum;
+    }
+    return lastMaxSum;
+}
+
+void merge(int* nums1, int nums1Size, int m, int* nums2, int nums2Size, int n){
+//    // 从左到右插入
+//    int *nums3 = malloc(sizeof(int)*nums1Size);
+//    int i = 0, j = 0, k = 0;
+//    while (i < m && j < n) {
+//        if (nums1[i] > nums2[j]) {
+//            nums3[k++] = nums2[j++];
+//        }else{
+//            nums3[k++] = nums1[i++];
+//        }
+//    }
+//    if (j == n) {
+//        while (i < m) nums3[k++] = nums1[i++];
+//    }else{
+//        while (j < n)  nums3[k++] = nums2[j++];
+//    }
+//    memcpy(nums1, nums3, sizeof(int)*nums1Size);
+    
+    // 从右到左插入
+    int index = m+n-1;
+    int i = m-1, j = n-1;
+    while (i >= 0 && j >= 0) {
+        if (nums1[i] > nums2[j]) {
+            nums1[index--] = nums1[i--];
+        }else{
+            nums1[index--] = nums2[j--];
+        }
+    }
+    while (j >= 0) nums1[index--] = nums2[j--];
+}
+
+char ** letterCombinations(char * digits, int* returnSize){
+
+    
+    return NULL;
 }

@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import <CoreLocation/CoreLocation.h>
 #import "LeetCodeC.h"
+#import "CompileSourceParse.h"
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
@@ -24,7 +25,26 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    convertZ("ABCD", 3);
+    //int size;
+    //letterCombinations("23", &size);
+    
+    NSString *string1 = [[NSString alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"sourceString1" ofType:@"txt"] encoding:NSUTF8StringEncoding error:nil];
+    NSString *string2 = [[NSString alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"sourceString2" ofType:@"txt"] encoding:NSUTF8StringEncoding error:nil];
+    NSArray *array1 = [CompileSourceParse arrayFromCompileString:string1];
+    NSArray *array2 = [CompileSourceParse arrayFromCompileString:string2];
+    NSLog(@"对比Array2");
+    for (int i = 0; i < array2.count; ++i) {
+        if (![array1 containsObject:array2[i]]) {
+            NSLog(@"%@", array2[i]);
+        }
+    }
+    
+    NSLog(@"对比Array1");
+    for (int i = 0; i < array1.count; ++i) {
+        if (![array2 containsObject:array1[i]]) {
+            NSLog(@"%@", array1[i]);
+        }
+    }
     
 }
 

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C61BCDA2305082D0011F8E5 /* CompileSourceParse.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C61BCD92305082D0011F8E5 /* CompileSourceParse.m */; };
+		8C61BCDD2305086F0011F8E5 /* sourceString1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8C61BCDC2305086F0011F8E5 /* sourceString1.txt */; };
+		8C61BCDF2305087F0011F8E5 /* sourceString2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8C61BCDE2305087F0011F8E5 /* sourceString2.txt */; };
 		8CC0ABA822BCBBAB001BB84D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC0ABA722BCBBAB001BB84D /* AppDelegate.m */; };
 		8CC0ABAB22BCBBAB001BB84D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC0ABAA22BCBBAB001BB84D /* ViewController.m */; };
 		8CC0ABAE22BCBBAB001BB84D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CC0ABAC22BCBBAB001BB84D /* Main.storyboard */; };
@@ -24,6 +27,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8C61BCD82305082D0011F8E5 /* CompileSourceParse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CompileSourceParse.h; sourceTree = "<group>"; };
+		8C61BCD92305082D0011F8E5 /* CompileSourceParse.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CompileSourceParse.m; sourceTree = "<group>"; };
+		8C61BCDC2305086F0011F8E5 /* sourceString1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = sourceString1.txt; sourceTree = "<group>"; };
+		8C61BCDE2305087F0011F8E5 /* sourceString2.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = sourceString2.txt; sourceTree = "<group>"; };
 		8CC0ABA322BCBBAB001BB84D /* CommonTool.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CommonTool.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CC0ABA622BCBBAB001BB84D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		8CC0ABA722BCBBAB001BB84D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -63,6 +70,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8C61BCD7230508090011F8E5 /* Tool */ = {
+			isa = PBXGroup;
+			children = (
+				8C61BCD82305082D0011F8E5 /* CompileSourceParse.h */,
+				8C61BCD92305082D0011F8E5 /* CompileSourceParse.m */,
+			);
+			path = Tool;
+			sourceTree = "<group>";
+		};
+		8C61BCDB230508550011F8E5 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8C61BCDC2305086F0011F8E5 /* sourceString1.txt */,
+				8C61BCDE2305087F0011F8E5 /* sourceString2.txt */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		8CC0AB9A22BCBBAB001BB84D = {
 			isa = PBXGroup;
 			children = (
@@ -82,6 +107,8 @@
 		8CC0ABA522BCBBAB001BB84D /* CommonTool */ = {
 			isa = PBXGroup;
 			children = (
+				8C61BCDB230508550011F8E5 /* Resources */,
+				8C61BCD7230508090011F8E5 /* Tool */,
 				8CF75FE722FBDD25002E9CCE /* LeetCodeC */,
 				8CE456FD22D86776002EA4CF /* Cate */,
 				8CC0ABA622BCBBAB001BB84D /* AppDelegate.h */,
@@ -232,6 +259,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C61BCDF2305087F0011F8E5 /* sourceString2.txt in Resources */,
+				8C61BCDD2305086F0011F8E5 /* sourceString1.txt in Resources */,
 				8CC0ABB322BCBBAD001BB84D /* LaunchScreen.storyboard in Resources */,
 				8CC0ABB022BCBBAD001BB84D /* Assets.xcassets in Resources */,
 				8CC0ABAE22BCBBAB001BB84D /* Main.storyboard in Resources */,
@@ -253,6 +282,7 @@
 				8CC0ABB622BCBBAD001BB84D /* main.m in Sources */,
 				8CE4570922D867E5002EA4CF /* NSString+ALHelper.m in Sources */,
 				8CE4571022D87113002EA4CF /* UIView+AZLXibExtend.m in Sources */,
+				8C61BCDA2305082D0011F8E5 /* CompileSourceParse.m in Sources */,
 				8CE4571422D871DE002EA4CF /* NSURL+AZLProcess.m in Sources */,
 				8CC0ABA822BCBBAB001BB84D /* AppDelegate.m in Sources */,
 				8CF75FEA22FBDD5F002E9CCE /* LeetCodeC.c in Sources */,

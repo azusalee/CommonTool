@@ -444,8 +444,192 @@ void merge(int* nums1, int nums1Size, int m, int* nums2, int nums2Size, int n){
     while (j >= 0) nums1[index--] = nums2[j--];
 }
 
+// 电话号码的字母组合 https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/
 char ** letterCombinations(char * digits, int* returnSize){
-
+    if (digits[0] == '\0') {
+        *returnSize = 0;
+        return NULL;
+    }
+    int i = 0;
+    int arraySize = 1;
+    unsigned long length = 0;
+    while (digits[i] != '\0') {
+        ++length;
+        switch (digits[i++]) {
+            case '2':
+                //abc
+                arraySize *= 3;
+                break;
+            case '3':
+                //def
+                arraySize *= 3;
+                break;
+            case '4':
+                //ghi
+                arraySize *= 3;
+                break;
+            case '5':
+                //jkl
+                arraySize *= 3;
+                break;
+            case '6':
+                //mno
+                arraySize *= 3;
+                break;
+            case '7':
+                //pqrs
+                arraySize *= 4;
+                break;
+            case '8':
+                //tuv
+                arraySize *= 3;
+                break;
+            case '9':
+                //wxyz
+                arraySize *= 4;
+                break;
+                
+            default:
+                break;
+        }
+    }
     
-    return NULL;
+    char **result = malloc(sizeof(char*)*arraySize);
+    for (i = 0; i < arraySize; ++i) {
+        result[i] = malloc(sizeof(char)*(length+1));
+        memset(result[i], '\0', sizeof(char)*(length+1));
+    }
+    
+    *returnSize = arraySize;
+    arraySize = 1;
+    
+    i = 0;
+    while (digits[i] != '\0') {
+        switch (digits[i]) {
+            case '2':
+                //abc
+                for (int j = 0; j < arraySize; ++j) {
+                    char *str1 = result[j];
+                    char *str2 = result[j+arraySize];
+                    char *str3 = result[j+arraySize*2];
+                    memcpy(str2, str1, sizeof(char)*i);
+                    memcpy(str3, str1, sizeof(char)*i);
+                    str1[i] = 'a';
+                    str2[i] = 'b';
+                    str3[i] = 'c';
+                }
+                arraySize *= 3;
+                break;
+            case '3':
+                //def
+                for (int j = 0; j < arraySize; ++j) {
+                    char *str1 = result[j];
+                    char *str2 = result[j+arraySize];
+                    char *str3 = result[j+arraySize*2];
+                    memcpy(str2, str1, sizeof(char)*i);
+                    memcpy(str3, str1, sizeof(char)*i);
+                    str1[i] = 'd';
+                    str2[i] = 'e';
+                    str3[i] = 'f';
+                }
+                arraySize *= 3;
+                break;
+            case '4':
+                //ghi
+                for (int j = 0; j < arraySize; ++j) {
+                    char *str1 = result[j];
+                    char *str2 = result[j+arraySize];
+                    char *str3 = result[j+arraySize*2];
+                    memcpy(str2, str1, sizeof(char)*i);
+                    memcpy(str3, str1, sizeof(char)*i);
+                    str1[i] = 'g';
+                    str2[i] = 'h';
+                    str3[i] = 'i';
+                }
+                arraySize *= 3;
+                break;
+            case '5':
+                //jkl
+                for (int j = 0; j < arraySize; ++j) {
+                    char *str1 = result[j];
+                    char *str2 = result[j+arraySize];
+                    char *str3 = result[j+arraySize*2];
+                    memcpy(str2, str1, sizeof(char)*i);
+                    memcpy(str3, str1, sizeof(char)*i);
+                    str1[i] = 'j';
+                    str2[i] = 'k';
+                    str3[i] = 'l';
+                }
+                arraySize *= 3;
+                break;
+            case '6':
+                //mno
+                for (int j = 0; j < arraySize; ++j) {
+                    char *str1 = result[j];
+                    char *str2 = result[j+arraySize];
+                    char *str3 = result[j+arraySize*2];
+                    memcpy(str2, str1, sizeof(char)*i);
+                    memcpy(str3, str1, sizeof(char)*i);
+                    str1[i] = 'm';
+                    str2[i] = 'n';
+                    str3[i] = 'o';
+                }
+                arraySize *= 3;
+                break;
+            case '7':
+                //pqrs
+                for (int j = 0; j < arraySize; ++j) {
+                    char *str1 = result[j];
+                    char *str2 = result[j+arraySize];
+                    char *str3 = result[j+arraySize*2];
+                    char *str4 = result[j+arraySize*3];
+                    memcpy(str2, str1, sizeof(char)*i);
+                    memcpy(str3, str1, sizeof(char)*i);
+                    memcpy(str4, str1, sizeof(char)*i);
+                    str1[i] = 'p';
+                    str2[i] = 'q';
+                    str3[i] = 'r';
+                    str4[i] = 's';
+                }
+                arraySize *= 4;
+                break;
+            case '8':
+                //tuv
+                for (int j = 0; j < arraySize; ++j) {
+                    char *str1 = result[j];
+                    char *str2 = result[j+arraySize];
+                    char *str3 = result[j+arraySize*2];
+                    memcpy(str2, str1, sizeof(char)*i);
+                    memcpy(str3, str1, sizeof(char)*i);
+                    str1[i] = 't';
+                    str2[i] = 'u';
+                    str3[i] = 'v';
+                }
+                arraySize *= 3;
+                break;
+            case '9':
+                //wxyz
+                for (int j = 0; j < arraySize; ++j) {
+                    char *str1 = result[j];
+                    char *str2 = result[j+arraySize];
+                    char *str3 = result[j+arraySize*2];
+                    char *str4 = result[j+arraySize*3];
+                    memcpy(str2, str1, sizeof(char)*i);
+                    memcpy(str3, str1, sizeof(char)*i);
+                    memcpy(str4, str1, sizeof(char)*i);
+                    str1[i] = 'w';
+                    str2[i] = 'x';
+                    str3[i] = 'y';
+                    str4[i] = 'z';
+                }
+                arraySize *= 4;
+                break;
+                
+            default:
+                break;
+        }
+        ++i;
+    }
+    
+    return result;
 }

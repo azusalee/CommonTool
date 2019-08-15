@@ -63,4 +63,7 @@ int maxSubArray(int* nums, int numsSize);
 // 合并两个有序数组 https://leetcode-cn.com/problems/merge-sorted-array/submissions/
 void merge(int* nums1, int nums1Size, int m, int* nums2, int nums2Size, int n);
 
+// 电话号码的字母组合 https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/
+char ** letterCombinations(char * digits, int* returnSize);
+
 #endif /* LeetCodeC_h */

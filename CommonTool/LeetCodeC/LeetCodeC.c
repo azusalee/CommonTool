@@ -633,3 +633,200 @@ char ** letterCombinations(char * digits, int* returnSize){
     
     return result;
 }
+
+char * countAndSay(int n){
+    if (n == 1) {
+        return "1";
+    }
+    
+    int i = 0, count = 0, index = 0;
+    
+    char *str = malloc(sizeof(char)*10000);
+    memset(str, '\0', sizeof(char)*10000);
+    str[0] = '1';
+    char tmp = '\0';
+    char *tmpStr = malloc(sizeof(char)*10000);
+    memset(tmpStr, '\0', sizeof(char)*10000);
+    
+    char *str2 = str;
+    for (int k = 1; k < n; ++k) {
+        while (1) {
+            if (tmp != str[i]) {
+                if (count != 0) {
+                    tmpStr[index] = '0'+count;
+                    tmpStr[index+1] = tmp;
+                    index += 2;
+                }
+                tmp = str[i];
+                count = 0;
+            }
+            if (str[i] == '\0') {
+                tmpStr[index] = '\0';
+                break;
+            }
+            ++count;
+            ++i;
+        }
+        i = 0;
+        count = 0;
+        index = 0;
+        str = tmpStr;
+        tmpStr = str2;
+        str2 = str;
+    }
+    free(tmpStr);
+    
+    return str;
+}
+
+int removeElement(int* nums, int numsSize, int val){
+    int j = 0;
+    for (int i = 0; i < numsSize; ++i) {
+        if (nums[i] == val) continue;
+        nums[j++] = nums[i];
+    }
+    
+    return j;
+}
+
+void createParenthesis(char **block, int *memSize, char *str, int n, int l, int r, int* returnSize) {
+    if (l+r+1 == n) {
+        if (*returnSize >= *memSize) {
+            *memSize *= 2;
+            *block = realloc(*block, sizeof(char)*(*memSize)*(n+1));
+        }
+        // 加入结果
+        memcpy(*block+(*returnSize*(n+1)), str, sizeof(char)*(l+r));
+        (*block)[(*returnSize*(n+1))+l+r] = ')';
+        (*block)[(*returnSize*(n+1))+l+r+1] = '\0';
+        ++(*returnSize);
+    }else{
+        if (l > r) {
+            str[l+r] = ')';
+            createParenthesis(block, memSize, str, n, l, r+1, returnSize);
+        }
+        if (2*l < n) {
+            str[l+r] = '(';
+            createParenthesis(block, memSize, str, n, l+1, r, returnSize);
+        }
+    }
+}
+
+char ** generateParenthesis(int n, int* returnSize){
+    *returnSize = 0;
+    if (n == 0) return NULL;
+    
+    char *block = malloc(sizeof(char)*n*(2*n+1));
+    char *str = malloc(sizeof(char)*(2*n+1));
+    str[0] = '(';
+    int memSize = n;
+    createParenthesis(&block, &memSize, str, n*2, 1, 0, returnSize);
+    free(str);
+    char **result = malloc(sizeof(char*)*(*returnSize));
+    for (int i = 0; i < *returnSize; ++i) {
+        result[i] = block+i*(2*n+1); 
+    }
+    
+    return result;
+}
+
+int numJewelsInStones(char * J, char * S){
+    if (S[0] == '\0' || J[0] == '\0') return 0;
+    
+    char arr[58] = {0};
+    int i = 0, count = 0;
+    while (J[i] != '\0') {
+        arr[J[i++]-'A'] = 1;
+    }
+    i = 0;
+    while (S[i] != '\0') {
+        if (arr[S[i++]-'A'] == 1) ++count;
+    }
+    return count;
+}
+
+int singleNumber(int* nums, int numsSize){
+    while (numsSize > 1) nums[0] ^= nums[--numsSize];
+    return nums[0];
+}
+
+char * addBinary(char * a, char * b){
+    unsigned long lena = strlen(a);
+    unsigned long lenb = strlen(b);
+    
+    unsigned long resultLen = lena;
+    if (lena < lenb) {
+        char *tmp;
+        tmp = a;
+        a = b;
+        b = tmp;
+        lena = lenb;
+        lenb = resultLen;
+        resultLen = lena;
+    }
+    
+    bool up = false;
+    while (lenb != 0 && lena != 0) {
+        --lenb;
+        --lena;
+        if (a[lena] == b[lenb]) {
+            if (a[lena] == '1') {
+                if (up == true) {
+                    a[lena] = '1';
+                }else{
+                    a[lena] = '0';
+                }
+                up = true;
+            }else{
+                if (up == true) {
+                    a[lena] = '1';
+                }else{
+                    a[lena] = '0';
+                }
+                up = false;
+            }
+        }else{
+            if (up == true) {
+                a[lena] = '0';
+                up = true;
+            }else{
+                a[lena] = '1';
+                up = false;
+            }
+        }
+    }
+    
+    if (up == false) {
+        return a;
+    }else{
+        while (lena != 0) {
+            --lena;
+            if (a[lena] == '1') {
+                a[lena] = '0';
+            }else{
+                a[lena] = '1';
+                return a;
+            }
+        }
+        char *result = malloc(sizeof(char)*(resultLen+2));
+        result[0] = '1';
+        memcpy(result+1, a, sizeof(char)*(resultLen+1));
+        return result;
+    }
+}
+
+int climbStairs(int n){
+    //C(n)=C(n-1)+C(n-2), C(1) = 1; C(2) = 2;
+    if (n == 1) return 1;
+    
+    int first = 1;
+    int second = 2;
+    for (int i = 3; i <= n; i++) {
+        int third = first + second;
+        first = second;
+        second = third;
+    }
+    return second;
+}
+
+

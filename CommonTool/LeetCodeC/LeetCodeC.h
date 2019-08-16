@@ -66,4 +66,22 @@ void merge(int* nums1, int nums1Size, int m, int* nums2, int nums2Size, int n);
 // 电话号码的字母组合 https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/
 char ** letterCombinations(char * digits, int* returnSize);
 
+// 报数 https://leetcode-cn.com/problems/count-and-say/
+char * countAndSay(int n);
+
+// 括号生成 https://leetcode-cn.com/problems/generate-parentheses/submissions/
+char ** generateParenthesis(int n, int* returnSize);
+
+// 宝石与石头 https://leetcode-cn.com/problems/jewels-and-stones/
+int numJewelsInStones(char * J, char * S);
+
+// 只出现一次的数字 https://leetcode-cn.com/problems/single-number/
+int singleNumber(int* nums, int numsSize);
+
+// 二进制求和 https://leetcode-cn.com/problems/add-binary/submissions/
+char * addBinary(char * a, char * b);
+
+// 爬楼梯 https://leetcode-cn.com/problems/climbing-stairs/submissions/
+int climbStairs(int n);
+
 #endif /* LeetCodeC_h */

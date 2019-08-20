@@ -829,4 +829,343 @@ int climbStairs(int n){
     return second;
 }
 
+struct ListNode* reverseList(struct ListNode* head){
+    if (head == NULL || head->next == NULL) return head;
+    
+    struct ListNode *result = head;
+    struct ListNode *p = head;
+    struct ListNode *r = NULL;
+    
+    while (p != NULL) {
+        result = p;
+        p = p->next;
+        result->next = r;
+        r = result;
+    }
+    
+    return result;
+}
 
+int lengthOfLastWord(char * s){
+    int i = 0;
+    int len = 0;
+    bool isSpace = false;
+    while (s[i] != '\0') {
+        if (s[i] == ' ') {
+            isSpace = true;
+        }else{
+            if (isSpace) {
+                len = 0;
+                isSpace = false;
+            }
+            ++len;
+        }
+        ++i;
+    }
+
+    return len;
+}
+
+int search(int* nums, int numsSize, int target){
+    if (numsSize == 0) return -1;
+    if (numsSize == 1) return nums[0]==target?0:-1;
+    
+    /*
+    Binary search
+    */
+    int left = 0, right = numsSize-1;
+    int rotateIndex = 0;
+    if (nums[left] > nums[right]){
+        while (left <= right) {
+            int pivot = (left + right) / 2;
+            if (nums[pivot] > nums[pivot + 1]){
+                rotateIndex = pivot + 1;
+                break;
+            } else {
+                if (nums[pivot] < nums[left])
+                    right = pivot - 1;
+                else
+                    left = pivot + 1;
+            }
+        }
+    }
+    
+    if (nums[rotateIndex] == target) return rotateIndex;
+    
+    if (rotateIndex == 0) {
+        left = 0;
+        right = numsSize-1;
+    }else if (nums[0] > target) {
+        left = rotateIndex;
+        right = numsSize-1;
+    }else{
+        left = 0;
+        right = rotateIndex-1;
+    }
+    
+    while (left <= right) {
+        int pivot = (left + right) / 2;
+        if (nums[pivot] == target)
+            return pivot;
+        else {
+            if (target < nums[pivot])
+                right = pivot - 1;
+            else
+                left = pivot + 1;
+        }
+    }
+    return -1;
+}
+
+struct ListNode* swapPairs(struct ListNode* head){
+    if (head == NULL || head->next == NULL) return head;
+    
+    struct ListNode *p1 = head;
+    struct ListNode *p2 = head->next;
+    struct ListNode *result = p2;
+    struct ListNode *tmpHead = NULL;
+    
+    while (1) {
+        p1->next = p2->next;
+        p2->next = p1;
+        tmpHead = p1;
+        p1 = p1->next;
+        if (p1 == NULL) break;
+        p2 = p1->next;
+        if (p2 == NULL) break;
+        tmpHead->next = p2;
+    }
+    
+    return result;
+}
+
+int min(int num1, int num2) {
+    return num1<num2?num1:num2;
+}
+
+int maxArea(int* height, int heightSize){
+    // (n2-n1)*min(height1, height2);
+    int i = 0;
+    int j = heightSize-1;
+    int maxsize = 0;
+    int tmpsize = 0;
+    
+    while (i < j) {
+        if (height[i] < height[j]) {
+            tmpsize = (j-i)*height[i];
+            if (tmpsize > maxsize) maxsize = tmpsize;
+            ++i;
+        }else{
+            tmpsize = (j-i)*height[j];
+            if (tmpsize > maxsize) maxsize = tmpsize;
+            --j;
+        }
+        
+    }
+    
+    return maxsize;
+}
+
+int maxDepth(struct TreeNode* root){
+    if (root == NULL) return 0;
+    int left = maxDepth(root->left)+1;
+    int right = maxDepth(root->right)+1;
+    return left>right?left:right;
+}
+
+struct ListNode* reverseKGroup(struct ListNode* head, int k){
+    if (head == NULL || head->next == NULL || k < 2) return head;
+    
+    struct ListNode *p = head;
+    struct ListNode *f = head;
+    struct ListNode *f2 = NULL;
+    struct ListNode *r = NULL;
+    struct ListNode *cur = head;
+    
+    int loopCount = 0;
+    bool flag = false;
+    
+    while (p != NULL) {
+        cur = p;
+        p = p->next;
+        cur->next = r;
+        r = cur;
+        if (++loopCount == k) {
+            if (flag == false) {
+                head = cur;
+                flag = true;
+            }else{
+                f->next = cur;
+                f = f2;
+            }
+            f2 = p;
+            r = NULL;
+            loopCount = 0;
+        }
+    }
+    
+    if (loopCount != 0) {
+        p = cur;
+        r = NULL;
+        while (p != NULL) {
+            cur = p;
+            p = p->next;
+            cur->next = r;
+            r = cur;
+        }
+        if (flag == true) {
+            f->next = cur;
+        }
+    }
+    
+    return head;
+}
+
+void reverseString(char* s, int sSize){
+    int i = 0, j = sSize-1;
+    while (i < j) {
+        char tmp = s[i];
+        s[i] = s[j];
+        s[j] = tmp;
+        ++i;
+        --j;
+    }
+}
+
+int* searchRange(int* nums, int numsSize, int target, int* returnSize){
+    int *result = malloc(sizeof(int)*2);
+    *returnSize = 2;
+    result[0] = -1;
+    result[1] = -1;
+    
+    int left = 0, right = numsSize-1;
+    
+    while (left <= right) {
+        int mid = (left+right)/2;
+        if (nums[mid] == target) {
+            result[0] = mid;
+            result[1] = mid;
+            break;
+        }else if (nums[mid] < target) {
+            left = mid+1;
+        }else{
+            right = mid-1;
+        }
+    }
+    if (result[0] == -1) {
+        return result;
+    }
+    
+    left = 0;
+    right = result[0]-1;
+    while (left <= right) {
+        int mid = (left+right)/2;
+        if (nums[mid] == target) {
+            if (mid == 0 || nums[mid] != nums[mid-1]) {
+                result[0] = mid;
+                break;
+            }
+            right = mid-1;
+        }else{
+            if (nums[mid+1] == target) {
+                result[0] = mid+1;
+                break;
+            }
+            left = mid+1;
+        }
+    }
+    
+    left = result[1]+1;
+    right = numsSize-1;
+    
+    while (left <= right) {
+        int mid = (left+right)/2;
+        if (nums[mid] == target) {
+            if (mid == numsSize-1 || nums[mid] != nums[mid+1]) {
+                result[1] = mid;
+                break;
+            }
+            left = mid+1;
+        }else{
+            if (nums[mid-1] == target) {
+                result[1] = mid-1;
+                break;
+            }
+            right = mid-1;
+        }
+    }
+    
+    return result;
+}
+
+char * intToRoman(int num){
+    char *result = malloc(sizeof(char)*16);
+    
+    const int map[] = {1000, 900,  500, 400, 100, 90,  50,  40,  10,  9,   5,  4,   1};
+    const char *r[] = {"M" , "CM", "D", "CD","C", "XC","L", "XL","X", "IX","V","IV","I"};
+    const int rlen[] = {1 , 2 , 1 , 2, 1, 2, 1, 2, 1, 2, 1, 2, 1};
+    
+    int index = 0, i = 0, tmp;
+    while (num) {
+        tmp = map[i];
+        if (tmp > num) {
+            ++i;
+            continue;
+        }
+        num -= tmp;
+        memcpy(result+index, r[i], sizeof(char)*rlen[i]);
+        index += rlen[i];
+    }
+    
+    result[index] = '\0';
+    
+    return result;
+}
+
+void moveZeroes(int* nums, int numsSize){
+    int j = 0;
+    for(int i = 0; i < numsSize; i++) if(nums[i] != 0) nums[j++] = nums[i];
+    while (j < numsSize) nums[j++] = 0;
+}
+
+struct ListNode* mergeKLists(struct ListNode** lists, int listsSize){
+    if (listsSize == 0) return NULL;
+    if (listsSize == 1) return lists[0];
+    
+    int mid = listsSize / 2;
+    struct ListNode *l1 = mergeKLists(lists, mid);
+    struct ListNode *l2 = mergeKLists(lists+mid, listsSize-mid);
+    
+    return mergeTwoLists(l1, l2);
+}
+
+bool isPalindromeList(struct ListNode* head){
+    if (head == NULL || head->next == NULL) return true;
+    struct ListNode *cur = head;
+    int len = 0;
+    while (cur) {
+        cur = cur->next;
+        ++len;
+    }
+    
+    cur = head;
+    int i = 0;
+    for (i = 0; i < len/2; ++i) {
+        cur = cur->next;
+    }
+    
+    struct ListNode *r = reverseList(cur);
+    cur = r;
+    while (cur != NULL) {
+        if (cur->val != head ->val) {
+            reverseList(r);
+            return false;
+        }
+        cur = cur->next;
+        head = head->next;
+    }
+    
+    reverseList(r);
+    
+    return true;
+}

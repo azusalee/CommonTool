@@ -18,6 +18,13 @@ struct ListNode {
     struct ListNode *next;
 };
 
+// 二叉树
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+};
+
 /// 罗马数字转整数(1~3999) https://leetcode-cn.com/problems/roman-to-integer/
 int romanToInt(char * s);
 
@@ -83,5 +90,44 @@ char * addBinary(char * a, char * b);
 
 // 爬楼梯 https://leetcode-cn.com/problems/climbing-stairs/submissions/
 int climbStairs(int n);
+
+// 反转链表 https://leetcode-cn.com/problems/reverse-linked-list/submissions/
+struct ListNode* reverseList(struct ListNode* head);
+
+// 最后一个单词的长度 https://leetcode-cn.com/problems/length-of-last-word/submissions/
+int lengthOfLastWord(char * s);
+
+// 搜索旋转排序数组 https://leetcode-cn.com/problems/search-in-rotated-sorted-array/submissions/
+int search(int* nums, int numsSize, int target);
+
+// 两两交换链表中的节点 https://leetcode-cn.com/problems/swap-nodes-in-pairs/
+struct ListNode* swapPairs(struct ListNode* head);
+
+// 盛最多水的容器 https://leetcode-cn.com/problems/container-with-most-water/submissions/
+int maxArea(int* height, int heightSize);
+
+// 二叉树的最大深度 https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/submissions/
+int maxDepth(struct TreeNode* root);
+
+// K 个一组翻转链表 https://leetcode-cn.com/problems/reverse-nodes-in-k-group/submissions/
+struct ListNode* reverseKGroup(struct ListNode* head, int k);
+
+// 反转字符串 https://leetcode-cn.com/problems/reverse-string/submissions/
+void reverseString(char* s, int sSize);
+
+// 在排序数组中查找元素的第一个和最后一个位置 https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/submissions/
+int* searchRange(int* nums, int numsSize, int target, int* returnSize);
+
+// 整数转罗马数字 https://leetcode-cn.com/problems/integer-to-roman/submissions/
+char * intToRoman(int num);
+
+// 移动零 https://leetcode-cn.com/problems/move-zeroes/submissions/
+void moveZeroes(int* nums, int numsSize);
+
+// 合并K个排序链表 https://leetcode-cn.com/problems/merge-k-sorted-lists/submissions/
+struct ListNode* mergeKLists(struct ListNode** lists, int listsSize);
+
+// 回文链表 https://leetcode-cn.com/problems/palindrome-linked-list/submissions/
+bool isPalindromeList(struct ListNode* head);
 
 #endif /* LeetCodeC_h */

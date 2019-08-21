@@ -130,4 +130,13 @@ struct ListNode* mergeKLists(struct ListNode** lists, int listsSize);
 // 回文链表 https://leetcode-cn.com/problems/palindrome-linked-list/submissions/
 bool isPalindromeList(struct ListNode* head);
 
+// 全排列 https://leetcode-cn.com/problems/permutations/
+int** permute(int* nums, int numsSize, int* returnSize, int** returnColumnSizes);
+
+// 求众数 https://leetcode-cn.com/problems/majority-element/
+int majorityElement(int* nums, int numsSize);
+
+// x 的平方根 https://leetcode-cn.com/problems/sqrtx/submissions/
+int mySqrt(int x);
+
 #endif /* LeetCodeC_h */

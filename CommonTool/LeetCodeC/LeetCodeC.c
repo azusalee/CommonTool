@@ -1169,3 +1169,95 @@ bool isPalindromeList(struct ListNode* head){
     
     return true;
 }
+
+int** permute(int* nums, int numsSize, int* returnSize, int** returnColumnSizes){
+    if (numsSize == 0) {
+        *returnSize = 0;
+        return NULL;
+    }
+    int size = 1, i = 2, j, k, z;
+    for (; i <= numsSize; ++i) {
+        size *= i;
+    }
+    *returnSize = size;
+    *returnColumnSizes = (int *)malloc(sizeof(int) * size);
+    
+    int **result = malloc(sizeof(int*)*size);
+    for (i = 0; i < size; ++i) {
+        result[i] = malloc(sizeof(int)*numsSize);
+        (*returnColumnSizes)[i] = numsSize;
+    }
+    
+    result[0][0] = nums[0]; 
+    size = 1;
+    int val;
+    int *tmpstr, *tmpstr2;
+    for (i = 1; i < numsSize; ++i) {
+        val = nums[i];
+        for (j = 0; j < size; ++j) {
+            tmpstr = result[j];
+            tmpstr[i] = val;
+            for (k = 1; k <= i; ++k) {
+                tmpstr2 = result[size*k+j];
+                tmpstr2[i-k] = val;
+                for (z = 0; z < i; ++z) {
+                    if (z >= i-k) {
+                        tmpstr2[z+1] = tmpstr[z];
+                    }else{
+                        tmpstr2[z] = tmpstr[z];
+                    }
+                }
+            }
+        }
+        size = size*(i+1);
+    }
+    
+    return result;
+}
+
+int majorityElement(int* nums, int numsSize){
+    // 排序后取中获取总数 时间复杂度O(nlogn)(在leetcode里会超时，实际上只有哈希表和投票算法能通过，随机法运气好也有可能通过)
+//    quickSort(nums, 0, numsSize-1);
+//    return nums[numsSize/2];
+    
+    // Boyer-Moore 投票算法 时间复杂度O(n)
+    int result = nums[0];
+    int score = 1;
+    for (int i = 1; i < numsSize; ++i) {
+        if (score == 0) {
+            result = nums[i];
+        }
+        if (nums[i] == result) {
+            score += 1;
+        }else{
+            score -= 1;
+        }
+    }
+    return result;
+}
+
+int mySqrt(int x){
+    if (x <= 1) return x;
+    
+    int left = 1;
+    int right = x/2;
+    int mid = 0;
+    int tmp = 0;
+
+    while (left <= right) {
+        mid = (left+right)/2;
+        tmp = x/mid;
+        if (tmp == mid) {
+            break;
+        }else if (tmp < mid){
+            right = mid-1;
+        }else{
+            left = mid+1;
+        }
+    }
+    if (tmp < mid) {
+        return mid-1;
+    }
+    return mid;
+}
+

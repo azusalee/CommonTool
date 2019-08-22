@@ -1261,3 +1261,132 @@ int mySqrt(int x){
     return mid;
 }
 
+int* spiralOrder(int** matrix, int matrixSize, int* matrixColSize, int* returnSize){
+    if (matrixSize == 0) {
+        *returnSize = 0;
+        return NULL;
+    }
+    
+    int colSize = matrixColSize[0];
+    *returnSize = colSize*matrixSize;
+    if (matrixSize == 1) return matrix[0];
+    
+    int *result = malloc(sizeof(int)*(*returnSize));
+    int index = 0;
+    int firstRow = 0, firstCol = 0, lastRow = matrixSize-1, lastCol = colSize-1;
+    while (1) {
+        for (int i = firstCol; i <= lastCol; ++i) result[index++] = matrix[firstRow][i];
+        if (++firstRow > lastRow) break;
+        
+        for (int i = firstRow; i <= lastRow; ++i) result[index++] = matrix[i][lastCol];
+        if (--lastCol < firstCol) break;
+        
+        for (int i = lastCol; i >= firstCol; --i) result[index++] = matrix[lastRow][i];
+        if (--lastRow < firstRow) break;
+        
+        for (int i = lastRow; i >= firstRow; --i) result[index++] = matrix[i][firstCol];
+        if (++firstCol > lastCol) break;
+    }
+    
+    return result;
+}
+
+char * reverseWords(char * s){
+    char tmp;
+    int i = 0, wordStartIndex = 0, wordEndIndex = 0;
+    while (s[i] != '\0') {
+        if (s[i] == ' ') {
+            wordEndIndex = i-1;
+            while (wordStartIndex < wordEndIndex) {
+                tmp = s[wordStartIndex];
+                s[wordStartIndex++] = s[wordEndIndex];
+                s[wordEndIndex--] = tmp;
+            }
+            wordStartIndex = i+1;
+        }
+        ++i;
+    }
+    wordEndIndex = i-1;
+    while (wordStartIndex < wordEndIndex) {
+        tmp = s[wordStartIndex];
+        s[wordStartIndex++] = s[wordEndIndex];
+        s[wordEndIndex--] = tmp;
+    }
+    
+    return s;
+}
+
+char * multiply(char * num1, char * num2){
+    if (num1[0] == '0' || num2[0] == '0') {
+        char* res = (char*)malloc(sizeof(char) * 2);
+        res[0] = '0'; res[1] = '\0';
+        return res;
+    }
+    
+    int len1 = (int)strlen(num1);
+    int len2 = (int)strlen(num2);
+    
+    int resultLen = len1+len2+1;
+    char *result = malloc(sizeof(char)*resultLen);
+    memset(result, '0', sizeof(char)*resultLen);
+    result[resultLen-1] = '\0';
+    
+    int i = len1, j = len2, tmp2, tmp1, tmp3;
+    while (--j >= 0) {
+        tmp2 = num2[j]-'0';
+        if (tmp2 != 0) {
+            i = len1;
+            while (--i >= 0) {
+                resultLen = i+j;
+                tmp1 = (num1[i]-'0')*tmp2;
+                tmp3 = result[resultLen+1]-'0'+tmp1%10;
+                
+                result[resultLen+1] = tmp3%10+'0';
+                result[resultLen] = result[resultLen]+tmp3/10+tmp1/10;
+            }
+        }
+    }
+    
+    if (result[0] == '0') return result+1;
+    return result;
+}
+
+int findKthLargest(int* nums, int numsSize, int k){
+    if (numsSize == 1) return nums[0];
+    
+    int maxNum = nums[0];
+    int maxIndex = 0;
+    int nMax = 0;
+    if (k > numsSize/2) {
+        int kMin = numsSize-k+1;
+        while (nMax < kMin) {
+            maxNum = nums[0];
+            for (int i = 1; i < numsSize; ++i) {
+                if (nums[i] < maxNum) {
+                    maxNum = nums[i];
+                    maxIndex = i;
+                }
+            }
+            nums[maxIndex] = nums[numsSize-1];
+            nums[numsSize-1] = maxNum;
+            --numsSize;
+            ++nMax;
+        }
+    }else{
+        while (nMax < k) {
+            maxNum = nums[0];
+            for (int i = 1; i < numsSize; ++i) {
+                if (nums[i] > maxNum) {
+                    maxNum = nums[i];
+                    maxIndex = i;
+                }
+            }
+            nums[maxIndex] = nums[numsSize-1];
+            nums[numsSize-1] = maxNum;
+            --numsSize;
+            ++nMax;
+        }
+    }
+    
+    return maxNum;
+}

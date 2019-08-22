@@ -139,4 +139,16 @@ int majorityElement(int* nums, int numsSize);
 // x 的平方根 https://leetcode-cn.com/problems/sqrtx/submissions/
 int mySqrt(int x);
 
+// 螺旋矩阵 https://leetcode-cn.com/problems/spiral-matrix/
+int* spiralOrder(int** matrix, int matrixSize, int* matrixColSize, int* returnSize);
+
+// 反转字符串中的单词 III https://leetcode-cn.com/problems/reverse-words-in-a-string-iii/submissions/
+char * reverseWords(char * s);
+
+// 字符串相乘 https://leetcode-cn.com/problems/multiply-strings/submissions/
+char * multiply(char * num1, char * num2);
+
+// 数组中的第K个最大元素 https://leetcode-cn.com/problems/kth-largest-element-in-an-array/
+int findKthLargest(int* nums, int numsSize, int k);
+
 #endif /* LeetCodeC_h */

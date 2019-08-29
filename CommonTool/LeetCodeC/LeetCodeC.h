@@ -159,4 +159,13 @@ bool hasCycle(struct ListNode *head);
 // 旋转图像 https://leetcode-cn.com/problems/rotate-image/submissions/
 void rotate(int** matrix, int matrixSize, int* matrixColSize);
 
+// 验证回文串 https://leetcode-cn.com/problems/valid-palindrome/submissions/
+bool isPalindromeString(char * s);
+
+// 打家劫舍 https://leetcode-cn.com/problems/house-robber/solution/da-jia-jie-she-by-leetcode/
+int rob(int* nums, int numsSize);
+
+// 二叉树的层次遍历 https://leetcode-cn.com/problems/binary-tree-level-order-traversal/submissions/
+int** levelOrder(struct TreeNode* root, int* returnSize, int** returnColumnSizes);
+
 #endif /* LeetCodeC_h */

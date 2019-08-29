@@ -942,6 +942,9 @@ struct ListNode* swapPairs(struct ListNode* head){
 int min(int num1, int num2) {
     return num1<num2?num1:num2;
 }
+int max(int num1, int num2) {
+    return num1>num2?num1:num2;
+}
 
 int maxArea(int* height, int heightSize){
     // (n2-n1)*min(height1, height2);
@@ -1510,3 +1513,105 @@ void rotate(int** matrix, int matrixSize, int* matrixColSize){
     }
 
 }
+
+bool isPalindromeString(char * s){
+    // 65~90 A~Z   97~122 a~z 
+    // 48~57 0~9
+    if (s[0] == '\0') return true;
+    
+    unsigned long p1 = 0;
+    unsigned long p2 = strlen(s)-1;
+    
+    char c1, c2;
+    
+    while (p1 < p2) {
+        c1 = s[p1];
+        if (c1 >= 97 && c1 <= 122) {
+            c1 -= 32;
+        }else if ((c1 >= 65 && c1 <= 90) || (c1 >= 48 && c1 <= 57)){
+            
+        }else{
+            ++p1;
+            continue;
+        }
+        
+        while (1) {
+            c2 = s[p2];
+            if (c2 >= 97 && c2 <= 122) {
+                c2 -= 32;
+            }else if ((c2 >= 65 && c2 <= 90) || (c2 >= 48 && c2 <= 57)){
+                
+            }else{
+                --p2;
+                if (p1 >= p2) return true;
+                continue;
+            }
+            break;
+        }
+        
+        if (c1 != c2) return false;
+        ++p1;
+        --p2;
+    }
+    return true;
+}
+
+/*
+    31391
+    
+    0,0
+    0,3
+    3,3
+    3,6
+    6,12
+    
+    
+    
+*/
+
+int rob(int* nums, int numsSize){
+    int prevMax = 0;
+    int currMax = 0;
+    for (int i = 0; i < numsSize; ++i) {
+        int temp = currMax;
+        currMax = max(prevMax + nums[i], currMax);
+        prevMax = temp;
+    }
+    return currMax;
+}
+
+void levelHelper(struct TreeNode* root, int level, int **result, int* returnColumnSizes) {
+    if (root == NULL) return;
+    
+    result[level][(returnColumnSizes[level])++] = root->val;
+    
+    levelHelper(root->left, level+1, result, returnColumnSizes);
+    levelHelper(root->right, level+1, result, returnColumnSizes);
+}
+
+void caculateLevelSize(struct TreeNode* root, int level, int* returnColumnSizes) {
+    if (root == NULL) return;
+    
+    ++(returnColumnSizes[level]);
+    
+    caculateLevelSize(root->left, level+1, returnColumnSizes);
+    caculateLevelSize(root->right, level+1, returnColumnSizes);
+}
+
+int** levelOrder(struct TreeNode* root, int* returnSize, int** returnColumnSizes){
+    int maxLevel = maxDepth(root);
+    *returnColumnSizes = malloc(sizeof(int)*maxLevel);
+    memset(*returnColumnSizes, 0, sizeof(int)*maxLevel);
+    caculateLevelSize(root, 0,  *returnColumnSizes);
+    int **result = malloc(sizeof(int*)*maxLevel);
+    for (int i = 0; i < maxLevel; ++i) {
+        result[i] = malloc(sizeof(int)*(*returnColumnSizes)[i]);
+    }
+    
+    memset(*returnColumnSizes, 0, sizeof(int)*maxLevel);
+    levelHelper(root, 0, result, *returnColumnSizes);
+    *returnSize = maxLevel;
+    return result;
+}
+
+

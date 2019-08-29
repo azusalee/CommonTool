@@ -150,5 +150,13 @@ char * multiply(char * num1, char * num2);
 
 // 数组中的第K个最大元素 https://leetcode-cn.com/problems/kth-largest-element-in-an-array/
 int findKthLargest(int* nums, int numsSize, int k);
+int findKthLargest2(int* nums, int numsSize, int k);
+void myprintNums(int* nums, int numsSize);
+
+// 环形链表 https://leetcode-cn.com/problems/linked-list-cycle/submissions/
+bool hasCycle(struct ListNode *head);
+
+// 旋转图像 https://leetcode-cn.com/problems/rotate-image/submissions/
+void rotate(int** matrix, int matrixSize, int* matrixColSize);
 
 #endif /* LeetCodeC_h */

@@ -1353,40 +1353,160 @@ char * multiply(char * num1, char * num2){
 
 int findKthLargest(int* nums, int numsSize, int k){
     if (numsSize == 1) return nums[0];
-    
-    int maxNum = nums[0];
-    int maxIndex = 0;
-    int nMax = 0;
-    if (k > numsSize/2) {
-        int kMin = numsSize-k+1;
-        while (nMax < kMin) {
-            maxNum = nums[0];
-            for (int i = 1; i < numsSize; ++i) {
-                if (nums[i] < maxNum) {
-                    maxNum = nums[i];
-                    maxIndex = i;
+    int right = numsSize, targetIndex = 0;
+    int i, tmp;
+    if (k <= numsSize/2) {
+        while (numsSize-right != k) {
+            targetIndex = 0;
+            tmp = nums[targetIndex];
+            for (i = 1; i < right; ++i) {
+                if (tmp < nums[i]) {
+                    tmp = nums[i];
+                    targetIndex = i;
                 }
             }
-            nums[maxIndex] = nums[numsSize-1];
-            nums[numsSize-1] = maxNum;
-            --numsSize;
-            ++nMax;
+            --right;
+            nums[targetIndex] = nums[right];
+            nums[right] = tmp;
         }
     }else{
-        while (nMax < k) {
-            maxNum = nums[0];
-            for (int i = 1; i < numsSize; ++i) {
-                if (nums[i] > maxNum) {
-                    maxNum = nums[i];
-                    maxIndex = i;
+        while (right+1 != k) {
+            targetIndex = 0;
+            tmp = nums[targetIndex];
+            for (i = 1; i < right; ++i) {
+                if (tmp > nums[i]) {
+                    tmp = nums[i];
+                    targetIndex = i;
                 }
             }
-            nums[maxIndex] = nums[numsSize-1];
-            nums[numsSize-1] = maxNum;
-            --numsSize;
-            ++nMax;
+            --right;
+            nums[targetIndex] = nums[right];
+            nums[right] = tmp;
         }
     }
     
-    return maxNum;
+    return nums[right];
+    
+//    int left = 0, right = numsSize, targetIndex = 0;
+//    int i, j, tmp;
+//    while (1) {
+//        targetIndex = left;
+//        j = right;
+//        for (i = left+1; i <= j; ++i) {
+//            tmp = nums[i];
+//            if (tmp < nums[targetIndex]) {
+//                nums[i] = nums[targetIndex];
+//                nums[targetIndex] = tmp;
+//                targetIndex = i;
+//            }else{
+//                nums[i--] = nums[j];
+//                nums[j--] = tmp;
+//            }
+//        }
+//        if (numsSize-targetIndex == k) {
+//            break;
+//        }else if (numsSize-targetIndex > k) {
+//            left = targetIndex+1;
+//        }else{
+//            right = targetIndex-1;
+//        }
+//    }
+//    
+//    return nums[targetIndex];
+}
+
+int findKthLargest2(int* nums, int numsSize, int k){
+    int i, temp;
+    int parent, child;
+    for (i = (numsSize - 1)/2; i >= 0; i--){
+        temp = nums[i];
+        for(parent = i; 2*parent + 1 <= numsSize - 1;parent = child ){
+            if (2*parent + 1 == numsSize - 1 || nums[2*parent + 1] > nums[parent* 2 + 2])
+                child = 2*parent + 1;
+            else child = 2* parent + 2;
+            if (temp < nums[child]){
+                nums[parent] = nums[child];
+                myprintNums(nums, numsSize);
+            }
+            else break;
+        }
+        nums[parent] = temp;
+        myprintNums(nums, numsSize);
+    }
+    while(k - 1){
+        numsSize--;
+        temp = nums[numsSize];
+        for(parent = 0; 2*parent + 1 <= numsSize - 1;parent = child ){
+            if (2*parent + 1 == numsSize - 1 || nums[2*parent + 1] > nums[parent* 2 + 2])
+                child = 2*parent + 1;
+            else child = 2* parent + 2;
+            if (temp < nums[child]){
+                nums[parent] = nums[child];
+                myprintNums(nums, numsSize);
+            }
+            else break;
+        }
+        nums[parent] = temp;
+        myprintNums(nums, numsSize);
+        k --;
+    }
+    return nums[0];
+}
+
+void myprintNums(int* nums, int numsSize) {
+    for (int i = 0; i < numsSize; ++i) {
+        printf("%d", nums[i]);
+    }
+    printf("\n");
+}
+
+bool hasCycle(struct ListNode *head) {
+    if (head == NULL) return false;
+    struct ListNode *tmp = head;
+    head = head->next;
+    
+    while (head != NULL && head->next != NULL) {
+        if (tmp == head) return true;
+        head = head->next->next;
+        tmp = tmp->next;
+    }
+    return false;
+}
+
+void rotate(int** matrix, int matrixSize, int* matrixColSize){
+    /* n*n x为行，y为列
+     左上角
+     (x,y)
+     右上角
+     (y,n-1-x)
+     右下角
+     (n-1-x, n-1-y) 
+     左下角
+     (n-1-y, x)
+     
+     
+     0,0
+     0,2
+     2,2
+     2,0
+     
+     0,1
+     1,2
+     2,1
+     1,0
+     
+    */
+    if (matrixSize < 2) return;
+    int halfSizeX = (matrixSize+1)/2;
+    int halfSizeY = matrixSize/2;
+    for (int x = 0; x < halfSizeX; ++x) {
+        for (int y = 0; y < halfSizeY; ++y) {
+            int tmp = matrix[x][y];
+            matrix[x][y] = matrix[matrixSize-1-y][x];
+            matrix[matrixSize-1-y][x] = matrix[matrixSize-1-x][matrixSize-1-y];
+            matrix[matrixSize-1-x][matrixSize-1-y] = matrix[y][matrixSize-1-x];
+            matrix[y][matrixSize-1-x] = tmp;
+        }
+    }
+
 }

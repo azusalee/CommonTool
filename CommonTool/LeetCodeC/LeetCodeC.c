@@ -1614,4 +1614,233 @@ int** levelOrder(struct TreeNode* root, int* returnSize, int** returnColumnSizes
     return result;
 }
 
+int divide(int dividend, int divisor){
+    if (dividend == 0) return 0;
+    if (dividend == -2147483648 && divisor == -1) return 2147483647;
+    
+    bool isminus = false;
+    if (dividend > 0) {
+        dividend = -dividend;
+        isminus = !isminus;
+    }
+    if (divisor > 0) {
+        divisor = -divisor;
+        isminus = !isminus;
+    }
+    
+    int tmp = divisor;
+    int times = -1;
+    int count = 0;
+    
+    while (dividend <= divisor) {
+        while (tmp >= -1073741824 && dividend <= tmp+tmp) {
+            tmp += tmp;
+            times += times;
+        }
+        dividend -= tmp;
+        count += times;
+        times = -1;
+        tmp = divisor;
+    }
+    
+    if (isminus) {
+        return count;
+    }else{
+        return -count;
+    }
+}
 
+long long uniquePaths(int m, int n){
+    // m+n-2步 到右下角 (m-1)向右 (n-1)次向下
+    // C(m-1, m+n-2)
+    // (m+n-2)!/(m-1)!(n-1)!
+    
+    int i = 0;
+    long long count = 1;
+    if (--m > --n) while (i++ < n) count = count*(i+m)/i;
+    else while (i++ < m) count = count*(i+n)/i;
+    return count;
+}
+
+int maxProfit(int* prices, int pricesSize){
+    int max = 0, i = 0, tmp;
+    for (int j = i+1; j < pricesSize; ++j) {
+        if (prices[j] <= prices[i]) {
+            i = j;
+            continue;
+        }
+        tmp = prices[j]-prices[i];
+        if (max < tmp) max = tmp;
+    }
+    return max;
+}
+
+struct ListNode* rotateRight(struct ListNode* head, int k){
+    // 每右移动一次，即把最后一个指向第一个，倒数第二个指向NULL
+    if (head == NULL || head->next == NULL || k == 0) return head;
+    
+    struct ListNode *lastNode = head->next;
+    int count = 2;
+    while (lastNode->next != NULL) {
+        lastNode = lastNode->next;
+        ++count;
+    }
+    lastNode->next = head;
+    lastNode = head;
+    k = count-k%count-1;
+    while (k-- > 0) lastNode = lastNode->next;
+    head = lastNode->next;
+    lastNode->next = NULL;
+    return head;
+}
+
+MinStack* minStackCreate() {
+    MinStack *minStack = malloc(sizeof(MinStack));
+    minStack->top = NULL;
+    minStack->min = NULL;
+    return minStack;
+}
+
+void minStackPush(MinStack* obj, int x) {
+    struct ListNode *node = malloc(sizeof(struct ListNode));
+    node->next = NULL;
+    node->val = x;
+    
+    if (obj->top == NULL) {
+        obj->top = node;
+        obj->min = node;
+    }else{
+        if (x < obj->min->val) obj->min = node;
+        
+        node->next = obj->top;
+        obj->top = node;
+    }
+}
+
+void minStackPop(MinStack* obj) {
+    struct ListNode *top = obj->top;
+    if (top) {
+        obj->top = top->next;
+        if (top == obj->min) {
+            struct ListNode *cur = obj->top;
+            obj->min = cur;
+            while (cur != NULL) {
+                if (cur->val < obj->min->val) obj->min = cur;
+                cur = cur->next;
+            }
+        }
+        free(top);
+    }
+}
+
+int minStackTop(MinStack* obj) {
+    return obj->top->val;
+}
+
+int minStackGetMin(MinStack* obj) {
+    return obj->min->val;
+}
+
+void minStackFree(MinStack* obj) {
+    struct ListNode *top = obj->top;
+    struct ListNode *tmp;
+    while (top) {
+        tmp = top;
+        top = top->next;
+        free(tmp);
+    }
+    free(obj);
+}
+
+int maxProfit2(int* prices, int pricesSize){
+    int totalMax = 0;
+    for (int i = 1; i < pricesSize; ++i) 
+        if (prices[i] > prices[i-1]) 
+            totalMax += prices[i]-prices[i-1];
+    
+    return totalMax;
+}
+
+int** generate(int numRows, int* returnSize, int** returnColumnSizes){
+    *returnSize = numRows;
+    if (numRows == 0) return NULL;
+    
+    int **result = malloc(sizeof(int*)*numRows);
+    *returnColumnSizes = malloc(sizeof(int)*numRows);
+    int j = 0;
+    for (int i = 0; i < numRows; ++i){
+        result[i] = malloc(sizeof(int)*(i+1));
+        (*returnColumnSizes)[i] = i+1;
+        result[i][0] = 1;
+        result[i][i] = 1;
+        for (j = 1; j < i; ++j) {
+            result[i][j] = result[i-1][j-1]+result[i-1][j];
+        }
+    } 
+    return result;
+}
+
+struct ListNode* removeElements(struct ListNode* head, int val){
+    struct ListNode *cur = head;
+    struct ListNode *pre = NULL;
+    
+    while (cur) {
+        if (cur->val == val) {
+            if (pre == NULL) {
+                head = cur->next;
+                free(cur);
+                cur = head;
+            }else{
+                pre->next = cur->next;
+                free(cur);
+                cur = pre->next;
+            }
+        }else{
+            pre = cur;
+            cur = cur->next;
+        }
+    }
+    return head;
+}
+
+struct ListNode* reverseBetween(struct ListNode* head, int m, int n){
+    if (m == n) return head;
+    int i = 0;
+    --m;
+    --n;
+    struct ListNode *cur = head;
+    struct ListNode *pre = NULL;
+    struct ListNode *tmp = NULL;
+    struct ListNode *nodeM = NULL;
+    struct ListNode *nodeMPre = NULL;
+    while (cur) {
+        if (i >= m) {
+            if (i <= n) {
+                if (nodeM == NULL) {
+                    nodeM = cur;
+                    nodeMPre = pre;
+                }
+                tmp = cur->next;
+                cur->next = pre;
+                pre = cur;
+                cur = tmp;
+                ++i;
+                continue;
+            }else{
+                break;
+            }
+        }
+        pre = cur;
+        cur = cur->next;
+        ++i;
+    }
+    if (nodeMPre) {
+        nodeMPre->next = pre;
+    }else{
+        head = pre;
+    }
+    
+    nodeM->next = cur;
+    
+    return head;
+}

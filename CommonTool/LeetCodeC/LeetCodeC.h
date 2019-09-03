@@ -25,6 +25,12 @@ struct TreeNode {
     struct TreeNode *right;
 };
 
+// 最小栈
+typedef struct {
+    struct ListNode *top;
+    struct ListNode *min;
+} MinStack;
+
 /// 罗马数字转整数(1~3999) https://leetcode-cn.com/problems/roman-to-integer/
 int romanToInt(char * s);
 
@@ -167,5 +173,37 @@ int rob(int* nums, int numsSize);
 
 // 二叉树的层次遍历 https://leetcode-cn.com/problems/binary-tree-level-order-traversal/submissions/
 int** levelOrder(struct TreeNode* root, int* returnSize, int** returnColumnSizes);
+
+// 两数相除 https://leetcode-cn.com/problems/divide-two-integers/
+int divide(int dividend, int divisor);
+
+// 不同路径 https://leetcode-cn.com/problems/unique-paths/solution/
+long long uniquePaths(int m, int n);
+
+// 买卖股票的最佳时机 https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/submissions/
+int maxProfit(int* prices, int pricesSize);
+
+// 旋转链表 https://leetcode-cn.com/problems/rotate-list/solution/xuan-zhuan-lian-biao-by-leetcode/
+struct ListNode* rotateRight(struct ListNode* head, int k);
+
+// 最小栈 https://leetcode-cn.com/problems/min-stack/submissions/
+MinStack* minStackCreate(void);
+void minStackPush(MinStack* obj, int x);
+void minStackPop(MinStack* obj);
+int minStackTop(MinStack* obj);
+int minStackGetMin(MinStack* obj);
+void minStackFree(MinStack* obj);
+
+// 买卖股票的最佳时机 II https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/submissions/
+int maxProfit2(int* prices, int pricesSize);
+
+// 杨辉三角 https://leetcode-cn.com/problems/pascals-triangle/submissions/
+int** generate(int numRows, int* returnSize, int** returnColumnSizes);
+
+// 移除链表元素 https://leetcode-cn.com/problems/remove-linked-list-elements/submissions/
+struct ListNode* removeElements(struct ListNode* head, int val);
+
+// 反转链表 II https://leetcode-cn.com/problems/reverse-linked-list-ii/submissions/
+struct ListNode* reverseBetween(struct ListNode* head, int m, int n);
 
 #endif /* LeetCodeC_h */

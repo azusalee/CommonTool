@@ -1844,3 +1844,230 @@ struct ListNode* reverseBetween(struct ListNode* head, int m, int n){
     
     return head;
 }
+
+char * defangIPaddr(char * address){
+    char *result = malloc(sizeof(char)*22);
+    
+    int i = 0;
+    while (*address != '\0') {
+        if (*address == '.') {
+            result[i++] = '[';
+            result[i++] = '.';
+            result[i++] = ']';
+        }else{
+            result[i++] = *address;
+        }
+        ++address;
+    }
+    result[i] = '\0';
+    return result;
+}
+
+int hammingDistance(int x, int y){
+    x = x^y;
+    y = 0;
+    while (x != 0) {
+        ++y;
+        x &= x-1;
+    }
+    return y;
+}
+
+int firstMissingPositive(int* nums, int numsSize){
+    int first = 1;
+    int i = 0;
+    for (; i < numsSize; ++i) {
+        if (nums[i] < 1 || nums[i] > numsSize) {
+            nums[i] = 1;
+        }else if (nums[i] == first){
+            ++first;
+        }
+    }
+    
+    if (first == 1) return 1;
+    if (numsSize == 1) return 2;
+    
+    int a, tmp;
+    for (i = 0; i < numsSize; ++i) {
+        a = nums[i];
+        if (a < 0) a = -a;
+        a -= 1;
+        tmp = nums[a];
+        if (tmp < 0) nums[a] = tmp;
+        else nums[a] = -tmp;
+    }
+    
+    for (i = first-1; i < numsSize; ++i) {
+        if (nums[i] > 0) return i+1;
+    }
+    
+    return numsSize+1;
+}
+
+char * removeOuterParentheses(char * S){
+    int i = 0;
+    int left = 0;
+    int right = 0;
+    int len = 0;
+    while (S[i] != '\0') {
+        if (S[i] == '(') {
+            ++left;
+            if (left == 1) {
+                
+            }else{
+                S[len++] = S[i];
+            }
+        }else if (S[i] == ')') {
+            ++right;
+            if (left == right) {
+                left = 0;
+                right = 0;
+            }else{
+                S[len++] = S[i];
+            }
+        }
+        ++i;
+    }
+    S[len] = '\0';
+    return S;
+}
+
+int** mergeSet(int** intervals, int intervalsSize, int* intervalsColSize, int* returnSize, int** returnColumnSizes){
+    int left1, right1, left2, right2, i = 0, j;
+    int len = 0;
+    while (i < intervalsSize-1) {
+        left1 = intervals[i][0];
+        right1 = intervals[i][1];
+        len = i+1;
+        for (j = i+1; j < intervalsSize; ++j) {
+            left2 = intervals[j][0];
+            right2 = intervals[j][1];
+            if (left1 <= right2 && right1 >= left2) {
+                if (left1 > left2) {
+                    left1 = left2;
+                }
+                if (right1 < right2) {
+                    right1 = right2;
+                }
+                continue;
+            }
+            intervals[len][0] = intervals[j][0];
+            intervals[len][1] = intervals[j][1];
+            ++len;
+        }
+        intervals[i][0] = left1;
+        intervals[i][1] = right1;
+        if (len != intervalsSize) {
+            intervalsSize = len;
+        }else{
+            ++i;
+        }
+    }
+    
+    *returnSize = len;
+    *returnColumnSizes = intervalsColSize;
+    return intervals;
+}
+
+int minPathHelp(int** grid, int gridSize, int colSize, int i, int j) {
+    int num1 = grid[i][j];
+    if (i+1 < gridSize) {
+        num1 += minPathHelp(grid, gridSize, colSize, i+1, j);
+        if (j+1 < colSize) {
+            int num2 = grid[i][j];
+            num2 += minPathHelp(grid, gridSize, colSize, i, j+1);
+            return num1<num2?num1:num2;
+        }else{
+            return num1;
+        }
+    }else{
+        if (j+1 < colSize) {
+            num1 += minPathHelp(grid, gridSize, colSize, i, j+1);
+            return num1;
+        }else{
+            return num1;
+        }
+    }
+}
+
+int minPathSum(int** grid, int gridSize, int* gridColSize){
+    if (gridSize == 0 || gridColSize[0] == 0) return 0;
+    int colSize = gridColSize[0];
+    int i = --gridSize;
+    int j = --colSize-1;
+    while (i >= 0) {
+        while (j >= 0) {
+            if (i != gridSize && j != colSize) {
+                if (grid[i+1][j] < grid[i][j+1]) {
+                    grid[i][j] = grid[i][j]+grid[i+1][j];
+                }else{
+                    grid[i][j] = grid[i][j]+grid[i][j+1];
+                }
+            } else if (j != colSize) {
+                grid[i][j] = grid[i][j]+grid[i][j+1];
+            } else {
+                grid[i][j] = grid[i][j]+grid[i+1][j];
+            }
+            --j;
+        }
+        j = colSize;
+        --i;
+    }
+    
+    return grid[0][0];
+}
+
+void rotateNums(int* nums, int numsSize, int k){
+    if (numsSize < 2) return;
+    k = k%numsSize;
+    if (k == 0) return;
+    
+    int i = k, count = 1;
+    int tmp = nums[k], tmp2;
+    int lastStart = 0;
+    nums[k] = nums[0];
+    while (count < numsSize) {
+        if (i == lastStart) {
+            ++lastStart;
+            i = lastStart;
+            tmp = nums[lastStart];
+        }
+        i = (i+k)%numsSize;
+        tmp2 = nums[i];
+        nums[i] = tmp;
+        tmp = tmp2;
+        ++count;
+    }
+}
+
+int** subsets(int* nums, int numsSize, int* returnSize, int** returnColumnSizes){
+    // C(0,n)+C(1,n)+...+C(m,n)
+    // 1+n+...+n!/(m!(n-m)!)
+    
+    int totalSize = 1;
+    int m = 1;
+    int ni = 1;
+    int i;
+    for (i = 1; i <= numsSize; ++i) ni *= i;
+    int n_mi = ni;
+    for (i = 1; i <= numsSize; ++i) {
+        m *= i;
+        n_mi /= numsSize-(i-1);
+        totalSize += ni/m/n_mi;
+    }
+    
+    *returnSize = totalSize;
+    int **result = malloc(sizeof(int*)*totalSize);
+    *returnColumnSizes = malloc(sizeof(int)*totalSize);
+    //特殊处理一个都不选的情况
+    returnColumnSizes[0] = 0;
+    int index = 1;
+    // 按个数0,1,2...,n的顺序历遍
+    for (i = 1; i <= numsSize; i++) {
+        result[index] = malloc(sizeof(int)*i);
+        (*returnColumnSizes)[index] = i;
+    
+    }
+    
+    return result;
+}

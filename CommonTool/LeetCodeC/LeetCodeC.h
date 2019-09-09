@@ -206,4 +206,25 @@ struct ListNode* removeElements(struct ListNode* head, int val);
 // 反转链表 II https://leetcode-cn.com/problems/reverse-linked-list-ii/submissions/
 struct ListNode* reverseBetween(struct ListNode* head, int m, int n);
 
+// IP 地址无效化 https://leetcode-cn.com/problems/defanging-an-ip-address/submissions/
+char * defangIPaddr(char * address);
+
+// 汉明距离 https://leetcode-cn.com/problems/hamming-distance/
+int hammingDistance(int x, int y);
+
+// 缺失的第一个正数 https://leetcode-cn.com/problems/first-missing-positive/
+int firstMissingPositive(int* nums, int numsSize);
+
+// 删除最外层的括号 https://leetcode-cn.com/problems/remove-outermost-parentheses/
+char * removeOuterParentheses(char * S);
+
+// 合并区间 https://leetcode-cn.com/problems/merge-intervals/solution/he-bing-qu-jian-by-leetcode/
+int** mergeSet(int** intervals, int intervalsSize, int* intervalsColSize, int* returnSize, int** returnColumnSizes);
+
+// 最小路径和 https://leetcode-cn.com/problems/minimum-path-sum/submissions/
+int minPathSum(int** grid, int gridSize, int* gridColSize);
+
+// 旋转数组 https://leetcode-cn.com/problems/rotate-array/solution/
+void rotateNums(int* nums, int numsSize, int k);
+
 #endif /* LeetCodeC_h */

@@ -25,17 +25,24 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    //int size;
-    //letterCombinations("23", &size);
+    int nums[] = {1, 0, -1, 0, -2, 2};
+    int returnSize;
+    int *returnColumnSizes;
+    fourSum(nums, 6, 0, &returnSize, &returnColumnSizes);
     
     NSString *string1 = [[NSString alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"sourceString1" ofType:@"txt"] encoding:NSUTF8StringEncoding error:nil];
     NSString *string2 = [[NSString alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"sourceString2" ofType:@"txt"] encoding:NSUTF8StringEncoding error:nil];
     NSArray *array1 = [CompileSourceParse arrayFromCompileString:string1];
     NSArray *array2 = [CompileSourceParse arrayFromCompileString:string2];
+    
+    NSMutableArray *diffArray = [[NSMutableArray alloc] init];
     NSLog(@"对比Array2");
     for (int i = 0; i < array2.count; ++i) {
         if (![array1 containsObject:array2[i]]) {
             NSLog(@"%@", array2[i]);
+            if (![diffArray containsObject:array2[i]]) {
+                [diffArray addObject:array2[i]];
+            }
         }
     }
     
@@ -43,8 +50,13 @@
     for (int i = 0; i < array1.count; ++i) {
         if (![array2 containsObject:array1[i]]) {
             NSLog(@"%@", array1[i]);
+            if (![diffArray containsObject:array1[i]]) {
+                [diffArray addObject:array1[i]];
+            }
         }
     }
+    
+    NSLog(@"差别 %@", diffArray);
     
 }
 

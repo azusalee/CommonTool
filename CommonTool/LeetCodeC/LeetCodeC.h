@@ -227,4 +227,25 @@ int minPathSum(int** grid, int gridSize, int* gridColSize);
 // 旋转数组 https://leetcode-cn.com/problems/rotate-array/solution/
 void rotateNums(int* nums, int numsSize, int k);
 
+// 子集 https://leetcode-cn.com/problems/subsets/
+int** subsets(int* nums, int numsSize, int* returnSize, int** returnColumnSizes);
+
+// 两数之和 II - 输入有序数组 https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/
+int* twoSum(int* numbers, int numbersSize, int target, int* returnSize);
+
+// 相同的树 https://leetcode-cn.com/problems/same-tree/
+bool isSameTree(struct TreeNode* p, struct TreeNode* q);
+
+// 相交链表 https://leetcode-cn.com/problems/intersection-of-two-linked-lists/submissions/
+struct ListNode *getIntersectionNode(struct ListNode *headA, struct ListNode *headB);
+
+// 删除排序链表中的重复元素 II https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii/submissions/
+struct ListNode* deleteDuplicates(struct ListNode* head);
+
+// 接雨水 https://leetcode-cn.com/problems/trapping-rain-water/
+int trap(int* height, int heightSize);
+
+// 四数之和 https://leetcode-cn.com/problems/4sum/
+int** fourSum(int* nums, int numsSize, int target, int* returnSize, int** returnColumnSizes);
+
 #endif /* LeetCodeC_h */

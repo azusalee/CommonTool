@@ -2040,34 +2040,217 @@ void rotateNums(int* nums, int numsSize, int k){
     }
 }
 
+void subsetsHelper(int* nums, int numsSize, int** result, int* returnSize, int** returnColumnSizes, int *preNums, int n) {
+    for (int i = 0; i < numsSize; ++i) {
+        (*returnColumnSizes)[*returnSize] = n+1;
+        result[*returnSize] = malloc(sizeof(int)*(n+1));
+        if (n != 0) {
+            memcpy(result[*returnSize], preNums, sizeof(int)*n);
+        }
+        result[*returnSize][n] = nums[i];
+        ++(*returnSize);
+        subsetsHelper(nums+i+1, numsSize-i-1, result, returnSize, returnColumnSizes, result[*returnSize-1], n+1);
+    }
+}
+
 int** subsets(int* nums, int numsSize, int* returnSize, int** returnColumnSizes){
     // C(0,n)+C(1,n)+...+C(m,n)
-    // 1+n+...+n!/(m!(n-m)!)
+    // 1+n+...+n!/(m!(n-m)!) = 2^(n+1)
+    int totalSize = 1 << numsSize;
     
-    int totalSize = 1;
-    int m = 1;
-    int ni = 1;
-    int i;
-    for (i = 1; i <= numsSize; ++i) ni *= i;
-    int n_mi = ni;
-    for (i = 1; i <= numsSize; ++i) {
-        m *= i;
-        n_mi /= numsSize-(i-1);
-        totalSize += ni/m/n_mi;
-    }
-    
-    *returnSize = totalSize;
     int **result = malloc(sizeof(int*)*totalSize);
     *returnColumnSizes = malloc(sizeof(int)*totalSize);
     //特殊处理一个都不选的情况
-    returnColumnSizes[0] = 0;
-    int index = 1;
-    // 按个数0,1,2...,n的顺序历遍
-    for (i = 1; i <= numsSize; i++) {
-        result[index] = malloc(sizeof(int)*i);
-        (*returnColumnSizes)[index] = i;
+    (*returnColumnSizes)[0] = 0;
+    *returnSize = 1;
+    subsetsHelper(nums, numsSize, result, returnSize, returnColumnSizes, NULL, 0);
     
+    return result;
+}
+
+int* twoSum(int* numbers, int numbersSize, int target, int* returnSize){
+    *returnSize = 2;
+    int *result = malloc(sizeof(int)*2);
+    int left = 0, right = numbersSize-1;
+    
+    while (left < right) {
+        numbersSize = numbers[left]+numbers[right];
+        if (numbersSize == target) {
+            result[0] = left+1;
+            result[1] = right+1;
+            break;
+        }else if (numbersSize > target){
+            --right;
+        }else{
+            ++left;
+        }
     }
     
+    return result;
+}
+
+bool isSameTree(struct TreeNode* p, struct TreeNode* q){
+    if (p == NULL && q == NULL) return true;
+    if ((p == NULL || q == NULL) || (p->val != q->val) || isSameTree(p->left, q->left) == false || isSameTree(p->right, q->right) == false) return false;
+    
+    return true;
+}
+
+struct ListNode *getIntersectionNode(struct ListNode *headA, struct ListNode *headB) {
+    int n1 = 0;
+    int n2 = 0;
+    struct ListNode *tmp = headA;
+    while (tmp != NULL) {
+        ++n1;
+        tmp = tmp->next;
+    }
+    tmp = headB;
+    while (tmp != NULL) {
+        ++n2;
+        tmp = tmp->next;
+    }
+    if (n1 < n2) {
+        n2 = n2-n1;
+        while (n2-- > 0)  headB = headB->next;
+    }else{
+        n2 = n1-n2;
+        while (n2-- > 0) headA = headA->next;
+    }
+    while (headA != NULL) {
+        if (headA == headB) return headA;
+        headA = headA->next;
+        headB = headB->next;
+    }
+    return NULL;
+}
+
+struct ListNode* deleteDuplicates(struct ListNode* head){
+    if (head == NULL) return head;
+    struct ListNode *pre = NULL;
+    struct ListNode *cur = head;
+    struct ListNode *prepre = NULL;
+    while (cur) {
+        pre = cur;
+        cur = cur->next;
+        while (cur && (pre->val == cur->val)) cur = cur->next;
+        if (pre->next != cur) {
+            if (head == pre) head = cur;
+            if (prepre) prepre->next = cur;
+        }else{
+            prepre = pre;
+        }
+    }
+    
+    return head;
+}
+
+int trap(int* height, int heightSize){
+    int left = 0, right = heightSize-1, leftMax = 0, rightMax = 0, lastMax = 0;
+    int totalSize = 0;
+    
+    while (left < right) {
+        if (leftMax < rightMax) {
+            if (height[left] > leftMax) {
+                leftMax = height[left];
+                if (leftMax > rightMax) {
+                    if (rightMax > lastMax) {
+                        totalSize += (right-left)*(rightMax-lastMax);
+                        lastMax = rightMax;
+                    }
+                }else{
+                    if (leftMax > lastMax) {
+                        totalSize += (right-left)*(leftMax-lastMax);
+                        lastMax = leftMax;
+                    }
+                }
+            }else{
+                totalSize -= height[left];
+                ++left;
+            }
+        }else{
+            if (height[right] > rightMax) {
+                rightMax = height[right];
+                if (leftMax > rightMax) {
+                    if (rightMax > lastMax) {
+                        totalSize += (right-left)*(rightMax-lastMax);
+                        lastMax = rightMax;
+                    }
+                }else{
+                    if (leftMax > lastMax) {
+                        totalSize += (right-left)*(leftMax-lastMax);
+                        lastMax = leftMax;
+                    }
+                }
+            }else{
+                totalSize -= height[right];
+                --right;
+            }
+        }
+    }
+    
+    return totalSize;
+}
+
+int** fourSum(int* nums, int numsSize, int target, int* returnSize, int** returnColumnSizes){
+    if (numsSize < 4) {
+        *returnSize = 0;
+        return NULL;
+    }
+    quickSort(nums, 0, numsSize-1);
+    int **result = NULL;
+    *returnSize = 0;
+    int i,j,l,r,sum;
+    for (i = 0; i < numsSize-3; ++i) {
+        if (i != 0 && nums[i] == nums[i-1]) {
+            continue;
+        }
+        for (j = i+1; j < numsSize-2; ++j) {
+            if (j != i+1 && nums[j] == nums[j-1]) {
+                continue;
+            }
+            l = j+1;
+            r = numsSize-1;
+            if (nums[i] + nums[j] + nums[r - 1] + nums[r] < target)
+            {
+                continue;
+            }
+            if (nums[i] + nums[j] + nums[l] + nums[l + 1] > target)
+            {
+                break;
+            }
+            while (l < r) {
+                if (l != j+1 && nums[l] == nums[l-1]) {
+                    ++l;
+                    continue;
+                }
+                if (r != numsSize-1 && nums[r] == nums[r+1]) {
+                    --r;
+                    continue;
+                }
+                sum = nums[i]+nums[j]+nums[l]+nums[r];
+                if (sum == target) {
+                    if ((*returnSize)%100 == 0) {
+                        result = realloc(result, sizeof(int*)*(*returnSize+100));
+                    }
+                    result[(*returnSize)] = malloc(sizeof(int)*4);
+                    result[(*returnSize)][0] = nums[i];
+                    result[(*returnSize)][1] = nums[j];
+                    result[(*returnSize)][2] = nums[l];
+                    result[(*returnSize)][3] = nums[r];
+                    ++(*returnSize);
+                    ++l;
+                }else if (sum < target){
+                    ++l;
+                }else{
+                    --r;
+                }
+            }
+        }
+    }
+    
+    *returnColumnSizes = malloc(sizeof(int)*(*returnSize));
+    for (int i = 0; i < *returnSize; ++i) {
+        (*returnColumnSizes)[i] = 4;
+    }
     return result;
 }

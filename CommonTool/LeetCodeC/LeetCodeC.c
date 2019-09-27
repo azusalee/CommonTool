@@ -2254,3 +2254,104 @@ int** fourSum(int* nums, int numsSize, int target, int* returnSize, int** return
     }
     return result;
 }
+
+int threeSumClosest(int* nums, int numsSize, int target){
+    quickSort(nums, 0, numsSize-1);
+    int leftSum = nums[0]+nums[1]+nums[2];
+    if (leftSum > target) return leftSum;
+    int rightSum = nums[numsSize-1]+nums[numsSize-2]+nums[numsSize-3];
+    if (rightSum < target) return rightSum;
+
+    int l, r, sum;
+    for (int i = 0; i < numsSize-2; ++i) {
+        sum = nums[i] + nums[numsSize-1] + nums[numsSize-2];
+        if (sum < target)
+        {
+            if (leftSum < sum) leftSum = sum;
+            continue;
+        }
+        sum = nums[i] + nums[i+1] + nums[i+2];
+        if (sum > target)
+        {
+            if (rightSum > sum) rightSum = sum;
+            break;
+        }
+        l = i+1;
+        r = numsSize-1;
+        
+        while (l < r) {
+            sum = nums[i]+nums[l]+nums[r];
+            if (sum == target) {
+                return sum;
+            }else if (sum > target) {
+                if (rightSum > sum) rightSum = sum;
+                --r;
+            }else{
+                if (leftSum < sum) leftSum = sum;
+                ++l;
+            }
+        }
+    }
+    return abs(leftSum-target) < abs(rightSum-target)?leftSum:rightSum;
+}
+
+void numIslandsHelper(char** grid, int gridSize, int colSize, int i, int j) {
+    if (grid[i][j] == '0') return;
+    grid[i][j] = '0';
+    if (i > 0) numIslandsHelper(grid, gridSize, colSize, i-1, j);
+    if (i < gridSize-1) numIslandsHelper(grid, gridSize, colSize, i+1, j);
+    if (j > 0) numIslandsHelper(grid, gridSize, colSize, i, j-1);
+    if (j < colSize-1) numIslandsHelper(grid, gridSize, colSize, i, j+1);
+}
+
+int numIslands(char** grid, int gridSize, int* gridColSize){
+    if (gridSize == 0) return 0;
+    int colSize = gridColSize[0];
+    int result = 0, i, j;
+    for (i = 0; i < gridSize; ++i) {
+        for (j = 0; j < colSize; ++j) {
+            if (grid[i][j] == '1'){
+                numIslandsHelper(grid, gridSize, colSize, i, j);
+                ++result;
+            }
+        }
+    }
+    return result;
+}
+
+int minimumTotal(int** triangle, int triangleSize, int* triangleColSize){
+// 不使用额外空间(利用triangle的空间)
+//    for (int i = triangleSize-2; i >= 0; --i) {
+//        for (int j = 0; j <= i; ++j) {
+//            triangle[i][j] += triangle[i+1][j] < triangle[i+1][j+1]?triangle[i+1][j]:triangle[i+1][j+1];
+//        }
+//    }
+//    return triangle[0][0];
+
+// 不改变triangle空间，新建O(n)空间
+    int i, j;
+    int *tmp = malloc(sizeof(int)*triangleSize);
+    memset(tmp, 0, sizeof(int)*triangleSize);
+    
+    for (i = 0; i < triangleSize; ++i) {
+        for (j = i; j >= 0; --j) {
+            if (j == 0) {
+                tmp[j] += triangle[i][j];
+            }else if (j < i) {
+                if (tmp[j] < tmp[j-1]) {
+                    tmp[j] += triangle[i][j];
+                }else{
+                    tmp[j] = tmp[j-1]+triangle[i][j];
+                }
+            }else{
+                tmp[j] = tmp[j-1]+triangle[i][j];
+            }
+        }
+    }
+    int result = tmp[0];
+    for (i = 1; i < triangleSize; ++i) {
+        if (result > tmp[i]) result = tmp[i];
+    }
+    free(tmp);
+    return result;
+}

@@ -248,4 +248,13 @@ int trap(int* height, int heightSize);
 // 四数之和 https://leetcode-cn.com/problems/4sum/
 int** fourSum(int* nums, int numsSize, int target, int* returnSize, int** returnColumnSizes);
 
+// 最接近的三数之和 https://leetcode-cn.com/problems/3sum-closest/
+int threeSumClosest(int* nums, int numsSize, int target);
+
+// 岛屿数量 https://leetcode-cn.com/problems/number-of-islands/
+int numIslands(char** grid, int gridSize, int* gridColSize);
+
+// 三角形最小路径和 https://leetcode-cn.com/problems/triangle/
+int minimumTotal(int** triangle, int triangleSize, int* triangleColSize);
+
 #endif /* LeetCodeC_h */

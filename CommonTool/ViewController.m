@@ -25,10 +25,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    int nums[] = {1, 0, -1, 0, -2, 2};
-    int returnSize;
-    int *returnColumnSizes;
-    fourSum(nums, 6, 0, &returnSize, &returnColumnSizes);
+    int nums[] = {1,1,1,0};
+    threeSumClosest(nums, 4, 100);
+//    int returnSize;
+//    int *returnColumnSizes;
+//    fourSum(nums, 6, 0, &returnSize, &returnColumnSizes);
     
     NSString *string1 = [[NSString alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"sourceString1" ofType:@"txt"] encoding:NSUTF8StringEncoding error:nil];
     NSString *string2 = [[NSString alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"sourceString2" ofType:@"txt"] encoding:NSUTF8StringEncoding error:nil];

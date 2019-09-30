@@ -25,8 +25,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    int nums[] = {1,1,1,0};
-    threeSumClosest(nums, 4, 100);
+    int nums[] = {3,2,1};
+    nextPermutation(nums, 3);
+    isMatch("aasdfasdfasdfasdfas", "aasdf.*asdf.*asdf.*asdf.*s");
+    //threeSumClosest(nums, 4, 100);
 //    int returnSize;
 //    int *returnColumnSizes;
 //    fourSum(nums, 6, 0, &returnSize, &returnColumnSizes);

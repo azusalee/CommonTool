@@ -267,6 +267,7 @@ char * longestCommonPrefix(char ** strs, int strsSize){
     }
     return str1;
 }
+
 //快排代码
 void quickSort(int* nums,int first,int end){
     int temp,l,r;
@@ -2355,3 +2356,334 @@ int minimumTotal(int** triangle, int triangleSize, int* triangleColSize){
     free(tmp);
     return result;
 }
+
+bool isSymmetricHelper(struct TreeNode *left, struct TreeNode *right) {
+    if (left == NULL && right == NULL) return true;
+    if (left == NULL || right == NULL) return false;
+    if (left->val != right->val) return false;
+    if (isSymmetricHelper(left->left, right->right) == false) return false;
+    return isSymmetricHelper(left->right, right->left);
+}
+
+bool isSymmetric(struct TreeNode* root){
+    if (root == NULL) return true;
+    return isSymmetricHelper(root->left, root->right);
+}
+
+bool isValidBSTHelper(struct TreeNode* root, struct TreeNode* lower, struct TreeNode* upper) {
+    if (root == NULL) return true;
+    if (lower != NULL && root->val <= lower->val) return false;
+    if (upper != NULL && root->val >= upper->val) return false;
+    if (!isValidBSTHelper(root->left, lower, root)) return false;
+    if (!isValidBSTHelper(root->right, root, upper)) return false;
+    return true;
+}
+
+bool isValidBST(struct TreeNode* root){
+    return isValidBSTHelper(root, NULL, NULL);
+}
+
+void nextPermutation(int* nums, int numsSize){
+    int index = numsSize-2;
+    int i = numsSize-2, j, tmp;
+    while (index >= 0) {
+        if (nums[index] >= nums[index+1]) {
+            --index;
+            continue;
+        }
+        j = index;
+        for (i = numsSize-1; i > index; --i) {
+            if (nums[i] > nums[index]) { 
+                j = i;
+                break;
+            }
+        }
+        tmp = nums[index];
+        nums[index] = nums[j];
+        nums[j] = tmp;
+        break;
+    }
+    i = index+1;
+    j = numsSize-1;
+    while (i < j) {
+        tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+        ++i;
+        --j;
+    }
+}
+
+int** generateMatrix(int n, int* returnSize, int** returnColumnSizes){
+    int **result = malloc(sizeof(int*)*n);
+    *returnColumnSizes = malloc(sizeof(int)*n);
+    *returnSize = n;
+    int i;
+    for (i = 0; i < n; ++i) {
+        result[i] = malloc(sizeof(int)*n);
+        (*returnColumnSizes)[i] = n;
+    }
+    int firstRow = 0, firstCol = 0, lastRow = n-1, lastCol = n-1, count = 1;
+    while (1) {
+        for (int i = firstCol; i <= lastCol; ++i) result[firstRow][i] = count++;
+        if (++firstRow > lastRow) break;
+        
+        for (int i = firstRow; i <= lastRow; ++i) result[i][lastCol] = count++;
+        if (--lastCol < firstCol) break;
+        
+        for (int i = lastCol; i >= firstCol; --i) result[lastRow][i] = count++;
+        if (--lastRow < firstRow) break;
+        
+        for (int i = lastRow; i >= firstRow; --i) result[i][firstCol] = count++;
+        if (++firstCol > lastCol) break;
+    }
+    return result;
+}
+
+int fib(int N){
+    if (N < 2) return N;
+    int sum = 0, m = 0, n = 1;
+    for (int i = 1; i < N; ++i) {
+        sum = m+n;
+        m = n;
+        n = sum;
+    }
+    return sum;
+}
+
+void combinationSumHelper(int* candidates, int candidatesSize, int target, int*** result, int* returnSize, int** returnColumnSizes, int *nums, int numsCount) {
+    
+    int tmp;
+    for (int i = 0; i < candidatesSize; ++i) {
+        if (candidates[i] > target) break;
+        if (nums && nums[numsCount-1] > candidates[i]) continue;
+        
+        tmp = target-candidates[i];
+        int *newNums = malloc(sizeof(int)*(numsCount+1));
+        if (numsCount > 0) memcpy(newNums, nums, sizeof(int)*numsCount);
+        
+        newNums[numsCount] = candidates[i];
+        if (tmp == 0) {
+            if (*result == NULL) {
+                *result = malloc(sizeof(int*)*100);
+                *returnColumnSizes = malloc(sizeof(int)*100);
+            }else if ((*returnSize)%100 == 0) {
+                *result = realloc(*result, sizeof(int*)*((*returnSize)+100));
+                *returnColumnSizes = realloc(*returnColumnSizes, sizeof(int)*((*returnSize)+100));
+            }
+            (*result)[*returnSize] = newNums;
+            (*returnColumnSizes)[*returnSize] = numsCount+1;
+            ++(*returnSize);
+        }else{
+            combinationSumHelper(candidates, candidatesSize, tmp, result, returnSize, returnColumnSizes, newNums, numsCount+1);
+            free(newNums);
+        }
+    }
+}
+
+int** combinationSum(int* candidates, int candidatesSize, int target, int* returnSize, int** returnColumnSizes){
+    quickSort(candidates, 0, candidatesSize-1);
+    *returnSize = 0;
+    int **result = NULL;
+    combinationSumHelper(candidates, candidatesSize, target, &result, returnSize, returnColumnSizes, NULL, 0);
+    
+    return result;
+}
+
+bool isMatch(char * s, char * p){
+    int sl = strlen(s);
+    int pl = strlen(p);
+    bool dp[sl + 1][pl + 1];
+    bool flag = false;
+    memset(dp, 0, sizeof(dp));
+    for (int i = sl; i > -1; --i) {
+        for (int j = pl; j > -1; --j) {
+            if (i == sl && j == pl) {
+                dp[i][j] = true;
+                continue;
+            }
+            if (pl - j > 1 && p[j + 1] == '*') {
+                flag = dp[i][j + 2] || (i < sl && (p[j] == '.' || p[j] == s[i]) && dp[i + 1][j]);
+                dp[i][j] = flag;
+            } else {
+                flag = i < sl && (p[j] == '.' || p[j] == s[i]) && dp[i + 1][j + 1];
+                dp[i][j] = flag;
+            }
+        }
+    }
+    return dp[0][0];
+}
+
+int* intersect(int* nums1, int nums1Size, int* nums2, int nums2Size, int* returnSize){
+    int i, j;
+    quickSort(nums1, 0, nums1Size-1);
+    quickSort(nums2, 0, nums2Size-1);
+    
+    i = 0;
+    j = 0;
+    *returnSize = 0;
+    while (i < nums1Size && j < nums2Size) {
+        if (nums1[i] == nums2[j]) {
+            nums1[*returnSize] = nums1[i];
+            ++i;
+            ++j;
+            ++(*returnSize);
+        }else if (nums1[i] < nums2[j]) {
+            ++i;
+        }else{
+            ++j;
+        }
+    }
+    
+    return nums1;
+}
+
+int compare(void* a, void* b) {
+    return *(int*) a - *(int*) b;
+}
+
+bool containsDuplicate(int* nums, int numsSize){
+    qsort(nums, numsSize, sizeof(*nums), compare);
+    --numsSize;
+    for (int i = 0; i < numsSize; ++i) {
+        if (nums[i] == nums[i+1]) return true;
+    }
+    return false;
+}
+
+int** flipAndInvertImage(int** A, int ASize, int* AColSize, int* returnSize, int** returnColumnSizes){
+    int left, right, tmp;
+    for (int i = 0; i < ASize; ++i) {
+        left = 0;
+        right = AColSize[0]-1;
+        while (left < right) {
+            tmp = A[i][left];
+            A[i][left++] = 1-A[i][right];
+            A[i][right--] = 1-tmp;
+        }
+        if (left == right) A[i][left] = 1-A[i][left]; 
+    }
+    *returnSize = ASize;
+    *returnColumnSizes = AColSize;
+    return A;
+}
+
+int isHappyHelper(int n) {
+    int total = 0;
+    int bit;
+    while (n != 0) {
+        bit = n%10;
+        total += bit*bit;
+        n /= 10;
+    }
+    return total;
+}
+
+bool isHappy(int n){
+    int fast = isHappyHelper(n);
+    while (n != fast) {
+        n = isHappyHelper(n);
+        fast = isHappyHelper(isHappyHelper(fast));
+    }
+    return n == 1;
+}
+
+struct ListNode* deleteDuplicates2(struct ListNode* head){
+    struct ListNode *cur = head;
+    while (cur) {
+        if (cur->next != NULL) {
+            if (cur->val == cur->next->val) {
+                cur->next = cur->next->next;
+                continue;
+            }
+        }
+        cur = cur->next;
+    }
+    return head;
+}
+
+bool canJump(int* nums, int numsSize){
+    int needCount = 1;
+    for (int i = numsSize-2; i >= 0; --i) {
+        if (nums[i] < needCount) {
+            ++needCount;
+        }else{
+            needCount = 1;
+        }
+    }
+    return needCount == 1;
+}
+
+bool isAnagram(char * s, char * t){
+    int tmp[26];
+    memset(tmp, 0, sizeof(tmp));
+    int length = 0;
+    while (*s != '\0') {
+        tmp[*s-'a'] += 1;
+        ++s;
+        ++length;
+    }
+    while (*t != '\0') {
+        tmp[*t-'a'] -= 1;
+        if (tmp[*t-'a'] < 0) return false;
+        ++t;
+        --length;
+    }
+    return length == 0;
+}
+
+int* intersection(int* nums1, int nums1Size, int* nums2, int nums2Size, int* returnSize){
+    int i, j;
+    quickSort(nums1, 0, nums1Size-1);
+    quickSort(nums2, 0, nums2Size-1);
+    
+    i = 0;
+    j = 0;
+    *returnSize = 0;
+    while (i < nums1Size && j < nums2Size) {
+        if (nums1[i] == nums2[j]) {
+            if (*returnSize > 0) {
+                if (nums1[(*returnSize)-1] != nums1[i]) {
+                    nums1[*returnSize] = nums1[i];
+                    ++(*returnSize);
+                }
+            }else{
+                nums1[*returnSize] = nums1[i];
+                ++(*returnSize);
+            }
+            ++i;
+            ++j;
+        }else if (nums1[i] < nums2[j]) {
+            ++i;
+        }else{
+            ++j;
+        }
+    }
+    
+    return nums1;
+}
+
+bool isPowerOfTwo(int n){
+    if (n < 1) return false;
+    while (n != 1) {
+        if (n%2 != 0) return false;
+        n = n >> 1;
+    }
+    return true;
+}
+
+int* getRow(int rowIndex, int* returnSize){
+    int *result = malloc(sizeof(int)*rowIndex+1);
+    *returnSize = rowIndex+1;
+    
+    result[0] = 1;
+    for (int i = 1; i <= rowIndex; ++i) {
+        for (int j = 1; j < i; ++j) {
+            
+        }
+        result[i] = 1;
+    }
+    
+    return result;
+}
+

@@ -257,4 +257,55 @@ int numIslands(char** grid, int gridSize, int* gridColSize);
 // 三角形最小路径和 https://leetcode-cn.com/problems/triangle/
 int minimumTotal(int** triangle, int triangleSize, int* triangleColSize);
 
+// 对称二叉树 https://leetcode-cn.com/problems/symmetric-tree/
+bool isSymmetric(struct TreeNode* root);
+
+// 验证二叉搜索树 https://leetcode-cn.com/problems/validate-binary-search-tree/
+bool isValidBST(struct TreeNode* root);
+
+// 下一个排列 https://leetcode-cn.com/problems/next-permutation/
+void nextPermutation(int* nums, int numsSize);
+
+// 螺旋矩阵 II https://leetcode-cn.com/problems/spiral-matrix-ii/
+int** generateMatrix(int n, int* returnSize, int** returnColumnSizes);
+
+// 斐波那契数 https://leetcode-cn.com/problems/fibonacci-number/submissions/
+int fib(int N);
+
+// 组合总和 https://leetcode-cn.com/problems/combination-sum/
+int** combinationSum(int* candidates, int candidatesSize, int target, int* returnSize, int** returnColumnSizes);
+
+// 正则表达式匹配 https://leetcode-cn.com/problems/regular-expression-matching/
+bool isMatch(char * s, char * p);
+
+// 两个数组的交集 II https://leetcode-cn.com/problems/intersection-of-two-arrays-ii/
+int* intersect(int* nums1, int nums1Size, int* nums2, int nums2Size, int* returnSize);
+
+// 存在重复元素 https://leetcode-cn.com/problems/contains-duplicate/
+bool containsDuplicate(int* nums, int numsSize);
+
+// 翻转图像 https://leetcode-cn.com/problems/flipping-an-image/
+int** flipAndInvertImage(int** A, int ASize, int* AColSize, int* returnSize, int** returnColumnSizes);
+
+// 快乐数 https://leetcode-cn.com/problems/happy-number/
+bool isHappy(int n);
+
+// 删除排序链表中的重复元素 https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/
+struct ListNode* deleteDuplicates2(struct ListNode* head);
+
+// 跳跃游戏 https://leetcode-cn.com/problems/jump-game/
+bool canJump(int* nums, int numsSize);
+
+// 有效的字母异位词 https://leetcode-cn.com/problems/valid-anagram/
+bool isAnagram(char * s, char * t);
+
+// 两个数组的交集 https://leetcode-cn.com/problems/intersection-of-two-arrays/
+int* intersection(int* nums1, int nums1Size, int* nums2, int nums2Size, int* returnSize);
+
+// 2的幂 https://leetcode-cn.com/problems/power-of-two/
+bool isPowerOfTwo(int n);
+
+// 杨辉三角 II https://leetcode-cn.com/problems/pascals-triangle-ii/
+int* getRow(int rowIndex, int* returnSize);
+
 #endif /* LeetCodeC_h */

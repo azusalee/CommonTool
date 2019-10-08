@@ -2673,17 +2673,15 @@ bool isPowerOfTwo(int n){
 }
 
 int* getRow(int rowIndex, int* returnSize){
-    int *result = malloc(sizeof(int)*rowIndex+1);
+    int *result = malloc(sizeof(int)*(rowIndex+1));
     *returnSize = rowIndex+1;
-    
     result[0] = 1;
     for (int i = 1; i <= rowIndex; ++i) {
-        for (int j = 1; j < i; ++j) {
-            
-        }
         result[i] = 1;
+        for (int j = i-1; j > 0; --j) {
+            result[j] = result[j]+result[j-1];
+        }
     }
-    
     return result;
 }
 

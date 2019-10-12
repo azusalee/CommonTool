@@ -31,6 +31,11 @@ typedef struct {
     struct ListNode *min;
 } MinStack;
 
+typedef struct {
+    struct ListNode *top;
+    struct ListNode *last;
+} MyQueue;
+
 /// 罗马数字转整数(1~3999) https://leetcode-cn.com/problems/roman-to-integer/
 int romanToInt(char * s);
 
@@ -307,5 +312,108 @@ bool isPowerOfTwo(int n);
 
 // 杨辉三角 II https://leetcode-cn.com/problems/pascals-triangle-ii/
 int* getRow(int rowIndex, int* returnSize);
+
+// 第k个排列 https://leetcode-cn.com/problems/permutation-sequence/
+char * getPermutation(int n, int k);
+
+// 用栈实现队列 https://leetcode-cn.com/problems/implement-queue-using-stacks/submissions/
+/** Initialize your data structure here. */
+MyQueue* myQueueCreate();
+/** Push element x to the back of queue. */
+void myQueuePush(MyQueue* obj, int x);
+/** Removes the element from in front of queue and returns that element. */
+int myQueuePop(MyQueue* obj);
+/** Get the front element. */
+int myQueuePeek(MyQueue* obj);
+/** Returns whether the queue is empty. */
+bool myQueueEmpty(MyQueue* obj);
+void myQueueFree(MyQueue* obj);
+
+// 翻转二叉树 https://leetcode-cn.com/problems/invert-binary-tree/
+struct TreeNode* invertTree(struct TreeNode* root);
+
+// N皇后 https://leetcode-cn.com/problems/n-queens/
+char *** solveNQueens(int n, int* returnSize, int** returnColumnSizes);
+
+// 最长有效括号 https://leetcode-cn.com/problems/longest-valid-parentheses/
+int longestValidParentheses(char * s);
+
+// 字符串中的第一个唯一字符 https://leetcode-cn.com/problems/first-unique-character-in-a-string/submissions/
+int firstUniqChar(char * s);
+
+// 最后一块石头的重量 https://leetcode-cn.com/problems/last-stone-weight/
+int lastStoneWeight(int* stones, int stonesSize);
+
+// 路径总和 https://leetcode-cn.com/problems/path-sum/submissions/
+bool hasPathSum(struct TreeNode* root, int sum);
+
+// 平衡二叉树 https://leetcode-cn.com/problems/balanced-binary-tree/submissions/
+bool isBalanced(struct TreeNode* root);
+
+// 数组的相对排序 https://leetcode-cn.com/problems/relative-sort-array/solution/
+int* relativeSortArray(int* arr1, int arr1Size, int* arr2, int arr2Size, int* returnSize);
+
+// 有效的数独 https://leetcode-cn.com/problems/valid-sudoku/submissions/
+bool isValidSudoku(char** board, int boardSize, int* boardColSize);
+
+// 二叉树的最小深度 https://leetcode-cn.com/submissions/detail/32562884/
+int minDepth(struct TreeNode* root);
+
+// 缺失数字 https://leetcode-cn.com/problems/missing-number/
+int missingNumber(int* nums, int numsSize);
+
+// 递增顺序查找树 https://leetcode-cn.com/problems/increasing-order-search-tree/
+struct TreeNode* increasingBST(struct TreeNode* root);
+
+// 下一个更大元素 I https://leetcode-cn.com/problems/next-greater-element-i/
+int* nextGreaterElement(int* nums1, int nums1Size, int* nums2, int nums2Size, int* returnSize);
+
+// 二叉树的层平均值 https://leetcode-cn.com/problems/average-of-levels-in-binary-tree/submissions/
+double* averageOfLevels(struct TreeNode* root, int* returnSize);
+
+// 旋转数字 https://leetcode-cn.com/problems/rotated-digits/
+int rotatedDigits(int N);
+
+// 一周中的第几天 https://leetcode-cn.com/problems/day-of-the-week/
+char * dayOfTheWeek(int day, int month, int year);
+
+// 写字符串需要的行数 https://leetcode-cn.com/problems/number-of-lines-to-write-string/
+int* numberOfLines(int* widths, int widthsSize, char * S, int* returnSize);
+
+// 拼写单词 https://leetcode-cn.com/problems/find-words-that-can-be-formed-by-characters/
+int countCharacters(char ** words, int wordsSize, char * chars);
+
+// 特殊等价字符串组 https://leetcode-cn.com/problems/groups-of-special-equivalent-strings/
+int numSpecialEquivGroups(char ** A, int ASize);
+
+// 三维形体投影面积 https://leetcode-cn.com/problems/projection-area-of-3d-shapes/
+int projectionArea(int** grid, int gridSize, int* gridColSize);
+
+// Fizz Buzz https://leetcode-cn.com/problems/fizz-buzz/
+char ** fizzBuzz(int n, int* returnSize);
+
+// “气球” 的最大数量 https://leetcode-cn.com/problems/maximum-number-of-balloons/
+int maxNumberOfBalloons(char * text);
+
+// 分糖果 II https://leetcode-cn.com/problems/distribute-candies-to-people/
+int* distributeCandies(int candies, int num_people, int* returnSize);
+
+// 字母大小写全排列 https://leetcode-cn.com/problems/letter-case-permutation/
+char ** letterCasePermutation(char * S, int* returnSize);
+
+// 位1的个数 https://leetcode-cn.com/problems/number-of-1-bits/
+int hammingWeight(uint32_t n);
+
+// 复写零 https://leetcode-cn.com/problems/duplicate-zeros/
+void duplicateZeros(int* arr, int arrSize);
+
+// 十进制整数的反码 https://leetcode-cn.com/problems/complement-of-base-10-integer/
+int bitwiseComplement(int N);
+
+// 二进制间距 https://leetcode-cn.com/problems/binary-gap/
+int binaryGap(int N);
+
+// 山羊拉丁文 https://leetcode-cn.com/problems/goat-latin/
+char * toGoatLatin(char * S);
 
 #endif /* LeetCodeC_h */

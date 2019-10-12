@@ -25,13 +25,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    int nums[] = {3,2,1};
-    nextPermutation(nums, 3);
-    isMatch("aasdfasdfasdfasdfas", "aasdf.*asdf.*asdf.*asdf.*s");
+    rotatedDigits(857);
+    int nums[] = {1,3};
+    lastStoneWeight(nums, 2);
+//    nextPermutation(nums, 3);
+//    isMatch("aasdfasdfasdfasdfas", "aasdf.*asdf.*asdf.*asdf.*s");
+    getPermutation(4, 10);
     //threeSumClosest(nums, 4, 100);
 //    int returnSize;
 //    int *returnColumnSizes;
 //    fourSum(nums, 6, 0, &returnSize, &returnColumnSizes);
+    int resturnSize = 0;
+    letterCasePermutation("a1b2", &resturnSize);
     
     NSString *string1 = [[NSString alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"sourceString1" ofType:@"txt"] encoding:NSUTF8StringEncoding error:nil];
     NSString *string2 = [[NSString alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"sourceString2" ofType:@"txt"] encoding:NSUTF8StringEncoding error:nil];

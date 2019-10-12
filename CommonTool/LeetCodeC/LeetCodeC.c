@@ -2685,3 +2685,828 @@ int* getRow(int rowIndex, int* returnSize){
     return result;
 }
 
+char * getPermutation(int n, int k){
+    char tmp[10] = "123456789";
+    char *result = malloc(sizeof(char)*(n+1));
+    result[n] = '\0';
+    int i, j, count = 1;
+    for (i = 1; i < n; ++i) count *= i;
+    int index = 0;
+    k = k-1;
+    while (n > 1) {
+        j = k/count;
+        result[index++] = tmp[j];
+        for (i = j; i < n; ++i) tmp[i] = tmp[i+1];
+        k = k%count;
+        count = count/(--n);
+    }
+    result[index] = tmp[0];
+    return result;
+}
+
+/** Initialize your data structure here. */
+MyQueue* myQueueCreate() {
+    MyQueue *myQueue = malloc(sizeof(MyQueue));
+    myQueue->top = NULL;
+    myQueue->last = NULL;
+    return myQueue;
+}
+
+/** Push element x to the back of queue. */
+void myQueuePush(MyQueue* obj, int x) {
+    struct ListNode *node = malloc(sizeof(struct ListNode));
+    node->next = NULL;
+    node->val = x;
+    if (obj->top == NULL) {
+        obj->top = node;
+    }else{
+        obj->last->next = node;
+    }
+    obj->last = node;
+}
+
+/** Removes the element from in front of queue and returns that element. */
+int myQueuePop(MyQueue* obj) {
+    struct ListNode *top = obj->top;
+    obj->top = top->next;
+    int val = top->val;
+    free(top);
+    return val;
+}
+
+/** Get the front element. */
+int myQueuePeek(MyQueue* obj) {
+    return obj->top->val;
+}
+
+/** Returns whether the queue is empty. */
+bool myQueueEmpty(MyQueue* obj) {
+    return obj->top==NULL;
+}
+
+void myQueueFree(MyQueue* obj) {
+    struct ListNode *top = obj->top;
+    while (top) {
+        obj->top = top->next;
+        free(top);
+        top = obj->top;
+    }
+    obj->last = NULL;
+    free(obj);
+}
+
+struct TreeNode* invertTree(struct TreeNode* root){
+    if (root == NULL) return root;
+    
+    struct TreeNode *left = root->left;
+    struct TreeNode *right = root->right;
+    invertTree(left);
+    invertTree(right);
+    root->left = right;
+    root->right = left;
+    return root;
+}
+
+void placeQueen(int row, int col, int n, int* queen, int* cols, int* hills, int* dales) {
+    queen[row] = col;
+    cols[col] = 1;
+    hills[row-col+n-1] = 1;
+    dales[row+col] = 1;
+}
+
+void removeQueen(int row, int col, int n, int* queen, int* cols, int* hills, int* dales) {
+    queen[row] = 0;
+    cols[col] = 0;
+    hills[row-col+n-1] = 0;
+    dales[row+col] = 0;
+}
+
+void backtrackQueen(int row, int n, int* queen, int* cols, int* hills, int* dales, char ***result, int* returnSize) {
+    for (int col = 0; col < n; col++) {
+      if (cols[col]+hills[row-col+n-1]+dales[row+col] == 0) {
+        placeQueen(row, col, n, queen, cols, hills, dales);
+        // if n queens are already placed
+        if (row + 1 == n){
+            char **solve = malloc(sizeof(char*)*n);
+            for (int i = 0; i < n; ++i) {
+                char *str = malloc(sizeof(char)*(n+1));
+                str[n] = '\0';
+                for (int j = 0; j < n; ++j) {
+                    if (j == queen[i]) {
+                        str[j] = 'Q';
+                    }else{
+                        str[j] = '.';
+                    }
+                }
+                solve[i] = str;
+            }
+            result[*returnSize] = solve;
+            ++(*returnSize);
+        }
+        else backtrackQueen(row + 1, n, queen, cols, hills, dales, result, returnSize);
+        // backtrack
+        removeQueen(row, col, n, queen, cols, hills, dales);
+      }
+    }
+}
+
+char *** solveNQueens(int n, int* returnSize, int** returnColumnSizes){
+    char ***result = malloc(sizeof(char**)*512);
+    int *cols = malloc(sizeof(int)*n);
+    int *hills = malloc(sizeof(int)*(2*n-1));
+    int *dales = malloc(sizeof(int)*(2*n-1));
+    int *queen = malloc(sizeof(int)*n);
+    memset(queen, 0, sizeof(int)*n);
+    memset(cols, 0, sizeof(int)*n);
+    memset(hills, 0, sizeof(int)*(2*n-1));
+    memset(dales, 0, sizeof(int)*(2*n-1));
+    
+    *returnSize = 0;
+    backtrackQueen(0, n, queen, cols, hills, dales, result, returnSize);
+    *returnColumnSizes = malloc(sizeof(int)*(*returnSize));
+    for (int i = 0; i < *returnSize; ++i) {
+        (*returnColumnSizes)[i] = n;
+    }
+    
+    return result;
+}
+
+
+int longestValidParentheses(char * s){
+    int i = 0;
+    int left = 0;
+    int right = 0;
+    int maxLen = 0;
+    while (s[i] != '\0') {
+        if (s[i] == '(') {
+            ++left;
+        }else if (s[i] == ')') {
+            if (right < left) {
+                ++right;
+                if (right == left) {
+                    if (right*2 > maxLen) {
+                        maxLen = right*2;
+                    }
+                }
+            }else{
+                left = 0;
+                right = 0;
+            }
+        }
+        ++i;
+    }
+    --i;
+    left = 0;
+    right = 0;
+    while (i >= 0) {
+        if (s[i] == '(') {
+            if (left < right) {
+                ++left;
+                if (right == left) {
+                    if (right*2 > maxLen) {
+                        maxLen = right*2;
+                    }
+                }
+            }else{
+                left = 0;
+                right = 0;
+            }
+        }else if (s[i] == ')') {
+            ++right;
+        }
+        --i;
+    }
+    
+    return maxLen;
+}
+
+int firstUniqChar(char * s){
+	int alphaList[26] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+	int i = 0;
+	while(s[i] != '\0') {
+		if (alphaList[s[i]-'a'] == -2)
+		{
+			
+		}else if (alphaList[s[i]-'a'] == -1) {
+			alphaList[s[i]-'a'] = i;
+		}else{
+			alphaList[s[i]-'a'] = -2;
+		}
+		++i;
+	}
+	int index = -1;
+	for (i = 0; i < 26; ++i)
+	{
+		if (alphaList[i] >= 0 && (index > alphaList[i] || index == -1)) index = alphaList[i];
+	}
+
+	return index;
+}
+
+int lastStoneWeight(int* stones, int stonesSize){
+    quickSort(stones, 0, stonesSize-1);
+    
+	int x;
+    int i = stonesSize-1;
+    int j;
+    while (i > 0) {
+        x = stones[i];
+        --i;
+        x -= stones[i];
+        if (x == 0) {
+            stonesSize -= 2;
+            i -= 1;
+        }else{
+            stonesSize -= 2;
+            for (j = 0; j < stonesSize; ++j) {
+                if (x < stones[j]) {
+                    stones[stonesSize] = stones[j];
+                    stones[j] = x;
+                    x = stones[stonesSize];
+                    ++j;
+                    break;
+                }
+            }
+            ++stonesSize;
+            for (; j < stonesSize; ++j) {
+                stones[stonesSize] = stones[j];
+                stones[j] = x;
+                x = stones[stonesSize];
+            }
+        }
+    }
+    if (stonesSize == 0) return 0;
+    else return stones[0];
+}
+
+bool hasPathSumHelper(struct TreeNode* root, int sum, int count){
+    count += root->val;
+    if (root->left != NULL && root->right != NULL) {
+        bool flag = hasPathSumHelper(root->left, sum, count);
+        if (flag == true) return flag;
+        flag = hasPathSumHelper(root->right, sum, count);
+        return flag;
+    }else if (root->left != NULL){
+        return hasPathSumHelper(root->left, sum, count);
+    }else if (root->right != NULL){
+        return hasPathSumHelper(root->right, sum, count);
+    }else{
+        return count==sum;
+    }
+}
+
+bool hasPathSum(struct TreeNode* root, int sum){
+    if (root == NULL) return false;
+    return hasPathSumHelper(root, sum, 0);
+}
+
+//void isBalancedHelper(struct TreeNode* root, int count, int *min, int *max){
+//    if (root == NULL) {
+//        if (*min == 0 || *min > count) *min = count;
+//        if (*max < count) *max = count;
+//        return;
+//    }
+//    ++count;
+//    isBalancedHelper(root->left, count, min, max);
+//    isBalancedHelper(root->right, count, min, max);
+//}
+
+int isBalancedHelper(struct TreeNode* root, bool *flag){
+    if (root == NULL) return 0;
+    int left = isBalancedHelper(root->left, flag);
+    if (*flag == false) return 0;
+    int right = isBalancedHelper(root->right, flag);
+    if (*flag == false) return 0;
+    if (left > right) {
+        if (left-right > 1) {
+            *flag = false;
+            return 0;
+        }
+        return 1+left;
+    }else{
+        if (right-left > 1) {
+            *flag = false;
+            return 0;
+        }
+        return 1+right;
+    }
+}
+
+bool isBalanced(struct TreeNode* root){
+    bool flag = true;
+    isBalancedHelper(root, &flag);
+    return flag;
+}
+
+int* relativeSortArray(int* arr1, int arr1Size, int* arr2, int arr2Size, int* returnSize){
+    int tmp, i, j, count = 0;
+    for (j = 0; j < arr2Size; ++j) {
+        for (i = count; i < arr1Size; ++i) {
+            if (arr1[i] == arr2[j]) {
+                tmp = arr1[i];
+                arr1[i] = arr1[count];
+                arr1[count] = tmp;
+                ++count;
+            }
+        }
+    }
+    quickSort(arr1, count, arr1Size-1);
+    *returnSize = arr1Size;
+    return arr1;
+}
+
+bool isValidSudoku(char** board, int boardSize, int* boardColSize){
+    int i, j, k, l, boxx, boxy;
+    for (i = 0; i < boardSize; ++i) {
+        for (j = 0; j < boardSize; ++j) {
+            if (board[i][j] == '.') continue;
+            boxx = (i/3)*3+3;
+            boxy = (j/3)*3;
+            l = j+1;
+            for (k = i; k < boxx; ++k) {
+                for (; l < boxy+3; ++l) {
+                    if (board[i][j] == board[k][l]) {
+                        return false;
+                    }
+                }
+                l = boxy;
+            }
+            l = boxy+3;
+            for (; k < boardSize; ++k) {
+                if (board[i][j] == board[k][j]) return false;
+            }
+            for (; l < boardSize; ++l) {
+                if (board[i][j] == board[i][l]) return false;
+            }
+        }
+    }
+    return true;
+}
+
+int heightChecker(int* heights, int heightsSize){
+    int *tmp = malloc(sizeof(int)*heightsSize);
+    memcpy(tmp, heights, sizeof(int)*heightsSize);
+    quickSort(tmp, 0, heightsSize-1);
+    int count = 0;
+    for (int i = 0; i < heightsSize; ++i) {
+        if (tmp[i] != heights[i]) ++count;
+    }
+    
+    return count;
+}
+
+int minDepth(struct TreeNode* root){
+    if (root == NULL) return 0;
+    if (root->left == NULL && root->right == NULL) return 1;
+    if (root->left && root->right) {
+        int left = minDepth(root->left);
+        int right = minDepth(root->right);
+        return left<right?left+1:right+1;
+    }else if (root->left){
+        return minDepth(root->left)+1;
+    }else{
+        return minDepth(root->right)+1;
+    }
+}
+
+char findTheDifference(char * s, char * t){
+    int flags[26] = {0};
+    while (*s != '\0') {
+        flags[*s-'a'] += 1;
+        ++s;
+    }
+    while (*t != '\0') {
+        if (flags[*t-'a'] == 0) return *t;
+        flags[*t-'a'] -= 1;
+        ++t;
+    }
+    
+    return '0';
+}
+
+int missingNumber(int* nums, int numsSize){
+    int i;
+    int count = numsSize*(numsSize+1)/2;
+    for (i = 0; i < numsSize; ++i) count -= nums[i];
+    return count;
+}
+
+struct TreeNode* _increasingBST(struct TreeNode* node,struct TreeNode* pre){
+    if(node==NULL) return pre;
+    struct TreeNode* cur=_increasingBST(node->left,node);
+    node->left=NULL;
+    if(node->right) node->right=_increasingBST(node->right,pre);
+    else node->right=pre;
+    return cur;
+}
+
+struct TreeNode* increasingBST(struct TreeNode* root){
+    return _increasingBST(root,NULL);
+}
+
+int* nextGreaterElement(int* nums1, int nums1Size, int* nums2, int nums2Size, int* returnSize){
+    int *result = malloc(sizeof(int)*nums1Size);
+    *returnSize = nums1Size;
+    int i, j;
+    for (i = 0; i < nums1Size; ++i) result[i] = -1;
+    for (i = 0; i < nums1Size; ++i) {
+        for (j = 0; j < nums2Size; ++j) {
+            if (nums2[j] == nums1[i]) {
+                while (j < nums2Size) {
+                    if (nums2[j] > nums1[i]) {
+                        result[i] = nums2[j];
+                        break;
+                    }
+                    ++j;
+                }
+                break;
+            }
+        }
+    }
+    return result;
+}
+
+void averageOfLevelsHelper(struct TreeNode* root, int count, double* result, int* floorSize) {
+    if (root == NULL) return;
+    floorSize[count] += 1;
+    result[count] += root->val;
+    ++count;
+    averageOfLevelsHelper(root->left, count, result, floorSize);
+    averageOfLevelsHelper(root->right, count, result, floorSize);
+}
+
+double* averageOfLevels(struct TreeNode* root, int* returnSize){
+    int count = maxDepth(root);
+    double *result = malloc(sizeof(double)*count);
+    int *floorSize = malloc(sizeof(int)*count);
+    memset(result, 0, sizeof(double)*count);
+    memset(floorSize, 0, sizeof(int)*count);
+    averageOfLevelsHelper(root, 0, result, floorSize);
+    *returnSize = count;
+    for (int i = 0; i < count; ++i) result[i] = result[i]/floorSize[i];
+    
+    return result;
+}
+
+int rotatedDigits(int N){
+    // 2,5,6,9
+    // 0,1,8
+    // 3,4,7
+    // 9 -> 4, 6~8 -> 3, 5 -> 2, 2~4 -> 1, 0~1 -> 0
+    
+    int tmp, num, count = 0, hasVaildNum, wei = 1;
+    for (int i = 1; i <= N; ++i) {
+        tmp = i;
+        hasVaildNum = false;
+        wei = 1;
+        while (tmp > 9) {
+            num = tmp%10;
+            if (num == 2 || num == 5 || num == 6 || num == 9) {
+                tmp = tmp/10;
+                hasVaildNum = true;
+            }else if (num == 0 || num == 1 || num == 8){
+                tmp = tmp/10;
+            }else{
+                i = i+wei-1;
+                hasVaildNum = false;
+                break;
+            }
+            wei = wei*10;
+        }
+        if (tmp == 2 || tmp == 5 || tmp == 6 || tmp == 9) hasVaildNum = true;
+        else if (tmp != 0 && tmp != 1 && tmp != 8) hasVaildNum = false;
+        
+        if (hasVaildNum) ++count;
+    }
+    
+    return count;
+}
+
+char * dayOfTheWeek(int day, int month, int year){
+    char *str[] = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+    int w;
+    if (month <= 2) {
+        month += 12;
+        --year;
+    }
+    int y = (year % 100);
+    int c = (year / 100);
+    int m = month;
+    int d = day;
+
+    w = y + y / 4 + c / 4 - 2 * c + 26 * (m + 1) / 10 + d - 1;
+    w = w % 7;
+    w = (w + 7) % 7;
+    return str[w];
+}
+
+int* numberOfLines(int* widths, int widthsSize, char * S, int* returnSize){
+    int row = 1;
+    int curSize = 0;
+    int width;
+    while (*S != '\0') {
+        width = widths[*S-'a'];
+        if (curSize+width > 100) {
+            ++row;
+            curSize = width;
+        }else{
+            curSize += width;
+        }
+        ++S;
+    }
+    int *result = malloc(sizeof(int)*2);
+    result[0] = row;
+    result[1] = curSize;
+    *returnSize = 2;
+    return result;
+}
+
+int countCharacters(char ** words, int wordsSize, char * chars){
+    int totalChars[26] = {0};
+    while (*chars != '\0') {
+        totalChars[*chars-'a'] += 1; 
+        ++chars;
+    } 
+    int usedChars[26];
+    int i, j, index, result = 0;
+    for (i = 0; i < wordsSize; ++i) {
+        j = 0;
+        memset(usedChars, 0, sizeof(int)*26);
+        while (words[i][j] != '\0') {
+            index = words[i][j]-'a';
+            usedChars[index] += 1;
+            if (usedChars[index] > totalChars[index]) break;
+            ++j;
+        }
+        if (words[i][j] == '\0') result += j;
+    }
+    
+    return result;
+}
+
+int numSpecialEquivGroups(char ** A, int ASize){
+    // 下面是取巧的方法，把每个数做一处理后加起来，当作是一个特征码，统计不一样的特征码个数。
+    // 这个虽然可以过leetcode的测试用例，但是实际上作为解法并不正确。(存在特征码一样，但组合不一样的情况)
+    int groups[ASize];
+    memset(groups, 0, sizeof(int)*ASize);
+    int tmp;
+    int i, j, k, result = 0;
+    bool flag;
+    for (i = 0; i < ASize; ++i) {
+        k = 0;
+        while (A[i][k] != '\0') {
+            tmp = A[i][k]*(k%2+1);
+            groups[i] += tmp*tmp*tmp;
+            ++k;
+        }
+        
+        j = 0;
+        flag = true;
+        while (j < result) {
+            if (groups[j] == groups[i]) {
+                flag = false;
+                break;
+            }
+            ++j;
+        }
+        if (flag) {
+            groups[result] = groups[i];
+            ++result;
+        }
+    }
+    
+    return result;
+}
+
+int projectionArea(int** grid, int gridSize, int* gridColSize){
+    int i, j, result = 0, tmp;
+    for (i = 0; i < gridSize; ++i) {
+        tmp = 0;
+        for (j = 0; j < gridColSize[i]; ++j) {
+            if (grid[i][j] != 0) ++result;
+            if (grid[i][j] > tmp) tmp = grid[i][j];
+            if (grid[i][j] > grid[0][j]) grid[0][j] = grid[i][j]; 
+        }
+        result += tmp;
+    }
+    for (j = 0; j < gridColSize[0]; ++j) result += grid[0][j];
+    return result;
+}
+
+char ** fizzBuzz(int n, int* returnSize){
+    char **result = malloc(sizeof(char*)*n);
+    *returnSize = n;
+    int tmp, size;
+    char *tmpStr;
+    for (int i = 1; i <= n; ++i) {
+        if (i%3 == 0 && i%5 == 0) {
+            result[i-1] = "FizzBuzz";
+        }else if (i%3 == 0){
+            result[i-1] = "Fizz";
+        }else if (i%5 == 0){
+            result[i-1] = "Buzz";
+        }else{
+            tmp = i;
+            size = 0;
+            while (tmp) {
+                tmp /= 10;
+                ++size;
+            }
+            tmpStr = malloc(sizeof(char)*(size+1));
+            tmp = i;
+            tmpStr[size] = '\0';
+            while (--size >= 0) {
+                tmpStr[size] = '0'+tmp%10; 
+                tmp /= 10;
+            }
+            result[i-1] = tmpStr;
+        }
+    }
+    return result;
+}
+
+int maxNumberOfBalloons(char * text){
+    // balloon
+    int tmp[5] = {0};
+    while (*text != '\0') {
+        if (*text == 'b') ++tmp[0];
+        else if (*text == 'a') ++tmp[1];
+        else if (*text == 'l') ++tmp[2];
+        else if (*text == 'o') ++tmp[3];
+        else if (*text == 'n') ++tmp[4];
+        ++text;
+    }
+    int result = 0;
+    while (1) {
+        if (tmp[0] < 1) break;
+        --tmp[0];
+        if (tmp[1] < 1) break;
+        --tmp[1];
+        if (tmp[2] < 2) break;
+        tmp[2] -= 2;
+        if (tmp[3] < 2) break;
+        tmp[3] -= 2;
+        if (tmp[4] < 1) break;
+        --tmp[4];
+        ++result;
+    }
+    
+    return result;
+}
+
+int* distributeCandies(int candies, int num_people, int* returnSize){
+    int *result = malloc(sizeof(int)*num_people);
+    memset(result, 0, sizeof(int)*num_people);
+    int i = 0, count;
+    while (candies > 0) {
+        count = i+1;
+        if (candies < count) count = candies;
+        result[i%num_people] += count;
+        candies -= count;
+        ++i;
+    }
+    *returnSize = num_people;
+    return result;
+}
+
+char ** letterCasePermutation(char * S, int* returnSize){
+    int i = 0;
+    int length = 1;
+    while (S[i] != '\0') {
+        if ((S[i] >= 'a' && S[i] <= 'z') || (S[i] >= 'A' && S[i] <= 'Z')) length *= 2;
+        ++i;
+    }
+    char** result = malloc(sizeof(char*)*length);
+    
+    length = i+1;
+    char *tmp = malloc(sizeof(char)*length);
+    memcpy(tmp, S, sizeof(char)*length);
+    int j = 0;
+    i = 0;
+    result[0] = tmp;
+    *returnSize = 1;
+    int offset = 'a'-'A';
+    while (S[i] != '\0') {
+        if (S[i] >= 'a' && S[i] <= 'z'){
+            for (j = 0; j < *returnSize; ++j) {
+                tmp = malloc(sizeof(char)*length);
+                memcpy(tmp, result[j], sizeof(char)*length);
+                tmp[i] -= offset;
+                result[j+(*returnSize)] = tmp;
+            }
+            *returnSize *= 2;
+        }else if (S[i] >= 'A' && S[i] <= 'Z'){
+            for (j = 0; j < *returnSize; ++j) {
+                tmp = malloc(sizeof(char)*length);
+                memcpy(tmp, result[j], sizeof(char)*length);
+                tmp[i] += offset;
+                result[j+(*returnSize)] = tmp;
+            }
+            *returnSize *= 2;
+        }
+        ++i;
+    }
+    
+    return result;
+}
+
+int hammingWeight(uint32_t n) {
+    int count = 0;
+    while (n) {
+        if (n%2 == 1) ++count;
+        n /= 2;
+    }
+    return count;
+}
+
+void duplicateZeros(int* arr, int arrSize){
+    int i, zeroCount = 0;
+    for (i = 0; i < arrSize; ++i) {
+        if (arr[i] == 0) ++zeroCount;
+    }
+    if (zeroCount == 0) return;
+    
+    int fixSize = arrSize+zeroCount;
+    i = arrSize-1;
+    while (1) {
+        if (--fixSize <= arrSize){
+            if (arr[i--] == 0) arr[--fixSize] = 0;
+            break;
+        }
+        if (arr[i--] == 0){
+            if (--fixSize <= arrSize) break;
+        }
+    }
+    for (; i >= 0; --i) {
+        arr[--fixSize] = arr[i];
+        if (arr[i] == 0) arr[--fixSize] = 0;
+    }
+}
+
+int bitwiseComplement(int N){
+    int t=1;
+    while(t<N){
+        t<<=1;
+        t+=1;
+    }
+    return t^N;
+}
+
+int binaryGap(int N){
+    int result = 0;
+    int tmp = 0, count = 1;
+    while (N) {
+        tmp = N%2;
+        N /= 2;
+        if (tmp == 1) break;
+    }
+    while (N) {
+        tmp = N%2;
+        if (tmp == 0) ++count;
+        else {
+            if (result < count) result = count;
+            count = 1;
+        }
+        N /= 2;
+    }
+    return result;
+}
+
+char * toGoatLatin(char * S){
+    char* result = malloc(sizeof(char)*1000);
+    int index = 0;
+    bool isfirst = true;
+    char firstChar = '\0';
+    int i, spaceCount = 0;
+    while (*S != '\0') {
+        if (*S == ' ') {
+            isfirst = true;
+            if (firstChar != '\0') {
+                result[index++] = firstChar;
+                firstChar = '\0';
+            }
+            result[index++] = 'm';
+            result[index++] = 'a';
+            ++spaceCount;
+            for (i = 0; i < spaceCount; ++i) result[index++] = 'a';
+            result[index++] = ' ';
+        }else if (isfirst) {
+            if (*S == 'a' || *S == 'e' || *S == 'i' || *S == 'o'|| *S == 'u' || *S == 'A' || *S == 'E' || *S == 'I' || *S == 'O'|| *S == 'U') result[index++] = *S;
+            else firstChar = *S;
+            
+            isfirst = false;
+        }else{
+            result[index++] = *S;
+        }
+        ++S;
+    }
+    
+    if (firstChar != '\0') result[index++] = firstChar;
+    result[index++] = 'm';
+    result[index++] = 'a';
+    ++spaceCount;
+    for (i = 0; i < spaceCount; ++i) result[index++] = 'a';
+    
+    result[index] = '\0';
+    return result;
+}

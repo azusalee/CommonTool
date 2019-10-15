@@ -9,6 +9,7 @@
 #include "LeetCodeC.h"
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 /*
  字符          数值
@@ -3508,5 +3509,439 @@ char * toGoatLatin(char * S){
     for (i = 0; i < spaceCount; ++i) result[index++] = 'a';
     
     result[index] = '\0';
+    return result;
+}
+
+int* numSmallerByFrequency(char ** queries, int queriesSize, char ** words, int wordsSize, int* returnSize){
+    int alphabatCount;
+    char minAlphabat;
+    int *queriesCount = malloc(sizeof(int)*queriesSize);
+    memset(queriesCount, 0, sizeof(int)*queriesSize);
+    int *wordsCount = malloc(sizeof(int)*wordsSize);
+    memset(wordsCount, 0, sizeof(int)*wordsSize);
+    int i, j;
+    for (i = 0; i < wordsSize; ++i) {
+        alphabatCount = 0;
+        minAlphabat = 'z';
+        j = 0;
+        while (words[i][j] != '\0') {
+            if (words[i][j] < minAlphabat) {
+                minAlphabat = words[i][j];
+                alphabatCount = 1;
+            }else if (words[i][j] == minAlphabat){
+                ++alphabatCount;
+            }
+            ++j;
+        }
+        wordsCount[i] = alphabatCount;
+    }
+    quickSort(wordsCount, 0, wordsSize-1);
+    int l,r;
+    for (i = 0; i < queriesSize; ++i) {
+        alphabatCount = 0;
+        minAlphabat = 'z';
+        j = 0;
+        while (queries[i][j] != '\0') {
+            if (queries[i][j] < minAlphabat) {
+                minAlphabat = queries[i][j];
+                alphabatCount = 1;
+            }else if (queries[i][j] == minAlphabat){
+                ++alphabatCount;
+            }
+            ++j;
+        }
+        l = 0;
+        r = wordsSize;
+        do {
+            j = (l+r)/2;
+            if (wordsCount[j] <= alphabatCount) {
+                l = j+1;
+            }else{
+                r = j;
+            }
+        }while (l < r);
+        queriesCount[i] = wordsSize-r;
+    }
+    
+    *returnSize = queriesSize;
+    return queriesCount;
+}
+
+struct ListNode* middleNode(struct ListNode* head){
+    int i = 0;
+    struct ListNode *tmp = head;
+    while (tmp != NULL) {
+        tmp = tmp->next;
+        ++i;
+    }
+    i /= 2;
+    tmp = head;
+    while (i) {
+        tmp = tmp->next;
+        --i;
+    }
+    
+    return tmp;
+}
+
+bool isToeplitzMatrix(int** matrix, int matrixSize, int* matrixColSize){
+    int i, j, k;
+    for (k = 0; k < matrixSize-1; ++k) {
+        j = 1;
+        i = k+1;
+        while (i < matrixSize && j < matrixColSize[0]) {
+            if (matrix[i][j] != matrix[i-1][j-1]) return false; 
+            ++i;
+            ++j;
+        }
+    }
+    for (k = 1; k < matrixColSize[0]-1; ++k) {
+        j = k+1;
+        i = 1;
+        while (i < matrixSize && j < matrixColSize[0]) {
+            if (matrix[i][j] != matrix[i-1][j-1]) return false; 
+            ++i;
+            ++j;
+        }
+    }
+    
+    return true;
+}
+
+
+char ** uncommonFromSentences(char * A, char * B, int* returnSize){
+    char **result = malloc(sizeof(char*)*100);
+    int *appearCounts = malloc(sizeof(int)*100);
+    memset(appearCounts, 0, sizeof(int)*100);
+    int count = 0;
+    char *tmp = A;
+    int i, j;
+    bool isContain;
+    while (*A != '\0') {
+        if (*A == ' ') {
+            *A = '\0';
+            isContain = false;
+            for (j = 0; j < count; ++j) {
+                i = 0;
+                while (tmp[i] != '\0') {
+                    if (tmp[i] != result[j][i]) {
+                        break;
+                    }
+                    ++i;
+                }
+                if (tmp[i] == '\0' && result[j][i] == '\0') {
+                    isContain = true;
+                    break;
+                }
+            }
+            ++A;
+            if (isContain) {
+                appearCounts[j] += 1;
+            }else{
+                appearCounts[count] = 1;
+                result[count++] = tmp;
+            }
+            tmp = A;
+        }else{
+            ++A;
+        }
+    }
+    isContain = false;
+    for (j = 0; j < count; ++j) {
+        i = 0;
+        while (tmp[i] != '\0') {
+            if (tmp[i] != result[j][i]) {
+                break;
+            }
+            ++i;
+        }
+        if (tmp[i] == '\0' && result[j][i] == '\0') {
+            isContain = true;
+            break;
+        }
+    }
+    if (isContain) {
+        appearCounts[j] += 1;
+    }else{
+        appearCounts[count] = 1;
+        result[count++] = tmp;
+    }
+    tmp = B;
+    while (*B != '\0') {
+        if (*B == ' ') {
+            *B = '\0';
+            isContain = false;
+            for (j = 0; j < count; ++j) {
+                i = 0;
+                while (tmp[i] != '\0') {
+                    if (tmp[i] != result[j][i]) {
+                        break;
+                    }
+                    ++i;
+                }
+                if (tmp[i] == '\0' && result[j][i] == '\0') {
+                    isContain = true;
+                    break;
+                }
+            }
+            ++B;
+            if (isContain) {
+                appearCounts[j] += 1;
+            }else{
+                appearCounts[count] = 1;
+                result[count++] = tmp;
+            }
+            tmp = B;
+        }else{
+            ++B;
+        }
+    }
+    isContain = false;
+    for (j = 0; j < count; ++j) {
+        i = 0;
+        while (tmp[i] != '\0') {
+            if (tmp[i] != result[j][i]) {
+                break;
+            }
+            ++i;
+        }
+        if (tmp[i] == '\0' && result[j][i] == '\0') {
+            isContain = true;
+            break;
+        }
+    }
+    if (isContain) {
+        appearCounts[j] += 1;
+    }else{
+        appearCounts[count] = 1;
+        result[count++] = tmp;
+    }
+    j = 0;
+    for (i = 0; i < count; ++i) {
+        if (appearCounts[i] < 2) {
+            result[j++] = result[i];
+        }
+    }
+    *returnSize = j;
+    
+    return result;
+}
+
+void convertBSTHelper(struct TreeNode* root, int* pre) {
+    if (root == NULL) return;
+    convertBSTHelper(root->right, pre);
+    root->val += *pre;
+    *pre = root->val;
+    convertBSTHelper(root->left, pre);
+}
+
+struct TreeNode* convertBST(struct TreeNode* root){
+    int pre = 0;
+    convertBSTHelper(root, &pre);
+    return root;
+}
+
+struct TreeNode* lowestCommonAncestor(struct TreeNode* root, struct TreeNode* p, struct TreeNode* q) {
+    if (p->val < root->val && q->val < root->val) return lowestCommonAncestor(root->left, p, q);
+    if (p->val > root->val && q->val > root->val) return lowestCommonAncestor(root->right, p, q);
+    return root;
+}
+
+double largestTriangleArea(int** points, int pointsSize, int* pointsColSize){
+    int i, j, k;
+    double S = 0;
+    double tmp;
+    for (i = 0; i < pointsSize-2; ++i) {
+        for (j = i; j < pointsSize-1; ++j) {
+            for (k = j; k < pointsSize; ++k) {
+                tmp = (points[i][0]*points[j][1]+points[j][0]*points[k][1]+points[k][0]*points[i][1]
+                    -points[i][0]*points[k][1]-points[j][0]*points[i][1]-points[k][0]*points[j][1])/2.0f;
+                tmp = fabs(tmp);
+                if (tmp > S) S = tmp;
+            }
+        }
+    }
+    return S;
+}
+
+int** minimumAbsDifference(int* arr, int arrSize, int* returnSize, int** returnColumnSizes){
+    quickSort(arr, 0, arrSize-1);
+    int count = 0, tmp, i, maxSize = 16;
+    int min = arr[1]-arr[0];
+    int **result = malloc(sizeof(int*)*maxSize);
+    for (i = 1; i < arrSize; ++i){
+        tmp = arr[i]-arr[i-1];
+        if (tmp < min) min = tmp;
+    }
+    for (i = 1; i < arrSize; ++i) {
+        tmp = arr[i]-arr[i-1];
+        if (tmp == min) {
+            if (count == maxSize) {
+                maxSize *= 2;
+                result = realloc(result, sizeof(int*)*maxSize);
+            }
+            result[count] = malloc(sizeof(int)*2);
+            result[count][0] = arr[i-1];
+            result[count][1] = arr[i];
+            ++count;
+        }
+    }
+    *returnSize = count;
+    *returnColumnSizes = malloc(sizeof(int)*count);
+    for (i = 0; i < count; ++i) (*returnColumnSizes)[i] = 2;
+    return result;
+}
+
+char ** findOcurrences(char * text, char * first, char * second, int* returnSize){
+    char** result = malloc(sizeof(char*)*1000);
+    *returnSize = 0;
+    bool flag1 = false;
+    bool flag2 = false;
+    bool isFirst = true;
+    char* tmp = text;
+    int length = 0;
+    int i = 0;
+    while (*text != '\0') {
+        if (*text == ' ') {
+            if (flag1 == false) {
+                i = 0;
+                flag1 = true;
+                while (tmp[i] != ' ') {
+                    if (first[i] != tmp[i]) {
+                        flag1 = false;
+                        break;
+                    }
+                    ++i;
+                }
+            }else if (flag2 == false) {
+                i = 0;
+                flag2 = true;
+                while (tmp[i] != ' ') {
+                    if (second[i] != tmp[i]) {
+                        flag2 = false;
+                        flag1 = false;
+                        break;
+                    }
+                    ++i;
+                }
+                if (flag1 == false) {
+                    i = 0;
+                    flag1 = true;
+                    while (tmp[i] != ' ') {
+                        if (first[i] != tmp[i]) {
+                            flag1 = false;
+                            break;
+                        }
+                        ++i;
+                    }
+                }
+            }else{
+                result[*returnSize] = malloc(sizeof(char)*(length+1));
+                memcpy(result[*returnSize], tmp, sizeof(char)*length);
+                result[*returnSize][length] = '\0';
+                ++(*returnSize);
+                flag2 = false;
+                i = 0;
+                while (tmp[i] != ' ') {
+                    if (first[i] != tmp[i]) {
+                        flag1 = false;
+                        break;
+                    }
+                    ++i;
+                }
+            }
+            isFirst = true;
+        }else{
+            if (isFirst) {
+                tmp = text;
+                length = 1;
+                isFirst = false;
+            }else{
+                ++length;
+            }
+        }
+        ++text;
+    }
+    if (flag1 == true && flag2 == true) {
+        result[*returnSize] = malloc(sizeof(char)*(length+1));
+        memcpy(result[*returnSize], tmp, sizeof(char)*length);
+        result[*returnSize][length] = '\0';
+        ++(*returnSize);
+    }
+    return result;
+}
+
+int** allCellsDistOrder(int R, int C, int r0, int c0, int* returnSize, int** returnColumnSizes){
+    *returnSize = R*C;
+    int** result = malloc(sizeof(int*)*(*returnSize));
+    *returnColumnSizes = malloc(sizeof(int)*(*returnSize));
+    int i, j = sizeof(int)*2;
+    for (i = 0; i < *returnSize; ++i) {
+        result[i] = malloc(j);
+        (*returnColumnSizes)[i] = 2;
+    }
+    
+    result[0][0] = r0;
+    result[0][1] = c0;
+    if (*returnSize == 1) return result;
+    int index = 1;
+    i = r0;
+    j = c0;
+    while (1) {
+        --i;
+        while (i < r0) {
+            if (i < 0) {
+                j -= i;
+                i = 0;
+            }else if (j >= C){
+                i = (r0-(i-(j-(C-1))))+r0;
+                j = C-1;
+            }else{
+                result[index][0] = i++;
+                result[index++][1] = j++;
+            }
+        }
+        if (index == *returnSize) break;
+        while (j > c0) {
+            if (i >= R) {
+                j = (c0-(j+(i-(R-1))))+c0;
+                i = R-1;
+            }else if (j >= C){
+                i = i+j-(C-1);
+                j = C-1;
+            }else{
+                result[index][0] = i++;
+                result[index++][1] = j--;
+            }
+        }
+        if (index == *returnSize) break;
+        while (i > r0) {
+            if (i >= R) {
+                j = j-(i-(R-1));
+                i = R-1;
+            }else if (j < 0){
+                i = r0+r0-(i-j);
+                j = 0;
+            }else{
+                result[index][0] = i--;
+                result[index++][1] = j--;
+            }
+        }
+        if (index == *returnSize) break;
+        while (j < c0) {
+            if (i < 0) {
+                j = c0+c0-(j+i);
+                i = 0;
+            }else if (j < 0){
+                i = i+j;
+                j = 0;
+            }else{
+                result[index][0] = i--;
+                result[index++][1] = j++;
+            }
+        }
+        if (index == *returnSize) break;
+    }
+    
     return result;
 }

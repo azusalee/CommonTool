@@ -416,4 +416,34 @@ int binaryGap(int N);
 // 山羊拉丁文 https://leetcode-cn.com/problems/goat-latin/
 char * toGoatLatin(char * S);
 
+// 比较字符串最小字母出现频次 https://leetcode-cn.com/problems/compare-strings-by-frequency-of-the-smallest-character/
+int* numSmallerByFrequency(char ** queries, int queriesSize, char ** words, int wordsSize, int* returnSize);
+
+// 链表的中间结点 https://leetcode-cn.com/problems/middle-of-the-linked-list/
+struct ListNode* middleNode(struct ListNode* head);
+
+// 托普利茨矩阵 https://leetcode-cn.com/problems/toeplitz-matrix/
+bool isToeplitzMatrix(int** matrix, int matrixSize, int* matrixColSize);
+
+// 两句话中的不常见单词 https://leetcode-cn.com/problems/uncommon-words-from-two-sentences/
+char ** uncommonFromSentences(char * A, char * B, int* returnSize);
+
+// 把二叉搜索树转换为累加树 https://leetcode-cn.com/problems/convert-bst-to-greater-tree/
+struct TreeNode* convertBST(struct TreeNode* root);
+
+// 二叉搜索树的最近公共祖先 https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/
+struct TreeNode* lowestCommonAncestor(struct TreeNode* root, struct TreeNode* p, struct TreeNode* q);
+
+// 最大三角形面积 https://leetcode-cn.com/problems/largest-triangle-area/
+double largestTriangleArea(int** points, int pointsSize, int* pointsColSize);
+
+// 最小绝对差 https://leetcode-cn.com/problems/minimum-absolute-difference/
+int** minimumAbsDifference(int* arr, int arrSize, int* returnSize, int** returnColumnSizes);
+
+// Bigram 分词 https://leetcode-cn.com/problems/occurrences-after-bigram/
+char ** findOcurrences(char * text, char * first, char * second, int* returnSize);
+
+// 距离顺序排列矩阵单元格 https://leetcode-cn.com/problems/matrix-cells-in-distance-order/
+int** allCellsDistOrder(int R, int C, int r0, int c0, int* returnSize, int** returnColumnSizes);
+
 #endif /* LeetCodeC_h */

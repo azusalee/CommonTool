@@ -32,11 +32,12 @@
 //    isMatch("aasdfasdfasdfasdfas", "aasdf.*asdf.*asdf.*asdf.*s");
     getPermutation(4, 10);
     //threeSumClosest(nums, 4, 100);
-//    int returnSize;
-//    int *returnColumnSizes;
+    int returnSize;
+    int *returnColumnSizes;
 //    fourSum(nums, 6, 0, &returnSize, &returnColumnSizes);
-    int resturnSize = 0;
-    letterCasePermutation("a1b2", &resturnSize);
+   // int returnSize = 0;
+    //findOcurrences("we will we will rock you", "we", "will", &returnSize);
+    allCellsDistOrder(3, 3, 0, 2, &returnSize, &returnColumnSizes);
     
     NSString *string1 = [[NSString alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"sourceString1" ofType:@"txt"] encoding:NSUTF8StringEncoding error:nil];
     NSString *string2 = [[NSString alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"sourceString2" ofType:@"txt"] encoding:NSUTF8StringEncoding error:nil];

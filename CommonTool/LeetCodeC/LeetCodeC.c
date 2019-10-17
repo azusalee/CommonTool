@@ -3945,3 +3945,446 @@ int** allCellsDistOrder(int R, int C, int r0, int c0, int* returnSize, int** ret
     
     return result;
 }
+
+int** matrixReshape(int** nums, int numsSize, int* numsColSize, int r, int c, int* returnSize, int** returnColumnSizes){
+    if (numsSize == 0) {
+        *returnSize = 0;
+        return NULL;
+    }
+    
+    if (r*c > numsSize*numsColSize[0]) {
+        *returnSize = numsSize;
+        *returnColumnSizes = numsColSize;
+        return nums;
+    }
+    
+    int i;
+    *returnSize = r;
+    *returnColumnSizes = malloc(sizeof(int)*r);
+    int** result = malloc(sizeof(int*)*r);
+    for (i = 0; i < r; ++i) {
+        (*returnColumnSizes)[i] = c;
+        result[i] = malloc(sizeof(int)*c);
+    }
+    
+    int j, index = 0;
+    for (i = 0; i < numsSize; ++i) {
+        for (j = 0; j < numsColSize[0]; ++j) {
+            result[index/c][index%c] = nums[i][j];
+            ++index;
+        }
+    }
+    
+    return result;
+}
+
+void binaryTreePathsHelper(struct TreeNode* root, int* returnSize, char ** result, int index, char* prePath){
+    int val = root->val;
+    bool isminus = false;
+    int count = 0;
+    if (val < 0) {
+        val = -val;
+        isminus = true;
+        ++count;
+    }
+    int len = 1;
+    while (val >= len*10) {
+        len *= 10;
+        ++count;
+    }
+    if (prePath) count += 2;
+    
+    char* path = malloc(sizeof(int)*(index+count+1));
+    if (prePath) {
+        memcpy(path, prePath, sizeof(int)*index);
+        path[index++] = '-';
+        path[index++] = '>';
+    }
+    
+    if (isminus) path[index++] = '-';
+    
+    while (len > 0) {
+        path[index++] = (val%(len*10))/len+'0';
+        len /= 10;
+    }
+    
+    if (root->left == NULL && root->right == NULL) {
+        path[index] = '\0';
+        result[*returnSize] = path;
+        *returnSize += 1;
+        return;
+    }
+    if (root->left) binaryTreePathsHelper(root->left, returnSize, result, index, path);
+    if (root->right) binaryTreePathsHelper(root->right, returnSize, result, index, path);
+    free(path);
+}
+
+char ** binaryTreePaths(struct TreeNode* root, int* returnSize){
+    *returnSize = 0;
+    if (root == NULL) return NULL;
+    
+    char **result = malloc(sizeof(int*)*1000);
+    binaryTreePathsHelper(root, returnSize, result, 0, NULL);
+    
+    return result;
+}
+
+NumArray* numArrayCreate(int* nums, int numsSize) {
+    NumArray *array = malloc(sizeof(NumArray));
+    array->nums = nums;
+    array->numsSize = numsSize;
+    array->sums = malloc(sizeof(int)*numsSize);
+    int sum = 0;
+    for (int i = 0; i < numsSize; ++i) {
+        sum += nums[i];
+        array->sums[i] = sum;
+    }
+    return array;
+}
+
+int numArraySumRange(NumArray* obj, int i, int j) {
+    if (i == 0) return obj->sums[j];
+    return obj->sums[j]-obj->sums[i-1];
+}
+
+void numArrayFree(NumArray* obj) {
+    free(obj->sums);
+    free(obj);
+}
+
+
+
+/** Initialize your data structure here. */
+
+MyStack* myStackCreate() {
+    MyStack *obj = malloc(sizeof(MyStack));
+    obj->top = NULL;
+    return obj;
+}
+
+/** Push element x onto stack. */
+void myStackPush(MyStack* obj, int x) {
+    struct ListNode *node = malloc(sizeof(struct ListNode));
+    node->val = x;
+    if (obj->top) node->next = obj->top;
+    else node->next = NULL;
+    obj->top = node;
+}
+
+/** Removes the element on top of the stack and returns that element. */
+int myStackPop(MyStack* obj) {
+    struct ListNode *top = obj->top;
+    obj->top = top->next;
+    int val = top->val;
+    free(top);
+    return val;
+}
+
+/** Get the top element. */
+int myStackTop(MyStack* obj) {
+    return obj->top->val;
+}
+
+/** Returns whether the stack is empty. */
+bool myStackEmpty(MyStack* obj) {
+    return obj->top == NULL;
+}
+
+void myStackFree(MyStack* obj) {
+    struct ListNode *top = obj->top;
+    struct ListNode *next = NULL;
+    while (top) {
+        next = top->next;
+        free(top);
+        top = next;
+    }
+    free(obj);
+}
+
+char * removeDuplicates2(char * S){
+    int i = 0;
+    int setCount = 0;
+    while (S[i] != '\0') {
+        if (S[i] == S[i+1]) {
+            i += 2;
+            while (setCount > 0) {
+                if (S[setCount-1] == S[i]) {
+                    --setCount;
+                    ++i;
+                }else{
+                    break;
+                }
+            }
+        }else{
+            S[setCount++] = S[i++];
+        }
+    }
+    S[setCount] = '\0';
+    return S;
+}
+
+void leafSimilarHelper(struct TreeNode* root, int* nums, int* numsCount) {
+    if (root->left == NULL && root->right == NULL) {
+        nums[*numsCount] = root->val;
+        *numsCount += 1;
+    }
+    if (root->left) leafSimilarHelper(root->left, nums, numsCount);
+    if (root->right) leafSimilarHelper(root->right, nums, numsCount);
+}
+
+bool leafSimilar(struct TreeNode* root1, struct TreeNode* root2){
+    int *nums1 = malloc(sizeof(int)*100);
+    int *nums2 = malloc(sizeof(int)*100);
+    int nums1Count = 0, nums2Count = 0;
+    leafSimilarHelper(root1, nums1, &nums1Count);
+    leafSimilarHelper(root2, nums2, &nums2Count);
+    
+    if (nums1Count != nums2Count) return false;
+    for (int i = 0; i < nums1Count; ++i) {
+        if (nums1[i] != nums2[i]) return false;
+    }
+    return true;
+}
+
+int game(int* guess, int guessSize, int* answer, int answerSize){
+    int count = 0;
+    for (int i = 0; i < guessSize; ++i) {
+        if (guess[i] == answer[i]) ++count;
+    }
+    return count;
+}
+
+void deleteNode(struct ListNode* node) {
+    while (node->next->next != NULL) {
+        node->val = node->next->val;
+        node = node->next;
+    }
+    node->val = node->next->val;
+    node->next = NULL;
+}
+
+char * toLowerCase(char * str){
+    int offset = 'a'-'A';
+    int i = 0;
+    while (str[i] != '\0') {
+        if (str[i] >= 'A' && str[i] <= 'Z') str[i] += offset;
+        ++i;
+    }
+    return str;
+}
+
+bool judgeCircle(char * moves){
+    int x = 0, y = 0;
+    while (*moves != '\0') {
+        if (*moves == 'U') --x;
+        else if (*moves == 'D') ++x;
+        else if (*moves == 'L') --y;
+        else if (*moves == 'R') ++y;
+        ++moves;
+    }
+    return x==0&&y==0;
+}
+
+int* sortedSquares(int* A, int ASize, int* returnSize){
+    int* result = malloc(sizeof(int)*ASize);
+    *returnSize = ASize;
+    
+    int l, r = ASize, i;
+    for (i = 0; i < ASize; ++i) {
+        if (A[i] >= 0) {
+            r = i;
+            break;
+        }
+    }
+    
+    i = 0;
+    l = r-1;
+    while (l >= 0 && r < ASize) {
+        if (-A[l] < A[r]) {
+            result[i] = A[l]*A[l];
+            --l;
+        }else{
+            result[i] = A[r]*A[r];
+            ++r;
+        }
+        ++i;
+    }
+    if (l >= 0) {
+        while (l >= 0) {
+            result[i++] = A[l]*A[l];
+            --l;
+        }
+    }else{
+        while (r < ASize) {
+            result[i++] = A[r]*A[r];
+            ++r;
+        }
+    }
+    
+    return result;
+}
+
+int balancedStringSplit(char * s){
+    int l = 0;
+    int count = 0;
+    while (*s != '\0') {
+        if (*s == 'L') ++l;
+        else if (*s == 'R') --l;
+        if (l == 0) ++count;
+        ++s;
+    }
+    
+    return count;
+}
+
+int* selfDividingNumbers(int left, int right, int* returnSize){
+    *returnSize = 0;
+    int* result = malloc(sizeof(int)*1000);
+    int tmp, count;
+    bool flag;
+    while (left <= right) {
+        tmp = left;
+        flag = true;
+        while (tmp) {
+            count = tmp%10;
+            if (count == 0 || left%count != 0) {
+                flag = false;
+                break;
+            }
+            tmp = tmp/10;
+        }
+        if (flag) {
+            result[*returnSize] = left;
+            *returnSize += 1;
+        }
+        ++left;
+    }
+    return result;
+}
+
+bool canWinNim(int n){
+    return n%4 != 0;
+}
+
+int* diStringMatch(char * S, int* returnSize){
+    int len = strlen(S);
+    int* result = malloc(sizeof(int)*(len+1));
+    *returnSize = len+1;
+    int i = 0;
+    int index = 0;
+    
+    while (*S != '\0') {
+        if (*S == 'I') {
+            result[index++] = i++;
+        }else{
+            result[index++] = len--;
+        }
+        ++S;
+    }
+    result[index++] = i++;
+    
+    return result;
+}
+
+int uniqueMorseRepresentations(char ** words, int wordsSize){
+    char *str[] = { ".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."};
+    int len[] = {2,4,4,3,1,4,3,4,2,4,3,4,2,2,3,4,4,3,3,1,3,4,3,4,4,4};
+    char **result = malloc(sizeof(char*)*wordsSize);
+    int *resultLen = malloc(sizeof(int)*wordsSize);
+    char *tmp;
+    int i, j, k, index, count = 0;
+    bool flag, flag2;
+    for (i = 0; i < wordsSize; ++i) {
+        tmp = malloc(sizeof(char)*401);
+        resultLen[count] = 0;
+        j = 0;
+        while (words[i][j] != '\0') {
+            index = words[i][j]-'a';
+            memcpy(tmp+resultLen[count], str[index], sizeof(char)*len[index]);
+            resultLen[count] += len[index];
+            ++j;
+        }
+        tmp[resultLen[count]] = '\0';
+        flag = true;
+        for (j = 0; j < count; ++j) {
+            if (resultLen[j] != resultLen[count]) continue;
+            k = 0;
+            flag2 = true;
+            while (tmp[k] != '\0' && result[j][k] != '\0') {
+                if (tmp[k] != result[j][k]){
+                    flag2 = false;
+                    break;
+                }
+                ++k;
+            }
+            if (flag2) {
+                flag = false;
+                break;
+            }
+        }
+        if (flag) {
+            result[count++] = tmp;
+        }else{
+            free(tmp);
+        }
+    }
+    
+    return count;
+}
+
+struct TreeNode* mergeTrees(struct TreeNode* t1, struct TreeNode* t2){
+    if (t1 == NULL) return t2;
+    if (t2 == NULL) return t1;
+    t1->val += t2->val;
+    t1->left = mergeTrees(t1->left, t2->left);
+    t1->right = mergeTrees(t1->right, t2->right);
+    return t1;
+}
+
+RecentCounter* recentCounterCreate() {
+    RecentCounter *obj = malloc(sizeof(RecentCounter));
+    obj->last = NULL;
+    return obj;
+}
+
+int recentCounterPing(RecentCounter* obj, int t) {
+    struct ListNode *node = obj->last;
+    int i = 0;
+    while (node) {
+        if (node->val < t-3000) break;
+        node = node->next;
+        ++i;
+    }
+    node = malloc(sizeof(struct ListNode));
+    node->val = t;
+    node->next = obj->last;
+    obj->last = node;
+    return i+1;
+}
+
+void recentCounterFree(RecentCounter* obj) {
+    free(obj);
+}
+
+bool divisorGame(int N){
+    return N%2==0;
+}
+
+int peakIndexInMountainArray(int* A, int ASize){
+    int l = 1;
+    int r = ASize-2;
+    int center;
+    while (1) {
+        center = (l+r)/2;
+        if (A[center] <= A[center-1]) {
+            r = center-1;
+            continue;
+        }
+        if (A[center] <= A[center+1]) {
+            l = center+1;
+            continue;
+        }
+        return center;
+    }
+    return l;
+}

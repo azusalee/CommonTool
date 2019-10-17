@@ -10,6 +10,7 @@
 		8C61BCDA2305082D0011F8E5 /* CompileSourceParse.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C61BCD92305082D0011F8E5 /* CompileSourceParse.m */; };
 		8C61BCDD2305086F0011F8E5 /* sourceString1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8C61BCDC2305086F0011F8E5 /* sourceString1.txt */; };
 		8C61BCDF2305087F0011F8E5 /* sourceString2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8C61BCDE2305087F0011F8E5 /* sourceString2.txt */; };
+		8C6D795723570E09004FFF4A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8C6D795523570E09004FFF4A /* Localizable.strings */; };
 		8CC0ABA822BCBBAB001BB84D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC0ABA722BCBBAB001BB84D /* AppDelegate.m */; };
 		8CC0ABAB22BCBBAB001BB84D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC0ABAA22BCBBAB001BB84D /* ViewController.m */; };
 		8CC0ABAE22BCBBAB001BB84D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CC0ABAC22BCBBAB001BB84D /* Main.storyboard */; };
@@ -31,6 +32,10 @@
 		8C61BCD92305082D0011F8E5 /* CompileSourceParse.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CompileSourceParse.m; sourceTree = "<group>"; };
 		8C61BCDC2305086F0011F8E5 /* sourceString1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = sourceString1.txt; sourceTree = "<group>"; };
 		8C61BCDE2305087F0011F8E5 /* sourceString2.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = sourceString2.txt; sourceTree = "<group>"; };
+		8C6D795623570E09004FFF4A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8C6D795823570E13004FFF4A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		8C6D795923570E19004FFF4A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8C6D795A23570E31004FFF4A /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-GB"; path = "en-GB.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		8CC0ABA322BCBBAB001BB84D /* CommonTool.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CommonTool.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CC0ABA622BCBBAB001BB84D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		8CC0ABA722BCBBAB001BB84D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -115,6 +120,7 @@
 				8CC0ABA722BCBBAB001BB84D /* AppDelegate.m */,
 				8CC0ABA922BCBBAB001BB84D /* ViewController.h */,
 				8CC0ABAA22BCBBAB001BB84D /* ViewController.m */,
+				8C6D795523570E09004FFF4A /* Localizable.strings */,
 				8CC0ABAC22BCBBAB001BB84D /* Main.storyboard */,
 				8CC0ABAF22BCBBAD001BB84D /* Assets.xcassets */,
 				8CC0ABB122BCBBAD001BB84D /* LaunchScreen.storyboard */,
@@ -243,6 +249,8 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
+				"en-GB",
 			);
 			mainGroup = 8CC0AB9A22BCBBAB001BB84D;
 			productRefGroup = 8CC0ABA422BCBBAB001BB84D /* Products */;
@@ -260,6 +268,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C61BCDF2305087F0011F8E5 /* sourceString2.txt in Resources */,
+				8C6D795723570E09004FFF4A /* Localizable.strings in Resources */,
 				8C61BCDD2305086F0011F8E5 /* sourceString1.txt in Resources */,
 				8CC0ABB322BCBBAD001BB84D /* LaunchScreen.storyboard in Resources */,
 				8CC0ABB022BCBBAD001BB84D /* Assets.xcassets in Resources */,
@@ -292,6 +301,17 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		8C6D795523570E09004FFF4A /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8C6D795623570E09004FFF4A /* Base */,
+				8C6D795823570E13004FFF4A /* zh-Hans */,
+				8C6D795923570E19004FFF4A /* en */,
+				8C6D795A23570E31004FFF4A /* en-GB */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		8CC0ABAC22BCBBAB001BB84D /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -315,6 +335,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -374,6 +395,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

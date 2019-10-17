@@ -37,7 +37,15 @@
 //    fourSum(nums, 6, 0, &returnSize, &returnColumnSizes);
    // int returnSize = 0;
     //findOcurrences("we will we will rock you", "we", "will", &returnSize);
-    allCellsDistOrder(3, 3, 0, 2, &returnSize, &returnColumnSizes);
+    //allCellsDistOrder(3, 3, 0, 2, &returnSize, &returnColumnSizes);
+    
+    NSString *testString = NSLocalizedString(@"Hello", nil);
+    NSLog(@"%@", testString);
+    NSString *testString2 = NSLocalizedString(@"Haha", nil);
+    NSLog(@"%@", testString2);
+    NSString *testString3 = NSLocalizedString(@"Hehe", nil);
+    NSLog(@"%@", testString3);
+    self.distanceLabel.text = [NSString stringWithFormat:@"%@ %@ %@", testString, testString2, testString3];
     
     NSString *string1 = [[NSString alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"sourceString1" ofType:@"txt"] encoding:NSUTF8StringEncoding error:nil];
     NSString *string2 = [[NSString alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"sourceString2" ofType:@"txt"] encoding:NSUTF8StringEncoding error:nil];

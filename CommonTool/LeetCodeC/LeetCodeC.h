@@ -446,4 +446,88 @@ char ** findOcurrences(char * text, char * first, char * second, int* returnSize
 // 距离顺序排列矩阵单元格 https://leetcode-cn.com/problems/matrix-cells-in-distance-order/
 int** allCellsDistOrder(int R, int C, int r0, int c0, int* returnSize, int** returnColumnSizes);
 
+// 重塑矩阵 https://leetcode-cn.com/problems/reshape-the-matrix/
+int** matrixReshape(int** nums, int numsSize, int* numsColSize, int r, int c, int* returnSize, int** returnColumnSizes);
+
+// 二叉树的所有路径 https://leetcode-cn.com/problems/binary-tree-paths/
+char ** binaryTreePaths(struct TreeNode* root, int* returnSize);
+
+// 区域和检索 - 数组不可变 https://leetcode-cn.com/problems/range-sum-query-immutable/submissions/
+typedef struct {
+    int *nums;
+    int numsSize;
+    int *sums;
+} NumArray;
+NumArray* numArrayCreate(int* nums, int numsSize);
+int numArraySumRange(NumArray* obj, int i, int j);
+void numArrayFree(NumArray* obj);
+
+// 用队列实现栈 https://leetcode-cn.com/problems/implement-stack-using-queues/submissions/
+typedef struct {
+    struct ListNode * top;
+} MyStack;
+MyStack* myStackCreate();
+/** Push element x onto stack. */
+void myStackPush(MyStack* obj, int x);
+/** Removes the element on top of the stack and returns that element. */
+int myStackPop(MyStack* obj);
+/** Get the top element. */
+int myStackTop(MyStack* obj);
+/** Returns whether the stack is empty. */
+bool myStackEmpty(MyStack* obj);
+void myStackFree(MyStack* obj);
+
+// 删除字符串中的所有相邻重复项 https://leetcode-cn.com/problems/remove-all-adjacent-duplicates-in-string/
+char * removeDuplicates2(char * S);
+
+// 叶子相似的树 https://leetcode-cn.com/problems/leaf-similar-trees/
+bool leafSimilar(struct TreeNode* root1, struct TreeNode* root2);
+
+// 猜数字 https://leetcode-cn.com/problems/guess-numbers/
+int game(int* guess, int guessSize, int* answer, int answerSize);
+
+// 删除链表中的节点 https://leetcode-cn.com/problems/delete-node-in-a-linked-list/
+void deleteNode(struct ListNode* node);
+
+// 转换成小写字母 https://leetcode-cn.com/problems/to-lower-case/
+char * toLowerCase(char * str);
+
+// 机器人能否返回原点 https://leetcode-cn.com/problems/robot-return-to-origin/
+bool judgeCircle(char * moves);
+
+// 有序数组的平方 https://leetcode-cn.com/problems/squares-of-a-sorted-array/
+int* sortedSquares(int* A, int ASize, int* returnSize);
+
+// 分割平衡字符串 https://leetcode-cn.com/problems/split-a-string-in-balanced-strings/
+int balancedStringSplit(char * s);
+
+// 自除数 https://leetcode-cn.com/problems/self-dividing-numbers/
+int* selfDividingNumbers(int left, int right, int* returnSize);
+
+// Nim 游戏 https://leetcode-cn.com/problems/nim-game/
+bool canWinNim(int n);
+
+// 增减字符串匹配 https://leetcode-cn.com/problems/di-string-match/
+int* diStringMatch(char * S, int* returnSize);
+
+// 唯一摩尔斯密码词 https://leetcode-cn.com/problems/unique-morse-code-words/
+int uniqueMorseRepresentations(char ** words, int wordsSize);
+
+// 合并二叉树 https://leetcode-cn.com/problems/merge-two-binary-trees/
+struct TreeNode* mergeTrees(struct TreeNode* t1, struct TreeNode* t2);
+
+// 最近的请求次数 https://leetcode-cn.com/problems/number-of-recent-calls/submissions/
+typedef struct {
+    struct ListNode *last;
+} RecentCounter;
+RecentCounter* recentCounterCreate();
+int recentCounterPing(RecentCounter* obj, int t);
+void recentCounterFree(RecentCounter* obj);
+
+// 除数博弈 https://leetcode-cn.com/problems/divisor-game/
+bool divisorGame(int N);
+
+// 山脉数组的峰顶索引 https://leetcode-cn.com/problems/peak-index-in-a-mountain-array/
+int peakIndexInMountainArray(int* A, int ASize);
+
 #endif /* LeetCodeC_h */

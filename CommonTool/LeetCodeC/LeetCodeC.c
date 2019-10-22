@@ -4388,3 +4388,463 @@ int peakIndexInMountainArray(int* A, int ASize){
     }
     return l;
 }
+
+int findComplement(int num){
+    int tmp = 0;
+    int tmpNum = num;
+    while (tmpNum) {
+        tmpNum = tmpNum >> 1;
+        tmp = (tmp << 1)+1;
+    }
+    return num^tmp;
+}
+
+int* sortArrayByParity(int* A, int ASize, int* returnSize){
+    *returnSize = ASize;
+    int l = 0;
+    int r = ASize-1;
+    int tmp;
+    while (l < r) {
+        if (A[l]%2 == 0) {
+            ++l;
+        }else{
+            tmp = A[l];
+            A[l] = A[r];
+            A[r] = tmp;
+            --r;
+        }
+    }
+    return A;
+}
+
+int distributeCandies2(int* candies, int candiesSize){
+    quickSort(candies, 0, candiesSize-1);
+    int max = 1;
+    for (int i = 0; i < candiesSize-1; ++i) {
+        if (candies[i] != candies[i+1]) ++max;
+    }
+    if (max > candiesSize/2) max = candiesSize/2;
+    return max;
+}
+
+int islandPerimeter(int** grid, int gridSize, int* gridColSize){
+    int i, j, len = 0;
+    for (i = 0; i < gridSize; ++i) {
+        for (j = 0; j < gridColSize[0]; ++j) {
+            if (grid[i][j] == 1) {
+                len += 4;
+                if (i > 0 && grid[i-1][j] == 1) --len;
+                if (i < gridSize-1 && grid[i+1][j] == 1) --len;
+                if (j > 0 && grid[i][j-1] == 1) --len;
+                if (j < gridColSize[0]-1 && grid[i][j+1]) --len;
+            }
+        }
+    }
+    return len;
+}
+
+int minCostToMoveChips(int* chips, int chipsSize){
+    int i, tmp1 = 0, tmp2 = 0;
+    for (i = 0; i < chipsSize; ++i) {
+        if (chips[i]%2 == 0) ++tmp2;
+        else ++tmp1;
+    }
+    
+    return tmp1>tmp2?tmp2:tmp1;
+}
+
+bool isUnivalTreeHelper(struct TreeNode* root, int preVal) {
+    if (root == NULL) return true;
+    if (root->val != preVal) return false;
+    if (!isUnivalTreeHelper(root->left, root->val)) return false;
+    if (!isUnivalTreeHelper(root->right, root->val)) return false;
+    return true;
+}
+
+bool isUnivalTree(struct TreeNode* root){
+    if (!isUnivalTreeHelper(root->left, root->val)) return false;
+    if (!isUnivalTreeHelper(root->right, root->val)) return false;
+    return true;
+}
+
+int addDigits(int num){
+    // 数学方法
+//    if (num > 9) {
+//        num = num % 9;
+//        if (num == 0) return 9;
+//    }
+//    return num;
+
+    int result = num;
+    int tmp;
+    while (result >= 10) {
+        tmp = 0;
+        while (result > 0) {
+            tmp += result%10;
+            result = result/10;
+        }
+        result = tmp;
+    }
+    return result;
+}
+
+int arrayPairSum(int* nums, int numsSize){
+    quickSort(nums, 0, numsSize-1);
+    int total = 0;
+    for (int i = 0; i < numsSize; i += 2) total += nums[i];
+    return total;
+}
+
+int minDeletionSize(char ** A, int ASize){
+    int i = 0;
+    int j = 0;
+    int count = 0;
+    while (A[0][j] != '\0') {
+        for (i = 0; i < ASize-1; ++i) {
+            if (A[i][j] > A[i+1][j]) {
+                ++count;
+                break;
+            }
+        }
+        ++j;
+    }
+    return count;
+}
+
+struct TreeNode* sortedArrayToBST(int* nums, int numsSize){
+    if (numsSize == 0) return NULL;
+    int center = numsSize/2;
+    struct TreeNode *root = malloc(sizeof(struct TreeNode));
+    root->val = nums[center];
+    root->left = sortedArrayToBST(nums, center);
+    root->right = sortedArrayToBST(nums+center+1, numsSize-center-1);
+    
+    return root;
+}
+
+int smallestRangeI(int* A, int ASize, int K){
+    int min = A[0];
+    int max = A[0];
+    for (int i = 1; i < ASize; ++i) {
+        if (A[i] < min) min = A[i];
+        else if (A[i] > max) max = A[i];
+    }
+    int result = max-min-2*K;
+    return result>0?result:0;
+}
+
+int** transpose(int** A, int ASize, int* AColSize, int* returnSize, int** returnColumnSizes){
+    int** result = malloc(sizeof(int*)*AColSize[0]);
+    *returnSize = AColSize[0];
+    *returnColumnSizes = malloc(sizeof(int)*AColSize[0]);
+    int i, j;
+    for (i = 0; i < AColSize[0]; ++i) {
+        result[i] = malloc(sizeof(int)*ASize);
+        (*returnColumnSizes)[i] = ASize;
+    }
+    for (i = 0; i < ASize; ++i) {
+        for (j = 0; j < AColSize[0]; ++j) {
+            result[j][i] = A[i][j];
+        }
+    }
+
+    return result;
+}
+
+int repeatedNTimes(int* A, int ASize){
+    // 1. map方法 (由于题目0 <= A[i] <= 10000，所以可以这么做)
+    int map[10000] = {0};
+    for (int i = 0; i < ASize; ++i) {
+        if (map[A[i]] == 0) map[A[i]] = 1;
+        else return A[i];
+    }
+    // 2. 三个对比法
+    for (int i = 2; i < ASize; ++i) {
+        if (A[i-1] == A[i-2] || A[i] == A[i-1]) return A[i-1];
+        else if (A[i] == A[i-2]) return A[i];
+    }
+    return A[0];
+}
+
+int findLUSlength(char * a, char * b){
+    int alen = strlen(a);
+    int blen = strlen(b);
+    if (alen != blen) {
+        return alen>blen?alen:blen;
+    }else{
+        int i = 0;
+        while (a[i] != '\0') {
+            if (a[i] != b[i]) return alen;
+            ++i;
+        }
+        return -1;
+    }
+}
+
+int calPoints(char ** ops, int opsSize){
+    struct ListNode *node = NULL;
+    struct ListNode *tmpNode = NULL;
+    int j, tmp;
+    bool isMinus, hasNum;
+    for (int i = 0; i < opsSize; ++i) {
+        j = 0;
+        tmp = 0;
+        isMinus = false;
+        hasNum = true;
+        while (ops[i][j] != '\0') {
+            if (ops[i][j] == '-') {
+                isMinus = true;
+            }else if (ops[i][j] >= '0' && ops[i][j] <= '9') {
+                tmp *= 10;
+                tmp += ops[i][j]-'0';
+            }else if (ops[i][j] == '+'){
+                if (node) {
+                    tmp += node->val;
+                    if (node->next) tmp += node->next->val;
+                }
+            }else if (ops[i][j] == 'C'){
+                if (node) {
+                    tmpNode = node;
+                    node = node->next;
+                    free(tmpNode);
+                }
+                hasNum = false;
+            }else if (ops[i][j] == 'D'){
+                if (node) tmp = node->val*2;
+            }
+            ++j;
+        }
+        
+        if (hasNum) {
+            if (isMinus == true) tmp = -tmp;
+            tmpNode = malloc(sizeof(struct ListNode));
+            tmpNode->val = tmp;
+            tmpNode->next = node;
+            node = tmpNode;
+        }
+    }
+    tmp = 0;
+    while (node) {
+        tmp += node->val;
+        tmpNode = node;
+        node = node->next;
+        free(tmpNode);
+    }
+    
+    return tmp;
+}
+
+bool uniqueOccurrences(int* arr, int arrSize){
+    // 先统计，再排序
+    int map[2001] = {0};
+    int i, len = 0;
+    for (i = 0; i < arrSize; ++i) map[1000+arr[i]] += 1;
+    for (i = 0; i < 2001; ++i) {
+        if (map[i] > 0) map[len++] = map[i];
+    }
+    quickSort(map, 0, len-1);
+    for (i = 1; i < len; ++i) {
+        if (map[i] == map[i-1]) return false;
+    }
+    return true;
+}
+
+int* sortArrayByParityII(int* A, int ASize, int* returnSize){
+    int j = 0;
+    int o = 0;
+    int *result = malloc(sizeof(int)*ASize);
+    *returnSize = ASize;
+    for (int i = 0; i < ASize; ++i) {
+        if (A[i]%2 == 0) {
+            result[o*2] = A[i];
+            ++o;
+        }else{
+            result[j*2+1] = A[i];
+            ++j;
+        }
+    }
+    return result;
+}
+
+int titleToNumber(char * s){
+    int i = 0;
+    int num, total = 0;
+    while (s[i] != '\0') {
+        num = s[i]-'A'+1;
+        total *= 26;
+        total += num;
+        ++i;
+    }
+    return total;
+}
+
+int countPrimeSetBits(int L, int R){
+    int map[32] = {0,0,1,1,0,1,0,1,0,0,0,1,0,1,0,0,0,1,0,1,0,0,0,1,0,0,0,0,0,1,0,1};
+    int tmp = 0;
+    int result = 0;
+    int num;
+    while (L <= R) {
+        tmp = 0;
+        num = L;
+        while (num) {
+            ++tmp;
+            num = num & (num-1);
+        }
+        if (map[tmp] == 1) ++result;
+        ++L;
+    }
+    return result;
+}
+
+char ** commonChars(char ** A, int ASize, int* returnSize){
+    char* alphabet[26] = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o",
+    "p","q","r","s","t","u","v","w","x","y","z"};
+    int** map = malloc(sizeof(int*)*ASize);
+    int index;
+    int i, j;
+    for (i = 0; i < ASize; ++i) {
+        map[i] = malloc(sizeof(int)*26);
+        memset(map[i], 0, sizeof(int)*26);
+    }
+    char** result = malloc(sizeof(char*)*3333);
+    
+    *returnSize = 0;
+    for (i = 0; i < ASize; ++i) {
+        j = 0;
+        while (A[i][j] != '\0') {
+            index = A[i][j]-'a';
+            map[i][index] += 1;
+            ++j;
+        }
+    }
+    bool contain;
+    for (j = 0; j < 26;) {
+        contain = true;
+        for (i = 0; i < ASize; ++i) {
+            if (map[i][j] == 0) {
+                contain = false;
+                ++j;
+                break;
+            }
+            --map[i][j];
+        }
+        if (contain) {
+            result[*returnSize] = alphabet[j];
+            ++(*returnSize);
+        }
+    }
+    
+    return result;
+}
+
+int numUniqueEmails(char ** emails, int emailsSize){
+    int i, j, index;
+    bool isPlus;
+    bool isAt;
+    for (i = 0; i < emailsSize; ++i) {
+        index = 0;
+        j = 0;
+        isPlus = false;
+        isAt = false;
+        while (emails[i][j] != '\0') {
+            if (isAt) {
+                emails[i][index++] = emails[i][j];
+            }else{
+                if (isPlus == false) {
+                    if (emails[i][j] == '+') {
+                        isPlus = true;
+                    }else if (emails[i][j] == '@'){
+                        isAt = true;
+                        emails[i][index++] = emails[i][j];
+                    }else if (emails[i][j] != '.'){
+                        emails[i][index++] = emails[i][j];
+                    }
+                }else{
+                    if (emails[i][j] == '@'){
+                        isAt = true;
+                        emails[i][index++] = emails[i][j];
+                    }
+                }
+            }
+            ++j;
+        }
+        emails[i][index] = '\0';
+    }
+    int count = emailsSize, k;
+    bool isEqual;
+    for (i = 0; i < emailsSize-1; ++i) {
+        index = i+1;
+        for (j = i+1; j < emailsSize; ++j) {
+            k = 0;
+            isEqual = true;
+            while (emails[i][k] != '\0' && emails[j][k] != '\0') {
+                if (emails[i][k] != emails[j][k]) {
+                    isEqual = false;
+                    break;
+                }
+                ++k;
+            }
+            if (isEqual) {
+                if (emails[i][k] == emails[j][k]) {
+                    --count;
+                    continue;
+                }
+            }
+            emails[index++] = emails[j];
+        }
+        emailsSize = count;
+    }
+    
+    return count;
+}
+
+struct TreeNode* trimBST(struct TreeNode* root, int L, int R){
+    if (root == NULL) return NULL;
+    if (root->val < L) {
+        return trimBST(root->right, L, R);
+    }else if (root->val > R){
+        return trimBST(root->left, L, R);
+    }else{
+        root->left = trimBST(root->left, L, R);
+        root->right = trimBST(root->right, L, R);
+    }
+    return root;
+}
+
+void levelOrderBottomHelper(struct TreeNode* root, int level, int** result, int** returnColumnSizes) {
+    if (root == NULL) return;
+    result[level][(*returnColumnSizes)[level]] = root->val;
+    ++(*returnColumnSizes)[level];
+    levelOrderBottomHelper(root->left, level+1, result, returnColumnSizes);
+    levelOrderBottomHelper(root->right, level+1, result, returnColumnSizes);
+}
+
+int** levelOrderBottom(struct TreeNode* root, int* returnSize, int** returnColumnSizes){
+    int depth = maxDepth(root);
+    int** result = malloc(sizeof(int*)*depth);
+    int len = 1;
+    for (int i = 0; i < depth; ++i) {
+        result[i] = malloc(sizeof(int)*len);
+        if (len < 1000) len *= 2;
+    }
+    *returnColumnSizes = malloc(sizeof(int)*depth);
+    memset(*returnColumnSizes, 0, sizeof(int)*depth);
+    *returnSize = depth;
+    levelOrderBottomHelper(root, 0, result, returnColumnSizes);
+    
+    int l = 0, r = depth-1;
+    int* tmpNums;
+    int tmpSize;
+    while (l < r) {
+        tmpNums = result[l];
+        result[l] = result[r];
+        result[r] = tmpNums;
+        tmpSize = (*returnColumnSizes)[l];
+        (*returnColumnSizes)[l] = (*returnColumnSizes)[r];
+        (*returnColumnSizes)[r] = tmpSize;
+        ++l;
+        --r;
+    }
+    
+    return result;
+}

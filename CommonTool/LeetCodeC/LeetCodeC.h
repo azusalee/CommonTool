@@ -530,4 +530,73 @@ bool divisorGame(int N);
 // 山脉数组的峰顶索引 https://leetcode-cn.com/problems/peak-index-in-a-mountain-array/
 int peakIndexInMountainArray(int* A, int ASize);
 
+// 数字的补数 https://leetcode-cn.com/problems/number-complement/
+int findComplement(int num);
+
+// 按奇偶排序数组 https://leetcode-cn.com/problems/sort-array-by-parity/
+int* sortArrayByParity(int* A, int ASize, int* returnSize);
+
+// 分糖果 https://leetcode-cn.com/problems/distribute-candies/
+int distributeCandies2(int* candies, int candiesSize);
+
+// 岛屿的周长 https://leetcode-cn.com/problems/island-perimeter/
+int islandPerimeter(int** grid, int gridSize, int* gridColSize);
+
+// 玩筹码 https://leetcode-cn.com/problems/play-with-chips/
+int minCostToMoveChips(int* chips, int chipsSize);
+
+// 单值二叉树 https://leetcode-cn.com/problems/univalued-binary-tree/
+bool isUnivalTree(struct TreeNode* root);
+
+// 各位相加 https://leetcode-cn.com/problems/add-digits/
+int addDigits(int num);
+
+// 数组拆分 I https://leetcode-cn.com/problems/array-partition-i/
+int arrayPairSum(int* nums, int numsSize);
+
+// 删列造序 https://leetcode-cn.com/problems/delete-columns-to-make-sorted/
+int minDeletionSize(char ** A, int ASize);
+
+// 将有序数组转换为二叉搜索树 https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/
+struct TreeNode* sortedArrayToBST(int* nums, int numsSize);
+
+// 最小差值 I https://leetcode-cn.com/problems/smallest-range-i/
+int smallestRangeI(int* A, int ASize, int K);
+
+// 转置矩阵 https://leetcode-cn.com/problems/transpose-matrix/
+int** transpose(int** A, int ASize, int* AColSize, int* returnSize, int** returnColumnSizes);
+
+// 重复 N 次的元素 https://leetcode-cn.com/problems/n-repeated-element-in-size-2n-array/
+int repeatedNTimes(int* A, int ASize);
+
+// 最长特殊序列 Ⅰ https://leetcode-cn.com/problems/longest-uncommon-subsequence-i/
+int findLUSlength(char * a, char * b);
+
+// 棒球比赛 https://leetcode-cn.com/problems/baseball-game/
+int calPoints(char ** ops, int opsSize);
+
+// 独一无二的出现次数 https://leetcode-cn.com/problems/unique-number-of-occurrences/
+bool uniqueOccurrences(int* arr, int arrSize);
+
+// 按奇偶排序数组 II https://leetcode-cn.com/problems/sort-array-by-parity-ii/
+int* sortArrayByParityII(int* A, int ASize, int* returnSize);
+
+// Excel表列序号 https://leetcode-cn.com/problems/excel-sheet-column-number/
+int titleToNumber(char * s);
+
+// 二进制表示中质数个计算置位 https://leetcode-cn.com/problems/prime-number-of-set-bits-in-binary-representation/
+int countPrimeSetBits(int L, int R);
+
+// 查找常用字符 https://leetcode-cn.com/problems/find-common-characters/
+char ** commonChars(char ** A, int ASize, int* returnSize);
+
+// 独特的电子邮件地址 https://leetcode-cn.com/problems/unique-email-addresses/
+int numUniqueEmails(char ** emails, int emailsSize);
+
+// 修剪二叉搜索树 https://leetcode-cn.com/problems/trim-a-binary-search-tree/
+struct TreeNode* trimBST(struct TreeNode* root, int L, int R);
+
+// 二叉树的层次遍历 II https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/
+int** levelOrderBottom(struct TreeNode* root, int* returnSize, int** returnColumnSizes);
+
 #endif /* LeetCodeC_h */

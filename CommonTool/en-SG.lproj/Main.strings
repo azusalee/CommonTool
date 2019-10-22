@@ -1,0 +1,24 @@
+
+/* Class = "UILabel"; text = "0"; ObjectID = "BkM-Pa-8uA"; */
+"BkM-Pa-8uA.text" = "0";
+
+/* Class = "UITextField"; placeholder = "lon"; ObjectID = "Hff-g5-QHG"; */
+"Hff-g5-QHG.placeholder" = "lon";
+
+/* Class = "UITextField"; placeholder = "lat"; ObjectID = "JmC-XV-gfp"; */
+"JmC-XV-gfp.placeholder" = "lat";
+
+/* Class = "UITextField"; placeholder = "lon"; ObjectID = "PTy-5Y-5FZ"; */
+"PTy-5Y-5FZ.placeholder" = "lon";
+
+/* Class = "UILabel"; text = "坐标1"; ObjectID = "TkM-r4-qpJ"; */
+"TkM-r4-qpJ.text" = "坐标1";
+
+/* Class = "UIButton"; normalTitle = "计算距离"; ObjectID = "hc7-8e-dJr"; */
+"hc7-8e-dJr.normalTitle" = "计算距离";
+
+/* Class = "UITextField"; placeholder = "lat"; ObjectID = "nDd-07-vnT"; */
+"nDd-07-vnT.placeholder" = "lat";
+
+/* Class = "UILabel"; text = "坐标2"; ObjectID = "rSE-8X-YSb"; */
+"rSE-8X-YSb.text" = "坐标2";

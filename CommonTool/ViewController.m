@@ -39,6 +39,10 @@
     //findOcurrences("we will we will rock you", "we", "will", &returnSize);
     //allCellsDistOrder(3, 3, 0, 2, &returnSize, &returnColumnSizes);
     
+    NSArray *arr = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
+    NSString *languageName = arr.firstObject;
+    NSLog(@"语言:%@", languageName);
+    
     NSString *testString = NSLocalizedString(@"Hello", nil);
     NSLog(@"%@", testString);
     NSString *testString2 = NSLocalizedString(@"Haha", nil);

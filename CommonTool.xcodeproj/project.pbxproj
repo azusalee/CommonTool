@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C0C003723614D5C007EA32E /* UIScrollView+ALKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0C003623614D5C007EA32E /* UIScrollView+ALKeyboard.swift */; };
 		8C61BCDA2305082D0011F8E5 /* CompileSourceParse.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C61BCD92305082D0011F8E5 /* CompileSourceParse.m */; };
 		8C61BCDD2305086F0011F8E5 /* sourceString1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8C61BCDC2305086F0011F8E5 /* sourceString1.txt */; };
 		8C61BCDF2305087F0011F8E5 /* sourceString2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8C61BCDE2305087F0011F8E5 /* sourceString2.txt */; };
@@ -28,6 +29,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8C0C003523614D5B007EA32E /* CommonTool-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CommonTool-Bridging-Header.h"; sourceTree = "<group>"; };
+		8C0C003623614D5C007EA32E /* UIScrollView+ALKeyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+ALKeyboard.swift"; sourceTree = "<group>"; };
 		8C39A02C23585234006CC5DC /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
 		8C39A02D23585235006CC5DC /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		8C39A02E23585235006CC5DC /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -91,6 +94,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8C0C003423614D46007EA32E /* Swift */ = {
+			isa = PBXGroup;
+			children = (
+				8C0C003623614D5C007EA32E /* UIScrollView+ALKeyboard.swift */,
+			);
+			path = Swift;
+			sourceTree = "<group>";
+		};
 		8C61BCD7230508090011F8E5 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
@@ -128,6 +139,7 @@
 		8CC0ABA522BCBBAB001BB84D /* CommonTool */ = {
 			isa = PBXGroup;
 			children = (
+				8C0C003523614D5B007EA32E /* CommonTool-Bridging-Header.h */,
 				8C61BCDB230508550011F8E5 /* Resources */,
 				8C61BCD7230508090011F8E5 /* Tool */,
 				8CF75FE722FBDD25002E9CCE /* LeetCodeC */,
@@ -171,6 +183,7 @@
 		8CE4570222D867BB002EA4CF /* UIView */ = {
 			isa = PBXGroup;
 			children = (
+				8C0C003423614D46007EA32E /* Swift */,
 				8CE4570422D867CD002EA4CF /* UIView+ALInController.h */,
 				8CE4570322D867CD002EA4CF /* UIView+ALInController.m */,
 				8CE4570F22D87113002EA4CF /* UIView+AZLXibExtend.h */,
@@ -255,6 +268,7 @@
 				TargetAttributes = {
 					8CC0ABA222BCBBAB001BB84D = {
 						CreatedOnToolsVersion = 10.2.1;
+						LastSwiftMigration = 1110;
 					};
 				};
 			};
@@ -305,6 +319,7 @@
 			files = (
 				8CC0ABAB22BCBBAB001BB84D /* ViewController.m in Sources */,
 				8CE4571822D87331002EA4CF /* UINavigationController+AZLPop.m in Sources */,
+				8C0C003723614D5C007EA32E /* UIScrollView+ALKeyboard.swift in Sources */,
 				8CE4570122D867B7002EA4CF /* NSObject+ALSwizzing.m in Sources */,
 				8CE4570D22D86856002EA4CF /* UIViewController+AZLTopController.m in Sources */,
 				8CE4570522D867CD002EA4CF /* UIView+ALInController.m in Sources */,
@@ -485,6 +500,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = CommonTool/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -493,6 +509,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.al.CommonTool;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "../CommonTool/CommonTool/CommonTool-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -501,6 +520,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = CommonTool/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -509,6 +529,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.al.CommonTool;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "../CommonTool/CommonTool/CommonTool-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

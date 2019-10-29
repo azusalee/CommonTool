@@ -599,4 +599,34 @@ struct TreeNode* trimBST(struct TreeNode* root, int L, int R);
 // 二叉树的层次遍历 II https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/
 int** levelOrderBottom(struct TreeNode* root, int* returnSize, int** returnColumnSizes);
 
+// 验证外星语词典 https://leetcode-cn.com/problems/verifying-an-alien-dictionary/
+bool isAlienSorted(char ** words, int wordsSize, char * order);
+
+// 第 N 个泰波那契数 https://leetcode-cn.com/problems/n-th-tribonacci-number/
+int tribonacci(int n);
+
+// 分发饼干 https://leetcode-cn.com/problems/assign-cookies/
+int findContentChildren(int* g, int gSize, int* s, int sSize);
+
+// 阶乘后的零 https://leetcode-cn.com/problems/factorial-trailing-zeroes/
+int trailingZeroes(int n);
+
+// 仅仅反转字母 https://leetcode-cn.com/problems/reverse-only-letters/
+char * reverseOnlyLetters(char * S);
+
+// 最大连续1的个数 https://leetcode-cn.com/problems/max-consecutive-ones/
+int findMaxConsecutiveOnes(int* nums, int numsSize);
+
+// 二叉搜索树结点最小距离 https://leetcode-cn.com/problems/minimum-distance-between-bst-nodes/
+int minDiffInBST(struct TreeNode* root);
+
+// 两地调度 https://leetcode-cn.com/problems/two-city-scheduling/
+int twoCitySchedCost(int** costs, int costsSize, int* costsColSize);
+
+// 最短完整词 https://leetcode-cn.com/problems/shortest-completing-word/
+char * shortestCompletingWord(char * licensePlate, char ** words, int wordsSize);
+
+// 回旋镖的数量 https://leetcode-cn.com/problems/number-of-boomerangs/
+int numberOfBoomerangs(int** points, int pointsSize, int* pointsColSize);
+
 #endif /* LeetCodeC_h */

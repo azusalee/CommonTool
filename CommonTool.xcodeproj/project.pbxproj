@@ -12,6 +12,7 @@
 		8C61BCDD2305086F0011F8E5 /* sourceString1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8C61BCDC2305086F0011F8E5 /* sourceString1.txt */; };
 		8C61BCDF2305087F0011F8E5 /* sourceString2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8C61BCDE2305087F0011F8E5 /* sourceString2.txt */; };
 		8C6D795723570E09004FFF4A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8C6D795523570E09004FFF4A /* Localizable.strings */; };
+		8CA036262362D946007FAEB2 /* CommonToolTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CA036252362D946007FAEB2 /* CommonToolTests.m */; };
 		8CC0ABA822BCBBAB001BB84D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC0ABA722BCBBAB001BB84D /* AppDelegate.m */; };
 		8CC0ABAB22BCBBAB001BB84D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC0ABAA22BCBBAB001BB84D /* ViewController.m */; };
 		8CC0ABAE22BCBBAB001BB84D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CC0ABAC22BCBBAB001BB84D /* Main.storyboard */; };
@@ -27,6 +28,16 @@
 		8CE4571822D87331002EA4CF /* UINavigationController+AZLPop.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE4571722D87331002EA4CF /* UINavigationController+AZLPop.m */; };
 		8CF75FEA22FBDD5F002E9CCE /* LeetCodeC.c in Sources */ = {isa = PBXBuildFile; fileRef = 8CF75FE922FBDD5F002E9CCE /* LeetCodeC.c */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8CA036282362D946007FAEB2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8CC0AB9B22BCBBAB001BB84D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8CC0ABA222BCBBAB001BB84D;
+			remoteInfo = CommonTool;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		8C0C003523614D5B007EA32E /* CommonTool-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CommonTool-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -55,6 +66,9 @@
 		8C61BCDE2305087F0011F8E5 /* sourceString2.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = sourceString2.txt; sourceTree = "<group>"; };
 		8C6D795623570E09004FFF4A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8C6D795923570E19004FFF4A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8CA036232362D946007FAEB2 /* CommonToolTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CommonToolTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8CA036252362D946007FAEB2 /* CommonToolTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommonToolTests.m; sourceTree = "<group>"; };
+		8CA036272362D946007FAEB2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8CC0ABA322BCBBAB001BB84D /* CommonTool.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CommonTool.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CC0ABA622BCBBAB001BB84D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		8CC0ABA722BCBBAB001BB84D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -84,6 +98,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		8CA036202362D946007FAEB2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8CC0ABA022BCBBAB001BB84D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -120,10 +141,20 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		8CA036242362D946007FAEB2 /* CommonToolTests */ = {
+			isa = PBXGroup;
+			children = (
+				8CA036252362D946007FAEB2 /* CommonToolTests.m */,
+				8CA036272362D946007FAEB2 /* Info.plist */,
+			);
+			path = CommonToolTests;
+			sourceTree = "<group>";
+		};
 		8CC0AB9A22BCBBAB001BB84D = {
 			isa = PBXGroup;
 			children = (
 				8CC0ABA522BCBBAB001BB84D /* CommonTool */,
+				8CA036242362D946007FAEB2 /* CommonToolTests */,
 				8CC0ABA422BCBBAB001BB84D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -132,6 +163,7 @@
 			isa = PBXGroup;
 			children = (
 				8CC0ABA322BCBBAB001BB84D /* CommonTool.app */,
+				8CA036232362D946007FAEB2 /* CommonToolTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -240,6 +272,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		8CA036222362D946007FAEB2 /* CommonToolTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8CA0362C2362D946007FAEB2 /* Build configuration list for PBXNativeTarget "CommonToolTests" */;
+			buildPhases = (
+				8CA0361F2362D946007FAEB2 /* Sources */,
+				8CA036202362D946007FAEB2 /* Frameworks */,
+				8CA036212362D946007FAEB2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8CA036292362D946007FAEB2 /* PBXTargetDependency */,
+			);
+			name = CommonToolTests;
+			productName = CommonToolTests;
+			productReference = 8CA036232362D946007FAEB2 /* CommonToolTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		8CC0ABA222BCBBAB001BB84D /* CommonTool */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8CC0ABB922BCBBAD001BB84D /* Build configuration list for PBXNativeTarget "CommonTool" */;
@@ -266,6 +316,10 @@
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = AL;
 				TargetAttributes = {
+					8CA036222362D946007FAEB2 = {
+						CreatedOnToolsVersion = 11.1;
+						TestTargetID = 8CC0ABA222BCBBAB001BB84D;
+					};
 					8CC0ABA222BCBBAB001BB84D = {
 						CreatedOnToolsVersion = 10.2.1;
 						LastSwiftMigration = 1110;
@@ -292,11 +346,19 @@
 			projectRoot = "";
 			targets = (
 				8CC0ABA222BCBBAB001BB84D /* CommonTool */,
+				8CA036222362D946007FAEB2 /* CommonToolTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		8CA036212362D946007FAEB2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8CC0ABA122BCBBAB001BB84D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -313,6 +375,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		8CA0361F2362D946007FAEB2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8CA036262362D946007FAEB2 /* CommonToolTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8CC0AB9F22BCBBAB001BB84D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -334,6 +404,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8CA036292362D946007FAEB2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8CC0ABA222BCBBAB001BB84D /* CommonTool */;
+			targetProxy = 8CA036282362D946007FAEB2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		8C6D795523570E09004FFF4A /* Localizable.strings */ = {
@@ -382,6 +460,46 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		8CA0362A2362D946007FAEB2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = CommonToolTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.al.CommonToolTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CommonTool.app/CommonTool";
+			};
+			name = Debug;
+		};
+		8CA0362B2362D946007FAEB2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = CommonToolTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.al.CommonToolTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CommonTool.app/CommonTool";
+			};
+			name = Release;
+		};
 		8CC0ABB722BCBBAD001BB84D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -538,6 +656,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		8CA0362C2362D946007FAEB2 /* Build configuration list for PBXNativeTarget "CommonToolTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8CA0362A2362D946007FAEB2 /* Debug */,
+				8CA0362B2362D946007FAEB2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		8CC0AB9E22BCBBAB001BB84D /* Build configuration list for PBXProject "CommonTool" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

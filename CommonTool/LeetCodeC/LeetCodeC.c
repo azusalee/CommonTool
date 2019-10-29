@@ -4848,3 +4848,237 @@ int** levelOrderBottom(struct TreeNode* root, int* returnSize, int** returnColum
     
     return result;
 }
+
+bool isAlienSorted(char ** words, int wordsSize, char * order){
+    if (wordsSize < 2) return true;
+    int nums[26] = {0};
+    int i = 0;
+    while (order[i] != '\0') {
+        nums[order[i]-'a'] = i;
+        ++i;
+    }
+    int j;
+    for (i = 1; i < wordsSize; ++i) {
+        j = 0;
+        while (words[i-1][j] != '\0' || words[i][j] != '\0') {
+            if (words[i-1][j] == '\0') break;
+            if (words[i][j] == '\0') return false;
+            if (nums[words[i-1][j]-'a'] < nums[words[i][j]-'a']) break;
+            if (nums[words[i-1][j]-'a'] > nums[words[i][j]-'a']) return false;
+            ++j;
+        }
+    }
+    return true;
+}
+
+int tribonacci(int n){
+    if (n == 0) return 0;
+    if (n == 1) return 1;
+    if (n == 2) return 1;
+    int n1 = 0, n2 = 1, n3 = 1, n4 = 2;
+    for (int i = 3; i <= n; ++i) {
+        n4 = n1+n2+n3;
+        n1 = n2;
+        n2 = n3;
+        n3 = n4;
+    }
+    return n4;
+}
+
+int findContentChildren(int* g, int gSize, int* s, int sSize){
+    quickSort(g, 0, gSize-1);
+    quickSort(s, 0, sSize-1);
+    int result = 0;
+    int i = 0, j = 0;
+    while (i < gSize && j < sSize) {
+        if (g[i] <= s[j]) {
+            ++result;
+            ++i;
+        }
+        ++j;
+    }
+    return result;
+}
+
+int trailingZeroes(int n){
+    if (n == 0) return 1;
+    int count = 0;
+    int tmp = 1;
+    for (int i = 2; i <= n; ++i) {
+        tmp *= i;
+        while (tmp%10 == 0) {
+            ++count;
+            tmp /= 10;
+        }
+    }
+    return count;
+}
+
+char * reverseOnlyLetters(char * S){
+    int r = (int)strlen(S)-1;
+    int l = 0;
+    char tmp;
+    while (l < r) {
+        if (!((S[l] >= 'A' && S[l] <= 'Z') || (S[l] >= 'a' && S[l] <= 'z'))) {
+            ++l;
+            continue;
+        }
+        while (!((S[r] >= 'A' && S[r] <= 'Z') || (S[r] >= 'a' && S[r] <= 'z'))) {
+            --r;
+        }
+        if (l >= r) break;
+        tmp = S[l];
+        S[l] = S[r];
+        S[r] = tmp;
+        ++l;
+        --r;
+    }
+    
+    return S;
+}
+
+int findMaxConsecutiveOnes(int* nums, int numsSize){
+    int maxCount = 0;
+    int count = 0;
+    for (int i = 0; i < numsSize; ++i) {
+        if (nums[i] == 1) ++count;
+        else {
+            if (count > maxCount) maxCount = count;
+            count = 0;
+        }
+    }
+    if (count > maxCount) maxCount = count;
+    return maxCount;
+}
+
+void minDiffInBSTHelper(struct TreeNode* root, int* min, int* pre) {
+    if (root->left) minDiffInBSTHelper(root->left, min, pre);
+    if (*min == -2) {
+        *min = -1;
+    }else if(*min == -1){
+        *min = root->val-(*pre);
+    }else{
+        int val = root->val-(*pre);
+        if (val < *min) *min = val;
+    }
+    *pre = root->val;
+    if (root->right) minDiffInBSTHelper(root->right, min, pre);
+}
+
+int minDiffInBST(struct TreeNode* root){
+    int min = -2, pre;
+    minDiffInBSTHelper(root, &min, &pre);
+    return min;
+}
+
+int twoCitySchedCost(int** costs, int costsSize, int* costsColSize){
+    int N = costsSize/2;
+    int A = 0;
+    int B = 0;
+    int *tmp = malloc(sizeof(int)*costsSize);
+    int total = 0;
+    int i;
+    for (i = 0; i < costsSize; ++i) {
+        total += costs[i][0]+costs[i][1];
+        tmp[i] = costs[i][0]-costs[i][1];
+    }
+    quickSort(tmp, 0, costsSize-1);
+    int l = 0, r = costsSize-1;
+    while (l <= r) {
+        if (A == N) {
+            total -= tmp[r--];
+            ++B;
+            continue;
+        }
+        if (B == N) {
+            total += tmp[l++];
+            ++A;
+            continue;
+        }
+        if (tmp[r] > -tmp[l] || A == N) {
+            total -= tmp[r--];
+            ++B;
+        }else{
+            total += tmp[l++];
+            ++A;
+        }
+    }
+    free(tmp);
+    return total/2;
+}
+
+char * shortestCompletingWord(char * licensePlate, char ** words, int wordsSize){
+    char *result = "";
+    int maxlen = 100;
+    int i, j, index, count = 0;
+    int alphabet[26] = {0};
+    int tmp[26];
+    int tmpCount;
+    while (*licensePlate != '\0') {
+        if (*licensePlate >= 'a' && *licensePlate <= 'z') {
+            ++alphabet[*licensePlate-'a'];
+            ++count;
+        }else if (*licensePlate >= 'A' && *licensePlate <= 'Z'){
+            ++alphabet[*licensePlate-'A'];
+            ++count;
+        }
+        ++licensePlate;
+    }
+    for (i = 0; i < wordsSize; ++i) {
+        j = 0;
+        memset(tmp, 0, sizeof(int)*26);
+        tmpCount = 0;
+        while (words[i][j] != '\0') {
+            if (j >= maxlen) break;
+            if (words[i][j] >= 'a' && words[i][j] <= 'z') {
+                index = words[i][j]-'a';
+                ++tmp[index];
+                if (tmp[index] <= alphabet[index]) {
+                    ++tmpCount;
+                }
+            }else if(words[i][j] >= 'A' && words[i][j] <= 'Z'){
+                index = words[i][j]-'A';
+                ++tmp[index];
+                if (tmp[index] <= alphabet[index]) {
+                    ++tmpCount;
+                }
+            }
+            ++j;
+        }
+        if (tmpCount == count && j < maxlen) {
+            result = words[i];
+            maxlen = j;
+        }
+    }
+    return result;
+}
+
+int numberOfBoomerangs(int** points, int pointsSize, int* pointsColSize){
+    if (pointsSize < 2) return 0;
+    int i, j, k, l, m, n, count = 0;
+    int lineSize = pointsSize-1;
+    int *lines = malloc(sizeof(int)*lineSize);
+    for (i = 0; i < pointsSize; ++i) {
+        k = 0;
+        for (j = 0; j < pointsSize; ++j) {
+            if (i == j) continue;
+            lines[k++] = pow(points[i][0]-points[j][0], 2)+pow(points[i][1]-points[j][1], 2);
+        }
+        quickSort(lines, 0, lineSize-1);
+        m = lines[0];
+        n = 1;
+        for (l = 1; l < lineSize; ++l) {
+            if (lines[l] != m) {
+                if (n >= 2) count += n*(n-1);
+                m = lines[l];
+                n = 1;
+            }else{
+                ++n;
+            }
+        }
+        if (n >= 2) count += n*(n-1);
+    }
+    
+    free(lines);
+    return count;
+}

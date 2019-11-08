@@ -5082,3 +5082,176 @@ int numberOfBoomerangs(int** points, int pointsSize, int* pointsColSize){
     free(lines);
     return count;
 }
+
+typedef struct _Data{
+    int index;
+    int val;
+} Data;
+
+int findRelativeRankscmp(const void *a, const void *b){
+    return ((Data*)b)->val - ((Data*)a)->val;
+}
+
+char ** findRelativeRanks(int* nums, int numsSize, int* returnSize){
+    *returnSize = numsSize;
+    if (numsSize == 0) return NULL;
+    Data *d = (Data*)malloc(numsSize * sizeof(Data));
+    int i;
+    for (i = 0; i < numsSize; ++i) {
+        d[i].index = i;
+        d[i].val = nums[i];
+    }
+    qsort(d, numsSize, sizeof(Data), findRelativeRankscmp);
+    char **res = (char**)malloc(numsSize * sizeof(char*));
+    memset(res, 0, numsSize * sizeof(char*));
+    for (i = 0; i < numsSize; ++i){
+        res[d[i].index] = (char*)malloc(13 * sizeof(char));
+        memset(res[d[i].index], 0, 13 * sizeof(char));
+        switch (i) {
+        case 0:
+            sprintf(res[d[i].index], "Gold Medal");
+            break;
+        case 1:
+            sprintf(res[d[i].index], "Silver Medal");
+            break;
+        case 2:
+            sprintf(res[d[i].index], "Bronze Medal");
+            break;
+        default:
+            sprintf(res[d[i].index], "%d", i + 1);
+            break;
+        }
+    }
+    return res;
+}
+
+// 2重递归
+//int pathSumHelper(struct TreeNode* root, int sum) {
+//    if (root == NULL) return 0;
+//    sum -= root->val;
+//    return (sum==0?1:0)+pathSumHelper(root->left, sum)+pathSumHelper(root->right, sum);
+//}
+//
+//int pathSum(struct TreeNode* root, int sum){
+//    if (root == NULL) return 0;
+//    return pathSumHelper(root, sum)+pathSum(root->left, sum)+pathSum(root->right, sum);
+//}
+// dfs回溯
+int rootPath(struct TreeNode* root, int depth, int target, int* path_sum)
+{
+    if(root == NULL) return 0;
+    int i, count;
+    path_sum[depth] = root->val+path_sum[depth-1];
+    
+    for(count = 0, i = 0; i < depth; i++)
+    {
+        if(path_sum[depth]-path_sum[i] == target) count++;
+    }
+    return count+rootPath(root->left, depth+1, target, path_sum)+rootPath(root->right, depth+1, target, path_sum);
+}
+
+int pathSum(struct TreeNode* root, int sum)
+{ 
+    int path_sum[1001] = {0};
+    return rootPath(root, 1, sum, path_sum);
+}
+
+int search2(int* nums, int numsSize, int target){
+    int l = 0, r = numsSize-1, mid;
+    while (l <= r) {
+        mid = (l+r)/2;
+        if (nums[mid] == target) {
+            return mid;
+        }else if (nums[mid] < target){
+            l = mid+1;
+        }else{
+            r = mid-1;
+        }
+    }
+    return -1;
+}
+
+void tree2strHelper(struct TreeNode* t, char* result, int* index) {
+    int val = t->val;
+    if (val < 0) {
+        result[*index] = '-';
+        (*index) += 1;
+        val = -val;
+    }
+    sprintf(result+(*index), "%d", val);
+    *index = (int)strlen(result);
+    if (t->left == NULL && t->right == NULL) return;
+    if (t->left != NULL) {
+        result[*index] = '(';
+        (*index) += 1;
+        tree2strHelper(t->left, result, index);
+        result[*index] = ')';
+        (*index) += 1;
+    }else{
+        result[*index] = '(';
+        (*index) += 1;
+        result[*index] = ')';
+        (*index) += 1;
+    }
+    if (t->right != NULL) {
+        result[*index] = '(';
+        (*index) += 1;
+        tree2strHelper(t->right, result, index);
+        result[*index] = ')';
+        (*index) += 1;
+    }
+}
+
+char * tree2str(struct TreeNode* t){
+    if (t == NULL) return "";
+    int index = 0;
+    char* result = malloc(sizeof(char)*9999);
+    tree2strHelper(t, result, &index);
+    result[index] = '\0';
+    return result;
+}
+
+
+int largestPerimeter(int* A, int ASize){
+    quickSort(A, 0, ASize-1);
+    for (int i = ASize-1; i > 1; --i) {
+        if (A[i] < A[i-1]+A[i-2]) {
+            return A[i]+A[i-1]+A[i-2];
+        }
+    }
+    return 0;
+}
+
+void floodFillHelper(int** image, int imageSize, int* imageColSize, int sr, int sc, int newColor, int oriColor){
+    image[sr][sc] = newColor;
+    if (sr > 0) {
+        if (image[sr-1][sc] == oriColor) {
+            floodFillHelper(image, imageSize, imageColSize, sr-1, sc, newColor, oriColor);
+        }
+    }
+    if (sc > 0) {
+        if (image[sr][sc-1] == oriColor) {
+            floodFillHelper(image, imageSize, imageColSize, sr, sc-1, newColor, oriColor);
+        }
+    }
+    if (sr < imageSize-1) {
+        if (image[sr+1][sc] == oriColor) {
+            floodFillHelper(image, imageSize, imageColSize, sr+1, sc, newColor, oriColor);
+        }
+    }
+    if (sc < imageColSize[0]-1) {
+        if (image[sr][sc+1] == oriColor) {
+            floodFillHelper(image, imageSize, imageColSize, sr, sc+1, newColor, oriColor);
+        }
+    }
+} 
+
+int** floodFill(int** image, int imageSize, int* imageColSize, int sr, int sc, int newColor, int* returnSize, int** returnColumnSizes){
+    *returnSize = imageSize;
+    *returnColumnSizes = imageColSize;
+    int color = image[sr][sc];
+    if (color != newColor) {
+        floodFillHelper(image, imageSize, imageColSize, sr, sc, newColor, color);
+    }
+    return image;
+}

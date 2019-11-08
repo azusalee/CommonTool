@@ -629,4 +629,22 @@ char * shortestCompletingWord(char * licensePlate, char ** words, int wordsSize)
 // 回旋镖的数量 https://leetcode-cn.com/problems/number-of-boomerangs/
 int numberOfBoomerangs(int** points, int pointsSize, int* pointsColSize);
 
+// 相对名次 https://leetcode-cn.com/problems/relative-ranks/
+char ** findRelativeRanks(int* nums, int numsSize, int* returnSize);
+
+// 路径总和 III https://leetcode-cn.com/problems/path-sum-iii/
+int pathSum(struct TreeNode* root, int sum);
+
+// 二分查找 https://leetcode-cn.com/problems/binary-search/
+int search2(int* nums, int numsSize, int target);
+
+// 根据二叉树创建字符串 https://leetcode-cn.com/problems/construct-string-from-binary-tree/
+char * tree2str(struct TreeNode* t);
+
+// 三角形的最大周长 https://leetcode-cn.com/problems/largest-perimeter-triangle/
+int largestPerimeter(int* A, int ASize);
+
+// 图像渲染 https://leetcode-cn.com/problems/flood-fill/
+int** floodFill(int** image, int imageSize, int* imageColSize, int sr, int sc, int newColor, int* returnSize, int** returnColumnSizes);
+
 #endif /* LeetCodeC_h */

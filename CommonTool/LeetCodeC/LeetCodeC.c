@@ -5255,3 +5255,421 @@ int** floodFill(int** image, int imageSize, int* imageColSize, int sr, int sc, i
     }
     return image;
 }
+
+int surfaceArea(int** grid, int gridSize, int* gridColSize){
+    int i, j, result = 0;
+    for (i = 0; i < gridSize; ++i) {
+        for (j = 0; j < gridSize; ++j) {
+            if (grid[i][j] > 0) {
+                result += grid[i][j]*4+2;
+                if (j > 0) result -= min(grid[i][j],grid[i][j-1])*2;
+                if (i > 0) result -= min(grid[i][j],grid[i-1][j])*2;
+            }
+        }
+    }
+    return result;
+}
+
+bool detectCapitalUse(char * word){
+    if (*word == '\0') return true;
+    bool isAllBig = false;
+    int index = 1;
+    if (*word >= 'A' && *word <= 'Z') {
+        if (word[index] == '\0') return true;
+        if (word[index] >= 'A' && word[index]<= 'Z') {
+            isAllBig = true;
+            index = 2;
+        }
+    }
+    
+    while (word[index] != '\0') {
+        if (isAllBig == false) {
+            if (word[index] >= 'A' && word[index] <= 'Z') return false;
+        }else{
+            if (word[index] >= 'a' && word[index] <= 'z') return false;
+        }
+        ++index;
+    }
+    return true;
+}
+
+int getSum(int a, int b){
+    while (b)
+    {
+        unsigned int carry = (unsigned int)(a & b)<<1; // 记录a+b的进位，直到进位为0是退出
+        a = a^b;   //结果相加
+        b = carry;  //循环
+    }
+    return a;
+}
+
+bool lemonadeChange(int* bills, int billsSize){
+    int money[2] = {0};
+    for (int i = 0; i < billsSize; ++i) {
+        if (bills[i] == 5) {
+            money[0] += 1;
+        }else if (bills[i] == 10) {
+            if (money[0] < 1) return false;
+            money[1] += 1;
+            money[0] -= 1;
+        }else{
+            if (money[1] > 0) {
+                if (money[0] < 1) return false;
+                money[1] -= 1;
+                money[0] -= 1;
+            }else{
+                if (money[0] < 3) return false;
+                money[0] -= 3;
+            }
+        }
+    }
+    return true;
+}
+
+int minMoves(int* nums, int numsSize){
+    long min = nums[0];
+    long count = 0;
+    for (int i = 0; i < numsSize; ++i) {
+        if (min > nums[i]) min = nums[i];
+        count = count+nums[i];
+    }
+    return (int)(count-min*numsSize);
+}
+
+int distanceBetweenBusStops(int* distance, int distanceSize, int start, int destination){
+    if (start == destination) return 0;
+    int tmp;
+    if (start > destination) {
+        tmp = destination;
+        destination = start;
+        start = tmp;
+    }
+    int i, tmp2 = 0;
+    tmp = 0;
+    for (i = start; i < destination; ++i) {
+        tmp += distance[i];
+    }
+    for (i = 0; i < start; ++i) {
+        tmp2 += distance[i];
+    }
+    for (i = destination; i < distanceSize; ++i) {
+        tmp2 += distance[i];
+    }
+    
+    return tmp<tmp2?tmp:tmp2;
+}
+
+int* findDisappearedNumbers(int* nums, int numsSize, int* returnSize){
+    int i = 0, tmp;
+    while (i < numsSize) {
+        if (nums[i] == 0) {
+            ++i;
+            continue;
+        }
+        if (nums[i] != i+1) {
+            if (nums[nums[i]-1] != nums[i]) {
+                tmp = nums[nums[i]-1];
+                nums[nums[i]-1] = nums[i];
+                nums[i] = tmp;
+            }else{
+                nums[i] = 0;
+                ++i;
+            }
+        }else{
+            ++i;
+        }
+    }
+    *returnSize = 0;
+    for (i = 0; i < numsSize; ++i) {
+        if (nums[i] == 0) {
+            nums[*returnSize] = i+1;
+            ++(*returnSize);
+        }
+    }
+    return nums;
+}
+
+bool canThreePartsEqualSum(int* A, int ASize){
+    // 平均法，O(n)
+    int sum = 0;
+    int i;
+    for (i = 0; i < ASize; ++i) sum += A[i];
+    
+    if (sum%3 != 0) return false;
+    sum = sum/3;
+    int count = 0;
+    int p = 0;
+    for (i = 0; i < ASize; ++i) {
+        count += A[i];
+        if (count == sum) {
+            if (p == 1) return true;
+            count = 0;
+            p = 1;
+        }
+    }
+    return false;
+    // 暴力法，超時 O(n^2)
+//    int i, j, k;
+//    int p1 = 0, p2, p3;
+//    for (i = 0; i < ASize-2; ++i) {
+//        p1 += A[i];
+//        p2 = 0;
+//        for (j = i+1; j < ASize-1; ++j) {
+//            p2 += A[j];
+//            if (p1 == p2) {
+//                p3 = 0;
+//                for (k = j+1; k < ASize; ++k) {
+//                    p3 += A[k];
+//                }
+//                if (p3 == p2) {
+//                    return true;
+//                }
+//            }
+//        }
+//    }
+//    return false;
+}
+
+int longestPalindrome(char * s){
+    int alphabetCaps[26] = {0};
+    int alphabet[26] = {0};
+    while (*s != '\0') {
+        if (*s >= 'a') {
+            alphabet[*s-'a'] += 1;
+        }else{
+            alphabetCaps[*s-'A'] += 1;
+        }
+        ++s;
+    }
+    int count = 0;
+    int i, hasSingle = 0;
+    for (i = 0; i < 26; ++i) {
+        count += alphabet[i];
+        count += alphabetCaps[i];
+        if (alphabet[i]%2 == 1) {
+            count -= 1;
+            hasSingle = 1;
+        }
+        if (alphabetCaps[i]%2 == 1) {
+            count -= 1;
+            hasSingle = 1;
+        }
+    }
+     
+    return count+hasSingle;
+}
+
+int maximumProduct(int* nums, int numsSize){
+    if (numsSize == 3) return nums[0]*nums[1]*nums[2];
+    int i;
+    int maxIndex;
+    int minIndex;
+    int tmp;
+    
+    int loopCount = 0;
+    while (loopCount < 3) {
+        if (numsSize-loopCount <= 2) break;
+        maxIndex = loopCount;
+        minIndex = loopCount;
+        for (i = loopCount+1; i < numsSize-loopCount; ++i) {
+            if (nums[maxIndex] < nums[i]) {
+                maxIndex = i;
+            }else if (nums[minIndex] > nums[i]) {
+                minIndex = i;
+            }
+        }
+        tmp = nums[loopCount];
+        nums[loopCount] = nums[minIndex];
+        nums[minIndex] = tmp;
+        if (loopCount == maxIndex) maxIndex = minIndex;
+        tmp = nums[numsSize-loopCount-1];
+        nums[numsSize-loopCount-1] = nums[maxIndex];
+        nums[maxIndex] = tmp;
+        ++loopCount;
+    }
+    int max = nums[numsSize-3]*nums[numsSize-2]*nums[numsSize-1];
+    if (nums[0] < 0 && nums[1] < 0) {
+        int max2 = nums[0]*nums[1]*nums[numsSize-1];
+        if (max2 > max) return max2;
+    }
+    
+    return max;
+}
+
+int* fairCandySwap(int* A, int ASize, int* B, int BSize, int* returnSize){
+    int *result = malloc(sizeof(int)*2);
+    *returnSize = 2;
+    int tmp = 0;
+    int i;
+    int hashB[100001] = {0};
+    for (i = 0; i < ASize; ++i) {
+        tmp += A[i];
+    }
+    for (i = 0; i < BSize; ++i) {
+        hashB[B[i]] = 1;
+        tmp -= B[i];
+    }
+    tmp = tmp/2;
+    int BValue;
+    for (i = 0; i < ASize; ++i) {
+        BValue = A[i]-tmp;
+        if (BValue >= 1 && BValue <= 100000 && hashB[BValue] == 1) {
+            result[0] = A[i];
+            result[1] = BValue;
+            return result;
+        }
+    }
+    return NULL;
+}
+
+bool backspaceCompare(char * S, char * T){
+    int i = 0, len = 0;
+    while (S[i] != '\0') {
+        if (S[i] == '#') {
+            if (len > 0) --len;
+        }else{
+            S[len++] = S[i];
+        }
+        ++i;
+    }
+    S[len] = '\0';
+    int len2 = 0;
+    i = 0;
+    while (T[i] != '\0') {
+        if (T[i] == '#') {
+            if (len2 > 0) --len2;
+        }else{
+            T[len2++] = T[i];
+        }
+        ++i;
+    }
+    T[len2] = '\0';
+    if (len != len2) return false;
+    i = 0;
+    while (S[i] != '\0' || T[i] != '\0') {
+        if (S[i] != T[i]) return false;
+        ++i;
+    }
+    return true;
+}
+
+bool canConstruct(char * ransomNote, char * magazine){
+    int alphabet[26] = {0};
+    while (*magazine != '\0') {
+        alphabet[*magazine-'a'] += 1;
+        ++magazine;
+    }
+    while (*ransomNote != '\0') {
+        if (alphabet[*ransomNote-'a'] < 1) return false;
+        alphabet[*ransomNote-'a'] -= 1;
+        ++ransomNote;
+    }
+    return true;
+}
+
+void sumRootToLeafHelper(struct TreeNode* root, int* result, int preValue) {
+    preValue = preValue*2+root->val;
+    if (root->left == NULL && root->right == NULL) {
+        *result = *result+preValue;
+        return;
+    }
+    if (root->left) sumRootToLeafHelper(root->left, result, preValue);
+    if (root->right) sumRootToLeafHelper(root->right, result, preValue);
+}
+
+int sumRootToLeaf(struct TreeNode* root){
+    int result = 0;
+    sumRootToLeafHelper(root, &result, 0);
+    return result;
+}
+
+int dayOfYear(char * date){
+    int year = 0, month = 0, day = 0;
+    int type = 0;
+    while (*date != '\0') {
+        if (*date == '-') {
+            ++type;
+        }else{
+            if (type == 0) {
+                year = year*10+(*date-'0');
+            }else if (type == 1) {
+                month = month*10+(*date-'0');
+            }else{
+                day = day*10+(*date-'0');
+            }
+        }
+        ++date;
+    }
+    
+    if (month == 1) return day;
+    day += 31;
+    if (month == 2) return day;
+    if (year%4 == 0 && year%100 != 0) day += 29;
+    else day += 28;
+    
+    if (month == 3) return day;
+    day += 31;
+    if (month == 4) return day;
+    day += 30;
+    if (month == 5) return day;
+    day += 31;
+    if (month == 6) return day;
+    day += 30;
+    if (month == 7) return day;
+    day += 31;
+    if (month == 8) return day;
+    day += 31;
+    if (month == 9) return day;
+    day += 30;
+    if (month == 10) return day;
+    day += 31;
+    if (month == 11) return day;
+    day += 30;
+    
+    return day;
+}
+
+int findTiltHelper(struct TreeNode* root, int* result){
+    if (root == NULL) return 0;
+    int left = findTiltHelper(root->left, result);
+    int right = findTiltHelper(root->right, result);
+    *result = *result+abs(left-right);
+    return left+right+root->val;
+}
+
+int findTilt(struct TreeNode* root){
+    int result = 0;
+    findTiltHelper(root, &result);
+    return result;
+}
+
+int maxCount(int m, int n, int** ops, int opsSize, int* opsColSize){
+    for (int i = 0; i < opsSize; ++i) {
+        if (ops[i][0] < m) m = ops[i][0];
+        if (ops[i][1] < n) n = ops[i][1];
+        if (m == 1 && n == 1) return 1;
+    }
+    return m*n;
+}
+
+char * reverseStr(char * s, int k){
+    if (k < 2) return s;
+    int i, j;
+    int len = (int)strlen(s);
+    int tmp;
+    int offset = 0;
+    while (len > 0) {
+        i = offset;
+        if (len <= k) k = len;
+        j = offset+k-1;
+        while (i < j) {
+            tmp = s[i];
+            s[i++] = s[j];
+            s[j--] = tmp;
+        }
+        tmp = 2*k;
+        offset += tmp;
+        len -= tmp;
+    }
+    return s;
+}

@@ -647,4 +647,58 @@ int largestPerimeter(int* A, int ASize);
 // 图像渲染 https://leetcode-cn.com/problems/flood-fill/
 int** floodFill(int** image, int imageSize, int* imageColSize, int sr, int sc, int newColor, int* returnSize, int** returnColumnSizes);
 
+// 三维形体的表面积 https://leetcode-cn.com/problems/surface-area-of-3d-shapes/
+int surfaceArea(int** grid, int gridSize, int* gridColSize);
+
+// 检测大写字母 https://leetcode-cn.com/problems/detect-capital/
+bool detectCapitalUse(char * word);
+
+// 两整数之和 https://leetcode-cn.com/problems/sum-of-two-integers/
+int getSum(int a, int b);
+
+// 柠檬水找零 https://leetcode-cn.com/problems/lemonade-change/
+bool lemonadeChange(int* bills, int billsSize);
+
+// 最小移动次数使数组元素相等 https://leetcode-cn.com/problems/minimum-moves-to-equal-array-elements/
+int minMoves(int* nums, int numsSize);
+
+// 公交站间的距离 https://leetcode-cn.com/problems/distance-between-bus-stops/
+int distanceBetweenBusStops(int* distance, int distanceSize, int start, int destination);
+
+// 找到所有数组中消失的数字 https://leetcode-cn.com/problems/find-all-numbers-disappeared-in-an-array/
+int* findDisappearedNumbers(int* nums, int numsSize, int* returnSize);
+
+// 将数组分成和相等的三个部分 https://leetcode-cn.com/problems/partition-array-into-three-parts-with-equal-sum/
+bool canThreePartsEqualSum(int* A, int ASize);
+
+// 最长回文串 https://leetcode-cn.com/problems/longest-palindrome/
+int longestPalindrome(char * s);
+
+// 三个数的最大乘积 https://leetcode-cn.com/problems/maximum-product-of-three-numbers/
+int maximumProduct(int* nums, int numsSize);
+
+// 公平的糖果交换 https://leetcode-cn.com/problems/fair-candy-swap/
+int* fairCandySwap(int* A, int ASize, int* B, int BSize, int* returnSize);
+
+// 比较含退格的字符串 https://leetcode-cn.com/problems/backspace-string-compare/
+bool backspaceCompare(char * S, char * T);
+
+// 赎金信 https://leetcode-cn.com/problems/ransom-note/
+bool canConstruct(char * ransomNote, char * magazine);
+
+// 从根到叶的二进制数之和 https://leetcode-cn.com/problems/sum-of-root-to-leaf-binary-numbers/
+int sumRootToLeaf(struct TreeNode* root);
+
+// 一年中的第几天 https://leetcode-cn.com/problems/day-of-the-year/
+int dayOfYear(char * date);
+
+// 二叉树的坡度 https://leetcode-cn.com/problems/binary-tree-tilt/
+int findTilt(struct TreeNode* root);
+
+// 范围求和 II https://leetcode-cn.com/problems/range-addition-ii/
+int maxCount(int m, int n, int** ops, int opsSize, int* opsColSize);
+
+// 反转字符串 II https://leetcode-cn.com/problems/reverse-string-ii/
+char * reverseStr(char * s, int k);
+
 #endif /* LeetCodeC_h */

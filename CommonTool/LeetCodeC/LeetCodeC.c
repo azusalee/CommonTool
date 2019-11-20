@@ -5673,3 +5673,42 @@ char * reverseStr(char * s, int k){
     }
     return s;
 }
+
+bool isUgly(int num){
+    if (num < 1) return false;
+    while (num%2 == 0) num = num/2;
+    while (num%3 == 0) num = num/3;
+    while (num%5 == 0) num = num/5;
+    return num == 1;
+}
+
+bool rotateString(char * A, char * B){
+    int alen = (int)strlen(A);
+    int blen = (int)strlen(B);
+    if (alen != blen) return false;
+    if (alen == 0) return true;
+    int i = 0, j = 0, startIndex = 0;
+    while (startIndex < alen) {
+        if (A[i%alen] == B[j]) {
+            ++i;
+            ++j;
+            if (j == blen) return true;
+        }else{
+            ++startIndex;
+            i = startIndex;
+            j = 0;
+        }
+    }
+    return false;
+}
+
+uint32_t reverseBits(uint32_t n) {
+    uint32_t result = 0;
+    uint32_t tmp = 2147483648;
+    while (n > 0) {
+        if ((n&1)) result += tmp;
+        n >>= 1;
+        tmp >>= 1;
+    }
+    return result;
+}

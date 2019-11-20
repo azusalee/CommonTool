@@ -701,4 +701,13 @@ int maxCount(int m, int n, int** ops, int opsSize, int* opsColSize);
 // 反转字符串 II https://leetcode-cn.com/problems/reverse-string-ii/
 char * reverseStr(char * s, int k);
 
+// 丑数 https://leetcode-cn.com/problems/ugly-number/
+bool isUgly(int num);
+
+// 旋转字符串 https://leetcode-cn.com/problems/rotate-string/
+bool rotateString(char * A, char * B);
+
+// 颠倒二进制位 https://leetcode-cn.com/problems/reverse-bits/
+uint32_t reverseBits(uint32_t n);
+
 #endif /* LeetCodeC_h */

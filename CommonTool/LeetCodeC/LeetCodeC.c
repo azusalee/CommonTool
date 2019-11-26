@@ -5712,3 +5712,238 @@ uint32_t reverseBits(uint32_t n) {
     }
     return result;
 }
+
+char ** readBinaryWatch(int num, int* returnSize){
+    *returnSize = 0;
+    if (num >= 9) return NULL;
+    
+    int hourResult0[1] = {0};
+    int hourResult1[4] = {1,2,4,8};
+    int hourResult2[5] = {3,5,9,6,10};
+    int hourResult3[2] = {7,11};
+    
+    int minuteResult0[1] = {0};
+    int minuteResult1[6] = {1,2,4,8,16,32};
+    int minuteResult2[15] = {3,5,9,17,33,6,10,18,34,12,20,36,24,40,48};
+    int minuteResult3[20] = {7,11,13,14,19,21,22,25,26,28,35,37,38,41,42,44,49,50,52,56};
+    int minuteResult4[14] = {15,23,27,29,30,39,43,45,46,51,53,54,57,58};
+    int minuteResult5[4] = {31,47,55,59};
+    
+    int *tmpHourHash;
+    int tmpHourCount;
+    int *tmpMinuteHash;
+    int tmpMinuteCount;
+    
+    char** result = malloc(sizeof(char*)*1000);
+    char* tmpStr;
+    int strIndex;
+    int i, j, k;
+    for (i = 0; i <= num && i < 4; ++i) {
+        j = num-i;
+        if (j >= 6) continue;
+        if (i == 0) {
+            tmpHourHash = hourResult0;
+            tmpHourCount = 1;
+        }else if (i == 1) {
+            tmpHourHash = hourResult1;
+            tmpHourCount = 4;
+        }else if (i == 2) {
+            tmpHourHash = hourResult2;
+            tmpHourCount = 5;
+        }else{
+            tmpHourHash = hourResult3;
+            tmpHourCount = 2;
+        }
+        if (j == 0) {
+            tmpMinuteHash = minuteResult0;
+            tmpMinuteCount = 1;
+        }else if (j == 1) {
+            tmpMinuteHash = minuteResult1;
+            tmpMinuteCount = 6;
+        }else if (j == 2) {
+            tmpMinuteHash = minuteResult2;
+            tmpMinuteCount = 15;
+        }else if (j == 3) {
+            tmpMinuteHash = minuteResult3;
+            tmpMinuteCount = 20;
+        }else if (j == 4) {
+            tmpMinuteHash = minuteResult4;
+            tmpMinuteCount = 14;
+        }else{
+            tmpMinuteHash = minuteResult5;
+            tmpMinuteCount = 4;
+        }
+        
+        for (j = 0; j < tmpHourCount; ++j) {
+            for (k = 0; k < tmpMinuteCount; ++k) {
+                strIndex = 0;
+                if (tmpHourHash[j] >= 10) {
+                    tmpStr = malloc(sizeof(char)*6);
+                    tmpStr[strIndex++] = '1';
+                    tmpStr[strIndex++] = '0'+tmpHourHash[j]%10;
+                }else{
+                    tmpStr = malloc(sizeof(char)*5);
+                    tmpStr[strIndex++] = '0'+tmpHourHash[j];
+                }
+                tmpStr[strIndex++] = ':';
+                tmpStr[strIndex++] = '0'+tmpMinuteHash[k]/10;
+                tmpStr[strIndex++] = '0'+tmpMinuteHash[k]%10;
+                tmpStr[strIndex] = '\0';
+                result[(*returnSize)++] = tmpStr;
+            }
+        }
+    }
+    return result;
+}
+
+int** imageSmoother(int** M, int MSize, int* MColSize, int* returnSize, int** returnColumnSizes){
+    int** result = malloc(sizeof(int*)*MSize);
+    *returnSize = MSize;
+    *returnColumnSizes = MColSize;
+    int i, j, count, tmp;
+    for (i = 0; i < MSize; ++i) {
+        result[i] = malloc(sizeof(int)*MColSize[i]);
+        for (j = 0; j < MColSize[i]; ++j) {
+            count = 1;
+            tmp = M[i][j];
+            if (i > 0) {
+                tmp += M[i-1][j];
+                ++count;
+            }
+            if (j > 0) {
+                tmp += M[i][j-1];
+                ++count;
+            }
+            if (j > 0 && i > 0) {
+                tmp += M[i-1][j-1];
+                ++count;
+            }
+            if (i < MSize-1) {
+                tmp += M[i+1][j];
+                ++count;
+            }
+            if (i < MSize-1 && j > 0) {
+                tmp += M[i+1][j-1];
+                ++count;
+            }
+            if (i > 0 && j < MColSize[i]-1) {
+                tmp += M[i-1][j+1];
+                ++count;
+            }
+            if (j < MColSize[i]-1) {
+                tmp += M[i][j+1];
+                ++count;
+            }
+            if (i < MSize-1 && j < MColSize[i]-1) {
+                tmp += M[i+1][j+1];
+                ++count;
+            }
+            result[i][j] = tmp/count;
+        }
+    }
+    
+    return result;
+}
+
+int reorderLogFilesCmp(const void *a, const void *b){
+    char* str1 = *(char**)a;
+    char* str2 = *(char**)b;
+    int i = 0;
+    
+    while (*str1 != ' ') ++str1;
+    while (*str2 != ' ') ++str2;
+    
+    while (str1[i] != '\0' || str2[i] != '\0') {
+        if (str1[i] != str2[i]) return ((int)str1[i]-(int)str2[i]);
+        ++i;
+    }
+    str1 = *(char**)a;
+    str2 = *(char**)b;
+    i = 0;
+    while (str1[i] != ' ' || str2[i] != ' ') {
+        if (str1[i] != str2[i]) return ((int)str1[i]-(int)str2[i]);
+        ++i;
+    }
+    return 0;
+}
+
+char ** reorderLogFiles(char ** logs, int logsSize, int* returnSize){
+    char** result = malloc(sizeof(char*)*logsSize);
+    *returnSize = logsSize;
+    
+    int index = logsSize-1;
+    int pIndex = 0;
+    
+    int i, j;
+    bool isContent;
+    for (i = index; i >= 0; --i) {
+        j = 0;
+        isContent = false;
+        while (logs[i][j] != '\0') {
+            if (isContent) {
+                if (logs[i][j] >= '0' && logs[i][j] <= '9') {
+                    result[index--] = logs[i];
+                    break;
+                }else{
+                    result[pIndex++] = logs[i];
+                    break;
+                }
+            }else{
+                if (logs[i][j] == ' ') {
+                    isContent = true;
+                }
+            }
+            ++j;
+        }
+    }
+    
+    qsort(result, pIndex, sizeof(*result), reorderLogFilesCmp);
+    return result;
+}
+
+int findShortestSubArray(int* nums, int numsSize){
+    int minNum = 49999;
+    int maxNum = 0;
+    int i;
+    for (i = 0; i < numsSize; ++i) {
+        if (nums[i] < minNum) minNum = nums[i];
+        if (nums[i] > maxNum) maxNum = nums[i];
+    }
+    int numHash[50000] = {0};
+    for (i = 0; i < numsSize; ++i) numHash[nums[i]] += 1;
+    
+    int index = 0, maxCount = 0;
+    for (i = minNum; i <= maxNum; ++i) {
+        if (numHash[i] > maxCount) {
+            maxCount = numHash[i];
+            index = 0;
+            numHash[index++] = i;
+        }else if (numHash[i] == maxCount){
+            numHash[index++] = i;
+        }
+    }
+    if (maxCount == 1) return 1;
+    int tmpCount, j, left = 0, right = 49999;
+    minNum = 49999;
+    for (i = 0; i < index; ++i) {
+        tmpCount = 0;
+        for (j = 0; j < numsSize; ++j) {
+            if (nums[j] == numHash[i]) {
+                if (tmpCount == 0) left = j;
+                ++tmpCount;
+                if (tmpCount == maxCount) {
+                    right = j;
+                    break;
+                }
+                if (j-left+1 >= minNum) {
+                    right = 49999;
+                    break;
+                }
+            }
+        }
+        if (right-left+1 < minNum) minNum = right-left+1;
+        if (minNum == 2) return 2;
+    }
+    
+    return minNum;
+}

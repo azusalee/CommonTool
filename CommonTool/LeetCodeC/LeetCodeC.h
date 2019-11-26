@@ -710,4 +710,13 @@ bool rotateString(char * A, char * B);
 // 颠倒二进制位 https://leetcode-cn.com/problems/reverse-bits/
 uint32_t reverseBits(uint32_t n);
 
+// 二进制手表 https://leetcode-cn.com/problems/binary-watch/
+char ** readBinaryWatch(int num, int* returnSize);
+
+// 重新排列日志文件 https://leetcode-cn.com/problems/reorder-data-in-log-files/
+char ** reorderLogFiles(char ** logs, int logsSize, int* returnSize);
+
+// 数组的度 https://leetcode-cn.com/problems/degree-of-an-array/
+int findShortestSubArray(int* nums, int numsSize);
+
 #endif /* LeetCodeC_h */

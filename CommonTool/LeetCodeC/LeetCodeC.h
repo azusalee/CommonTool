@@ -719,4 +719,34 @@ char ** reorderLogFiles(char ** logs, int logsSize, int* returnSize);
 // 数组的度 https://leetcode-cn.com/problems/degree-of-an-array/
 int findShortestSubArray(int* nums, int numsSize);
 
+// K 次取反后最大化的数组和 https://leetcode-cn.com/problems/maximize-sum-of-array-after-k-negations/
+int largestSumAfterKNegations(int* A, int ASize, int K);
+
+// 构造矩形 https://leetcode-cn.com/problems/construct-the-rectangle/
+int* constructRectangle(int area, int* returnSize);
+
+// 学生出勤记录 I https://leetcode-cn.com/problems/student-attendance-record-i/
+bool checkRecord(char * s);
+
+// 两个列表的最小索引总和 https://leetcode-cn.com/problems/minimum-index-sum-of-two-lists/
+char ** findRestaurant(char ** list1, int list1Size, char ** list2, int list2Size, int* returnSize);
+
+// 找到小镇的法官 https://leetcode-cn.com/problems/find-the-town-judge/
+int findJudge(int N, int** trust, int trustSize, int* trustColSize);
+
+// 二叉树的堂兄弟节点 https://leetcode-cn.com/problems/cousins-in-binary-tree/
+bool isCousins(struct TreeNode* root, int x, int y);
+
+// 数字转换为十六进制数 https://leetcode-cn.com/problems/convert-a-number-to-hexadecimal/ 
+char * toHex(int num);
+
+// 字符串相加 https://leetcode-cn.com/problems/add-strings/
+char * addStrings(char * num1, char * num2);
+
+// 反转字符串中的元音字母 https://leetcode-cn.com/problems/reverse-vowels-of-a-string/
+char * reverseVowels(char * s);
+
+// 计数二进制子串 https://leetcode-cn.com/problems/count-binary-substrings/
+int countBinarySubstrings(char * s);
+
 #endif /* LeetCodeC_h */

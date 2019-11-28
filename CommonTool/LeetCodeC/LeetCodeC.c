@@ -5947,3 +5947,339 @@ int findShortestSubArray(int* nums, int numsSize){
     
     return minNum;
 }
+
+bool isMonotonic(int* A, int ASize){
+    if (ASize <= 2) return true;
+    int i;
+    for (i = 1; i < ASize; ++i) {
+        if (A[i] != A[i-1]) break;
+    }
+    if (i == ASize) return true;
+    if (A[i] < A[i-1]) {
+        while (++i < ASize) {
+            if (A[i] > A[i-1]) return false;
+        }
+    }else if (A[i] > A[i-1]){
+        while (++i < ASize) {
+            if (A[i] < A[i-1]) return false;
+        }
+    }
+    return true;
+}
+
+int largestSumAfterKNegations(int* A, int ASize, int K){
+    quickSort(A, 0, ASize-1);
+    int i, sum = 0;
+    for (i = 0; i < ASize; ++i) {
+        if (A[i] >= 0) {
+            if (K%2 == 1) {
+                if (i > 0) {
+                    if (A[i-1] < A[i]) {
+                        A[i-1] = -A[i-1];
+                    }else{
+                        A[i] = -A[i];
+                    }
+                    sum += A[i-1];
+                }else{
+                    if (i > 0) sum += A[i-1];
+                    A[i] = -A[i];
+                }
+            }else{
+                if (i > 0) sum += A[i-1];
+            }
+            break;
+        }else{
+            A[i] = -A[i];
+            if (i > 0) sum += A[i-1];
+            if (--K == 0) {
+                sum += A[i];
+                ++i;
+                break;
+            }
+        }
+    }
+    while (i < ASize) sum += A[i++];
+    
+    return sum;
+}
+
+int* constructRectangle(int area, int* returnSize){
+    int l;
+    int w = sqrt(area);
+    while (area%w) --w;
+    l = area/w;
+    *returnSize = 2;
+    int *result = malloc(sizeof(int)*2);
+    result[0] = l;
+    result[1] = w;
+    return result;
+}
+
+bool checkRecord(char * s){
+    int A = 0, L = 0;
+    while (*s != '\0') {
+        if (*s == 'A') {
+            if (++A > 1) return false;
+            L = 0;
+        }else if (*s == 'L') {
+            if (++L > 2) return false;
+        }else{
+            L = 0;
+        }
+        ++s;
+    }
+    
+    return true;
+}
+
+char ** findRestaurant(char ** list1, int list1Size, char ** list2, int list2Size, int* returnSize){
+    int i, j;
+    char *s1;
+    char *s2;
+    bool isEqual;
+    char** result = malloc(sizeof(char*)*list1Size);
+    
+    int* list1Hash = malloc(sizeof(int)*list1Size);
+    memset(list1Hash, 0, sizeof(int)*list1Size);
+    int* list2Hash = malloc(sizeof(int)*list2Size);
+    memset(list2Hash, 0, sizeof(int)*list2Size);
+    for (i = 0; i < list1Size; ++i) {
+        j = 0;
+        while (list1[i][j] != '\0') list1Hash[i] += list1[i][j++];
+    }
+    for (i = 0; i < list2Size; ++i) {
+        j = 0;
+        while (list2[i][j] != '\0') list2Hash[i] += list2[i][j++];
+    }
+    
+    *returnSize = 0;
+    int minCount = 2000;
+    for (i = 0; i < list1Size; ++i) {
+        if (i > minCount) break;
+        for (j = 0; j < list2Size; ++j) {
+            if (i+j > minCount) break;
+            if (list1Hash[i] != list2Hash[j]) continue;
+            s1 = list1[i];
+            s2 = list2[j];
+            isEqual = true;
+            while (*s1 != '\0' || *s2 != '\0') {
+                if (*s1 != *s2) {
+                    isEqual = false;
+                    break;
+                }
+                ++s1;
+                ++s2;
+            }
+            if (isEqual) {
+                if (i+j < minCount) {
+                    minCount = i+j;
+                    *returnSize = 0;
+                    result[*returnSize] = list1[i];
+                    *returnSize += 1;
+                }else{
+                    result[*returnSize] = list1[i];
+                    *returnSize += 1;
+                }
+            }
+        }
+    }
+    
+    free(list1Hash);
+    free(list2Hash);
+    
+    return result;
+}
+
+int findJudge(int N, int** trust, int trustSize, int* trustColSize){
+    int *beTrustHash = malloc(sizeof(int)*(N+1));
+    int *trustHash = malloc(sizeof(int)*(N+1));;
+    memset(beTrustHash, 0, sizeof(int)*(N+1));
+    memset(trustHash, 0, sizeof(int)*(N+1));
+    int i;
+    for (i = 0; i < trustSize; ++i) {
+        trustHash[trust[i][0]] += 1;
+        beTrustHash[trust[i][1]] += 1;
+    }
+    
+    for (i = 1; i <= N; ++i) {
+        if (trustHash[i] == 0 && beTrustHash[i] == N-1) return i;
+    }
+    
+    free(trustHash);
+    free(beTrustHash);
+    return -1;
+}
+
+void isCousinsHelper(struct TreeNode* root, int x, int y, int* kx, int* ky, int k, bool* result){
+    if (*kx != 0 && k >= *kx) return;
+    if (*ky != 0 && k >= *ky) return;
+    if (root->left) {
+        if (root->left->val == x) {
+            *kx = k+1;
+            if (*ky != 0 && *kx == *ky) {
+                *result = true;
+                return;
+            }
+        }else if (root->left->val == y) {
+            *ky = k+1;
+            if (*kx != 0 && *kx == *ky) {
+                *result = true;
+                return;
+            }
+        }else{
+            isCousinsHelper(root->left, x, y, kx, ky, k+1, result);
+        }
+    }
+    if (root->right) {
+        if (root->right->val == x) {
+            *kx = k+1;
+            if (*ky != 0 && *kx == *ky && (root->left == NULL || root->left->val != y)) {
+                *result = true;
+                return;
+            }
+        }else if (root->right->val == y) {
+            *ky = k+1;
+            if (*kx != 0 && *kx == *ky && (root->left == NULL || root->left->val != x)) {
+                *result = true;
+                return;
+            }
+        }else{
+            isCousinsHelper(root->right, x, y, kx, ky, k+1, result);
+        }
+    }
+}
+
+bool isCousins(struct TreeNode* root, int x, int y){
+    int kx = 0;
+    int ky = 0;
+    bool result = false;
+    isCousinsHelper(root, x, y, &kx, &ky, 0, &result);
+    return result;
+}
+
+char * toHex(int num){
+    if (num == 0) return "0";
+    char *result = malloc(sizeof(char)*9);
+    result[8] = '\0';
+    int tmp;
+    int index = 7;
+    unsigned int unsignedNum = num;
+    while (unsignedNum > 0) {
+        tmp = unsignedNum%16;
+        if (tmp >= 10) {
+            result[index] = 'a'+tmp-10;
+        }else{
+            result[index] = '0'+tmp;
+        }
+        --index;
+        unsignedNum = unsignedNum/16;
+    }
+    
+    return result+index+1;
+}
+
+char * addStrings(char * num1, char * num2){
+    int len1 = strlen(num1);
+    int len2 = strlen(num2);
+    int resultLen = len1;
+    if (len2 > len1) resultLen = len2;
+    
+    resultLen += 1;
+    
+    char* result = malloc(sizeof(char)*(resultLen+1));
+    result[resultLen] = '\0';
+    
+    int i = len1-1;
+    int j = len2-1;
+    
+    int tmp;
+    int up = 0;
+    while (1) {
+        tmp = num1[i]-'0'+num2[j]-'0'+up;
+        if (tmp/10 > 0) up = 1;
+        else up = 0;
+        --i;
+        --j;
+        result[--resultLen] = tmp%10+'0';
+        if (i < 0) {
+            while (j >= 0) {
+                tmp = num2[j]-'0'+up;
+                if (tmp/10 > 0) up = 1;
+                else up = 0;
+                --j;
+                result[--resultLen] = tmp%10+'0';
+            }
+            break;
+        }else if (j < 0){
+            while (i >= 0) {
+                tmp = num1[i]-'0'+up;
+                if (tmp/10 > 0) up = 1;
+                else up = 0;
+                --i;
+                result[--resultLen] = tmp%10+'0';
+            }
+            break;
+        }
+    }
+    if (up > 0) result[--resultLen] = '1';
+    return result+resultLen;
+}
+
+char * reverseVowels(char * s){
+    int r = strlen(s)-1;
+    int l = 0;
+    int hash[256] = {0};
+    hash['A'] = 1;
+    hash['E'] = 1;
+    hash['I'] = 1;
+    hash['O'] = 1;
+    hash['U'] = 1;
+    hash['a'] = 1;
+    hash['e'] = 1;
+    hash['i'] = 1;
+    hash['o'] = 1;
+    hash['u'] = 1;
+    
+    char tmp;
+    while (l < r) {
+        while (l < r) {
+            if (hash[s[l]] == 1) break;
+            ++l;
+        }
+        while (l < r) {
+            if (hash[s[r]] == 1) break;
+            --r;
+        }
+        if (l < r) {
+            tmp = s[l];
+            s[l] = s[r];
+            s[r] = tmp;
+            ++l;
+            --r;
+        }else{
+            break;
+        }
+    }
+    
+    return s;
+}
+
+int countBinarySubstrings(char * s){
+    int count0 = 0, count1 = 0, result = 0;
+    if (*s == '1') count1 = 1;
+    else count0 = 1;
+    char pre = *(s++);
+    while (*s != '\0') {
+        if (*s != pre) {
+            result += count1>count0?count0:count1;
+            if (*s == '1') count1 = 1;
+            else count0 = 1;
+        }else{
+            if (*s == '1') count1 += 1;
+            else count0 += 1;
+        }
+        pre = *(s++);
+    }
+    result += count1>count0?count0:count1;
+    return result;
+}

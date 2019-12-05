@@ -749,4 +749,34 @@ char * reverseVowels(char * s);
 // 计数二进制子串 https://leetcode-cn.com/problems/count-binary-substrings/
 int countBinarySubstrings(char * s);
 
+// 字符串的最大公因子 https://leetcode-cn.com/problems/greatest-common-divisor-of-strings/
+char * gcdOfStrings(char * str1, char * str2);
+
+// 找出井字棋的获胜者 https://leetcode-cn.com/problems/find-winner-on-a-tic-tac-toe-game/
+char * tictactoe(int** moves, int movesSize, int* movesColSize);
+
+// 缀点成线 https://leetcode-cn.com/problems/check-if-it-is-a-straight-line/
+bool checkStraightLine(int** coordinates, int coordinatesSize, int* coordinatesColSize);
+
+// 判断子序列 https://leetcode-cn.com/problems/is-subsequence/
+bool isSubsequence(char * s, char * t);
+
+// 七进制数 https://leetcode-cn.com/problems/base-7/
+char * convertToBase7(int num);
+
+// 4的幂 https://leetcode-cn.com/problems/power-of-four/
+bool isPowerOfFour(int num);
+
+// 同构字符串 https://leetcode-cn.com/problems/isomorphic-strings/
+bool isIsomorphic(char * s, char * t);
+
+// 腐烂的橘子 https://leetcode-cn.com/problems/rotting-oranges/
+int orangesRotting(int** grid, int gridSize, int* gridColSize);
+
+// 猜数字游戏 https://leetcode-cn.com/problems/bulls-and-cows/
+char * getHint(char * secret, char * guess);
+
+// 使用最小花费爬楼梯 https://leetcode-cn.com/problems/min-cost-climbing-stairs/
+int minCostClimbingStairs(int* cost, int costSize);
+
 #endif /* LeetCodeC_h */

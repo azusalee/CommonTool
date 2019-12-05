@@ -6283,3 +6283,262 @@ int countBinarySubstrings(char * s){
     result += count1>count0?count0:count1;
     return result;
 }
+
+int gcdOfNums(int num1, int num2) {
+    int tmp = num1%num2;
+    while (tmp != 0) {
+        num1 = num2;
+        num2 = tmp;
+        tmp = num1%num2;
+    }
+    return num2;
+}
+
+char * gcdOfStrings(char * str1, char * str2){
+    int i;
+    int len1 = strlen(str1);
+    int len2 = strlen(str2);
+    if (len1 < len2) {
+        char *tmp = str1;
+        str1 = str2;
+        str2 = tmp;
+        i = len1;
+        len1 = len2;
+        len2 = i;
+    }
+    i = 0;
+    while (str2[i] != '\0') {
+        if (str1[i] != str2[i]) return "";
+        ++i;
+    }
+    int j = 0;
+    while (str1[i] != '\0') {
+        if (str1[i] != str1[j]) return "";
+        ++i;
+        ++j;
+    }
+    i = 0;
+    while (str2[i] != '\0') {
+        if (str2[i] != str1[j]) return "";
+        ++i;
+        ++j;
+    }
+    i = gcdOfNums(len1, len2);
+    str2[len2] = '\0';
+    return str2;
+
+}
+
+char * tictactoe(int** moves, int movesSize, int* movesColSize){
+    int nums[9] = {0};
+    int i;
+    if (movesSize%2 == 0) i = 1;
+    else i = 0;
+    
+    for (; i < movesSize; i+=2) nums[moves[i][0]*3+moves[i][1]] = 1;
+    if ((nums[0]&nums[1]&nums[2])||(nums[3]&nums[4]&nums[5])||(nums[6]&nums[7]&nums[8])||
+        (nums[0]&nums[3]&nums[6])||(nums[1]&nums[4]&nums[7])||(nums[2]&nums[5]&nums[8])||
+        (nums[0]&nums[4]&nums[8])||(nums[2]&nums[4]&nums[6])) {
+        if (movesSize%2 == 0) return "B";
+        else return "A";
+    }else{
+        if (movesSize == 9) return "Draw";
+        else return "Pending";
+    }
+}
+
+bool checkStraightLine(int** coordinates, int coordinatesSize, int* coordinatesColSize){
+    int x = (coordinates[1][0]-coordinates[0][0]);
+    if (x == 0) {
+        for (int i = 2; i < coordinatesSize; ++i) {
+            if (coordinates[i][0] != coordinates[0][0]) return false;
+        }
+        return true;
+    }else{
+        x = (coordinates[1][1]-coordinates[0][1])/x;
+        int a = coordinates[0][1]-coordinates[0][0]*x;
+        for (int i = 2; i < coordinatesSize; ++i) {
+            if (coordinates[i][1] != coordinates[i][0]*x+a) return false;
+        }
+        return true;
+    }
+}
+
+bool isSubsequence(char * s, char * t){
+    if (s[0] == '\0') return true;
+    int i = 0, j = 0;
+    while (t[j] != '\0') {
+        if (s[i] == t[j]) {
+            ++i;
+            if (s[i] == '\0') return true;
+        }
+        ++j;
+    }
+    return false;
+}
+
+char * convertToBase7(int num){
+    if (num == 0) return "0";
+    char* result = malloc(sizeof(char)*20);
+    result[19] = '\0';
+    int index = 18;
+    bool isminus = false;
+    if (num < 0) {
+        isminus = true;
+        num = -num;
+    }
+    
+    while (num > 0) {
+        result[index] = '0'+num%7;
+        num /= 7;
+        --index;
+    }
+    if (isminus) result[index--] = '-';
+    
+    return result+index+1;
+}
+
+bool isPowerOfFour(int num){
+    if (num <= 0) return false;
+    if ((num&(num-1)) != 0) return false;
+    if ((num&0x55555555) == num) return true;
+    return false;
+}
+
+bool isIsomorphic(char * s, char * t){
+    int table[128] = {0};
+    bool container[128] = {0};
+    int i = 0;
+    while (s[i] != '\0') {
+        if (table[s[i]] == 0) {
+            if (container[t[i]] == true) return false;
+            table[s[i]] = t[i];
+            container[t[i]] = true;
+        }
+        else if (table[s[i]] != t[i]) return false;
+        ++i;
+    }
+    return true;
+}
+
+int orangesRotting(int** grid, int gridSize, int* gridColSize){
+    int i, j;
+    int nums[100] = {0};
+    int count = 0;
+    for (i = 0; i < gridSize; ++i) {
+        for (j = 0; j < gridColSize[0]; ++j) {
+            if (grid[i][j] == 2) {
+                nums[count] = i*gridColSize[0]+j;
+                ++count;
+            }
+        }
+    }
+    
+    int dr[4] = {-1,0,1,0};
+    int dc[4] = {0,-1,0,1};
+    int tmpNums[100] = {0};
+    int r, c, tmpCount, tmpr, tmpc;
+    int depth = 0;
+    if (count != 0) {
+        while (count != 0) {
+            memset(tmpNums, 0, sizeof(int)*100);
+            tmpCount = 0;
+            for (i = 0; i < count; ++i) {
+                c = nums[i]%gridColSize[0];
+                r = nums[i]/gridColSize[0];
+                for (j = 0; j < 4; ++j) {
+                    tmpr = r+dr[j];
+                    tmpc = c+dc[j];
+                    if (tmpr >= 0 && tmpr < gridSize && tmpc >= 0 && tmpc < gridColSize[0] && grid[tmpr][tmpc] == 1) {
+                        tmpNums[tmpCount] = tmpr*gridColSize[0]+tmpc;
+                        ++tmpCount;
+                        grid[tmpr][tmpc] = 2;
+                    }
+                }
+            }
+            memcpy(nums, tmpNums, sizeof(int)*100);
+            count = tmpCount;
+            ++depth;
+        }
+        --depth;
+    }
+    
+    for (i = 0; i < gridSize; ++i) {
+        for (j = 0; j < gridColSize[0]; ++j) {
+            if (grid[i][j] == 1) {
+                return -1;
+            }
+        }
+    }
+    
+    return depth;
+}
+
+char * getHint(char * secret, char * guess){
+    int A = 0;
+    int B = 0;
+    int counts[10] = {0};
+    
+    int i = 0;
+    while (secret[i] != '\0') {
+        if (secret[i] == guess[i]) ++A;
+        else {
+            counts[secret[i]-'0'] += 1;
+        }
+        ++i;
+    }
+    i = 0;
+    while (secret[i] != '\0') {
+        if (secret[i] != guess[i]){
+            if (counts[guess[i]-'0'] > 0) {
+                counts[guess[i]-'0'] -= 1;
+                ++B;
+            }
+        }
+        ++i;
+    }
+    char *result = malloc(sizeof(char)*100);
+    result[99] = '\0';
+    result[98] = 'B';
+    int index = 97;
+    if (B == 0) {
+        result[index--] = '0';
+    }else{
+        while (B != 0) {
+            result[index--] = '0'+B%10;
+            B = B/10;
+        }
+    }
+    result[index--] = 'A';
+    if (A == 0) {
+        result[index--] = '0';
+    }else{
+        while (A != 0) {
+            result[index--] = '0'+A%10;
+            A = A/10;
+        }
+    }
+    return result+index+1;
+}
+
+int minCostClimbingStairs(int* cost, int costSize){
+    int cost1 = cost[0];
+    int cost2 = cost[1];
+    
+    for (int i = 2; i < costSize; ++i) {
+        if (i%2 == 0) {
+            if (cost1 < cost2) {
+                cost1 = cost1+cost[i];
+            }else{
+                cost1 = cost2+cost[i];
+            }
+        }else{
+            if (cost1 < cost2) {
+                cost2 = cost1+cost[i];
+            }else{
+                cost2 = cost2+cost[i];
+            }
+        }
+    }
+    return cost1<cost2?cost1:cost2;
+}

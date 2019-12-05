@@ -11,6 +11,8 @@
 		8C61BCDA2305082D0011F8E5 /* CompileSourceParse.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C61BCD92305082D0011F8E5 /* CompileSourceParse.m */; };
 		8C61BCDD2305086F0011F8E5 /* sourceString1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8C61BCDC2305086F0011F8E5 /* sourceString1.txt */; };
 		8C61BCDF2305087F0011F8E5 /* sourceString2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8C61BCDE2305087F0011F8E5 /* sourceString2.txt */; };
+		8C6508CA239662C700484C1C /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C6508C9239662C700484C1C /* NotificationService.m */; };
+		8C6508CE239662C700484C1C /* notification.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 8C6508C6239662C700484C1C /* notification.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8C6D795723570E09004FFF4A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8C6D795523570E09004FFF4A /* Localizable.strings */; };
 		8CA036262362D946007FAEB2 /* CommonToolTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CA036252362D946007FAEB2 /* CommonToolTests.m */; };
 		8CC0ABA822BCBBAB001BB84D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC0ABA722BCBBAB001BB84D /* AppDelegate.m */; };
@@ -30,6 +32,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		8C6508CC239662C700484C1C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8CC0AB9B22BCBBAB001BB84D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8C6508C5239662C700484C1C;
+			remoteInfo = notification;
+		};
 		8CA036282362D946007FAEB2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8CC0AB9B22BCBBAB001BB84D /* Project object */;
@@ -38,6 +47,20 @@
 			remoteInfo = CommonTool;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8C6508C12396628600484C1C /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				8C6508CE239662C700484C1C /* notification.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		8C0C003523614D5B007EA32E /* CommonTool-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CommonTool-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -64,6 +87,11 @@
 		8C61BCD92305082D0011F8E5 /* CompileSourceParse.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CompileSourceParse.m; sourceTree = "<group>"; };
 		8C61BCDC2305086F0011F8E5 /* sourceString1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = sourceString1.txt; sourceTree = "<group>"; };
 		8C61BCDE2305087F0011F8E5 /* sourceString2.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = sourceString2.txt; sourceTree = "<group>"; };
+		8C6508B123965FE200484C1C /* CommonTool.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CommonTool.entitlements; sourceTree = "<group>"; };
+		8C6508C6239662C700484C1C /* notification.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = notification.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C6508C8239662C700484C1C /* NotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationService.h; sourceTree = "<group>"; };
+		8C6508C9239662C700484C1C /* NotificationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationService.m; sourceTree = "<group>"; };
+		8C6508CB239662C700484C1C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8C6D795623570E09004FFF4A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8C6D795923570E19004FFF4A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8CA036232362D946007FAEB2 /* CommonToolTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CommonToolTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -98,6 +126,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		8C6508C3239662C700484C1C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8CA036202362D946007FAEB2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -141,6 +176,16 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		8C6508C7239662C700484C1C /* notification */ = {
+			isa = PBXGroup;
+			children = (
+				8C6508C8239662C700484C1C /* NotificationService.h */,
+				8C6508C9239662C700484C1C /* NotificationService.m */,
+				8C6508CB239662C700484C1C /* Info.plist */,
+			);
+			path = notification;
+			sourceTree = "<group>";
+		};
 		8CA036242362D946007FAEB2 /* CommonToolTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -155,6 +200,7 @@
 			children = (
 				8CC0ABA522BCBBAB001BB84D /* CommonTool */,
 				8CA036242362D946007FAEB2 /* CommonToolTests */,
+				8C6508C7239662C700484C1C /* notification */,
 				8CC0ABA422BCBBAB001BB84D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -164,6 +210,7 @@
 			children = (
 				8CC0ABA322BCBBAB001BB84D /* CommonTool.app */,
 				8CA036232362D946007FAEB2 /* CommonToolTests.xctest */,
+				8C6508C6239662C700484C1C /* notification.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -171,6 +218,7 @@
 		8CC0ABA522BCBBAB001BB84D /* CommonTool */ = {
 			isa = PBXGroup;
 			children = (
+				8C6508B123965FE200484C1C /* CommonTool.entitlements */,
 				8C0C003523614D5B007EA32E /* CommonTool-Bridging-Header.h */,
 				8C61BCDB230508550011F8E5 /* Resources */,
 				8C61BCD7230508090011F8E5 /* Tool */,
@@ -272,6 +320,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		8C6508C5239662C700484C1C /* notification */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8C6508CF239662C700484C1C /* Build configuration list for PBXNativeTarget "notification" */;
+			buildPhases = (
+				8C6508C2239662C700484C1C /* Sources */,
+				8C6508C3239662C700484C1C /* Frameworks */,
+				8C6508C4239662C700484C1C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = notification;
+			productName = notification;
+			productReference = 8C6508C6239662C700484C1C /* notification.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		8CA036222362D946007FAEB2 /* CommonToolTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8CA0362C2362D946007FAEB2 /* Build configuration list for PBXNativeTarget "CommonToolTests" */;
@@ -297,10 +362,12 @@
 				8CC0AB9F22BCBBAB001BB84D /* Sources */,
 				8CC0ABA022BCBBAB001BB84D /* Frameworks */,
 				8CC0ABA122BCBBAB001BB84D /* Resources */,
+				8C6508C12396628600484C1C /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				8C6508CD239662C700484C1C /* PBXTargetDependency */,
 			);
 			name = CommonTool;
 			productName = CommonTool;
@@ -313,9 +380,13 @@
 		8CC0AB9B22BCBBAB001BB84D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1110;
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = AL;
 				TargetAttributes = {
+					8C6508C5239662C700484C1C = {
+						CreatedOnToolsVersion = 11.1;
+					};
 					8CA036222362D946007FAEB2 = {
 						CreatedOnToolsVersion = 11.1;
 						TestTargetID = 8CC0ABA222BCBBAB001BB84D;
@@ -347,11 +418,19 @@
 			targets = (
 				8CC0ABA222BCBBAB001BB84D /* CommonTool */,
 				8CA036222362D946007FAEB2 /* CommonToolTests */,
+				8C6508C5239662C700484C1C /* notification */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		8C6508C4239662C700484C1C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8CA036212362D946007FAEB2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -375,6 +454,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		8C6508C2239662C700484C1C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C6508CA239662C700484C1C /* NotificationService.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8CA0361F2362D946007FAEB2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -406,6 +493,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		8C6508CD239662C700484C1C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8C6508C5239662C700484C1C /* notification */;
+			targetProxy = 8C6508CC239662C700484C1C /* PBXContainerItemProxy */;
+		};
 		8CA036292362D946007FAEB2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8CC0ABA222BCBBAB001BB84D /* CommonTool */;
@@ -460,6 +552,42 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		8C6508D0239662C700484C1C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = notification/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.al.CommonTool.notification;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8C6508D1239662C700484C1C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = notification/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.al.CommonTool.notification;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		8CA0362A2362D946007FAEB2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -617,8 +745,10 @@
 		8CC0ABBA22BCBBAD001BB84D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = CommonTool/CommonTool.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = CommonTool/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -637,8 +767,10 @@
 		8CC0ABBB22BCBBAD001BB84D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = CommonTool/CommonTool.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = CommonTool/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -656,6 +788,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		8C6508CF239662C700484C1C /* Build configuration list for PBXNativeTarget "notification" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C6508D0239662C700484C1C /* Debug */,
+				8C6508D1239662C700484C1C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		8CA0362C2362D946007FAEB2 /* Build configuration list for PBXNativeTarget "CommonToolTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

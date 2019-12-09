@@ -779,4 +779,22 @@ char * getHint(char * secret, char * guess);
 // 使用最小花费爬楼梯 https://leetcode-cn.com/problems/min-cost-climbing-stairs/
 int minCostClimbingStairs(int* cost, int costSize);
 
+// 二叉树的直径 https://leetcode-cn.com/problems/diameter-of-binary-tree/
+int diameterOfBinaryTree(struct TreeNode* root);
+
+// 计数质数 https://leetcode-cn.com/problems/count-primes/
+int countPrimes(int n);
+
+// 质数排列 https://leetcode-cn.com/problems/prime-arrangements/
+int numPrimeArrangements(int n);
+
+// 3的幂 https://leetcode-cn.com/problems/power-of-three/
+bool isPowerOfThree(int n);
+
+// 1比特与2比特字符 https://leetcode-cn.com/problems/1-bit-and-2-bit-characters/
+bool isOneBitCharacter(int* bits, int bitsSize);
+
+// 长按键入 https://leetcode-cn.com/problems/long-pressed-name/
+bool isLongPressedName(char * name, char * typed);
+
 #endif /* LeetCodeC_h */

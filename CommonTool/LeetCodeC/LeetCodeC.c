@@ -6542,3 +6542,94 @@ int minCostClimbingStairs(int* cost, int costSize){
     }
     return cost1<cost2?cost1:cost2;
 }
+
+int diameterOfBinaryTreeHelper(struct TreeNode* root, int* maxlen){
+    if (root == NULL) return 0;
+    int left = diameterOfBinaryTreeHelper(root->left, maxlen);
+    int right = diameterOfBinaryTreeHelper(root->right, maxlen);
+    if (left+right > *maxlen) *maxlen = left+right;
+    return (left>right?left:right)+1;
+}
+
+int diameterOfBinaryTree(struct TreeNode* root){
+    int maxLen = 0;
+    diameterOfBinaryTreeHelper(root, &maxLen);
+    return maxLen;
+}
+
+int countPrimes(int n){
+    if (n <= 2) return 0;
+    int *hash = malloc(sizeof(int)*(n));
+    memset(hash, 0, sizeof(int)*(n));
+    int count = 0;
+    int i, j;
+    int in = sqrt(n);
+    for (i = 2; i <= in; ++i) {
+        if (hash[i] == 1) continue;
+        for (j = i*i; j < n; j+=i) {
+            if (hash[j] == 1) continue;
+            hash[j] = 1;
+            ++count;
+        }
+    }
+    ++count;
+    free(hash);
+    return n-count-1;
+}
+
+int numPrimeArrangements(int n){
+    // A(n-m, n-m)*A(m, m)
+    // (n-m)!*m! = (1*2*..*(n-m))*(1*2*..*m)
+    int count = countPrimes(n+1);
+    if (n > 8) count = n-count;
+    
+    long result = 1;
+    for (int i = 2; i <= count; ++i) {
+        result = result*i%1000000007;
+        if (i == n-count) {
+            result = result*result%1000000007;
+        }
+    }
+    
+    return result;
+}
+
+bool isPowerOfThree(int n){
+    return n > 0 && 1162261467 % n == 0;
+}
+
+bool isOneBitCharacter(int* bits, int bitsSize){
+//    int k = 0;
+//    for (int i = bitsSize-2; i >= 0; --i) {
+//        if (bits[i] == 0) {
+//            if (k%2 == 0) {
+//                return true;
+//            }else{
+//                return false;
+//            }
+//        }
+//        ++k;
+//    }
+//    return k%2==0;
+    if (bitsSize < 2) return true;
+    else if (bits[bitsSize-2] == 0) return true;
+    bool isone = false;
+    bitsSize -= 2;
+    for (int i = 0; i < bitsSize; ++i) {
+        if (isone) isone = false;
+        else if (bits[i] == 1) isone = true;
+    }
+    return isone;
+}
+
+bool isLongPressedName(char * name, char * typed){
+    int i = 0, j = 0;
+    while (typed[j] != '\0') {
+        if (name[i] == typed[j]) {
+            ++i;
+            ++j;
+        }else if (i > 0 && typed[j] == name[i-1]) ++j;
+        else return false;
+    }
+    return name[i] == '\0';
+}

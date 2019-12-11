@@ -6633,3 +6633,281 @@ bool isLongPressedName(char * name, char * typed){
     }
     return name[i] == '\0';
 }
+
+int findSecondMinimumValue(struct TreeNode* root){
+    if (root->left == NULL) return -1;
+    if (root->left->val == root->right->val) {
+        if (root->left->val > root->val) {
+            return root->left->val;
+        }else{
+            int left = findSecondMinimumValue(root->left);
+            int right = findSecondMinimumValue(root->right);
+            if (left > root->val && right > root->val) return left>right?right:left;
+            else if (left > root->val) return left;
+            else if (right > root->val) return right;
+            else return -1;
+        }
+    }else{
+        if (root->left->val > root->val && root->right->val > root->val) {
+            return root->left->val>root->right->val?root->right->val:root->left->val;
+        }else{
+            if (root->left->val > root->val) {
+                int right = findSecondMinimumValue(root->right);
+                if (right > root->val) {
+                    return root->left->val>right?right:root->left->val;
+                }else{
+                    return root->left->val;
+                }
+            }else{
+                int left = findSecondMinimumValue(root->left);
+                if (left > root->val) {
+                    return root->right->val>left?left:root->right->val;
+                }else{
+                    return root->right->val;
+                }
+            }
+        }
+    }
+}
+
+int** largeGroupPositions(char * S, int* returnSize, int** returnColumnSizes){
+    int** result = malloc(sizeof(int*)*333);
+    *returnColumnSizes = malloc(sizeof(int)*333);
+    *returnSize = 0;
+    int i = 1;
+    char last = S[0];
+    int count = 1;
+    int firstIndex = 0;
+    while (S[i] != '\0') {
+        if (S[i] == last) {
+            ++count;
+        }else{
+            if (count >= 3) {
+                result[*returnSize] = malloc(sizeof(int)*2);
+                returnColumnSizes[0][*returnSize] = 2;
+                result[*returnSize][0] = firstIndex;
+                result[*returnSize][1] = firstIndex+count-1;
+                ++(*returnSize);
+            }
+            last = S[i];
+            firstIndex = i;
+            count = 1;
+        }
+        ++i;
+    }
+    if (count >= 3) {
+        result[*returnSize] = malloc(sizeof(int)*2);
+        returnColumnSizes[0][*returnSize] = 2;
+        result[*returnSize][0] = firstIndex;
+        result[*returnSize][1] = firstIndex+count-1;
+        ++(*returnSize);
+    }
+    
+    return result;
+}
+
+struct trie_node {
+    bool is_end;
+    struct trie_node *child[26];
+};
+
+static struct trie_node *create()
+{
+    struct trie_node *node = malloc(sizeof(struct trie_node));
+    node->is_end = false;
+    for (int i = 0; i < 26; i++) {
+        node->child[i] = NULL;
+    }
+    return node;
+}
+
+static void insert_word(struct trie_node *obj, char *word)
+{
+    while (*word) {
+        if (obj->child[*word - 'a'] == NULL) {
+            obj->child[*word - 'a'] = create();
+        }
+        obj = obj->child[*word - 'a'];
+        word++;
+    }
+    obj->is_end = true;
+}
+
+static bool is_inc_word(struct trie_node *obj, char *word)
+{
+    while (*word) {
+        if (obj->child[*word - 'a'] == NULL)
+            return false;
+        else if (obj->child[*word - 'a']->is_end == false)
+            return false;
+        
+        obj = obj->child[*word - 'a'];
+        word++;
+    }
+    return obj->is_end;
+}
+
+static void free_trie(struct trie_node *obj)
+{
+    for (int i = 0; i < 26; i++) {
+        if (obj->child[i] != NULL) {
+            free_trie(obj->child[i]);
+        }
+    }
+    free(obj);
+}
+
+char * longestWord(char ** words, int wordsSize){
+    struct trie_node *root = create();
+    for (int i = 0; i < wordsSize; i++) {
+        insert_word(root, words[i]);
+    }
+    char *ret = malloc(sizeof(char) * 31);
+    memset(ret, 0, sizeof(char) * 31);
+
+    for (int i = 0; i < wordsSize; i++) {
+        if (is_inc_word(root, words[i])) {
+            if (strlen(words[i]) > strlen(ret))
+                strcpy(ret, words[i]);
+            else if (strlen(words[i]) == strlen(ret) && strcmp(words[i], ret) == -1)
+                strcpy(ret, words[i]);
+        }
+    }
+
+    return ret;
+}
+
+bool repeatedSubstringPattern(char * s){
+    int len = strlen(s);
+    char str[2 * len - 1];
+    memset(str, 0, sizeof(str));
+    strncat(str, s + 1, len - 1);
+    strncat(str, s, len - 1);
+    
+    return strstr(str, s);
+//    
+//    int repeatLen = 1;
+//    int len = strlen(s);
+//    int i;
+//    int j;
+//    bool flag;
+//    while (repeatLen <= len/2) {
+//        if (len%repeatLen != 0) {
+//            ++repeatLen;
+//            continue;
+//        }
+//        i = 0;
+//        j = repeatLen;
+//        flag = true;
+//        while (s[j] != '\0') {
+//            if (s[i] != s[j]) {
+//                flag = false;
+//                break;
+//            }
+//            ++i;
+//            ++j;
+//            if (i == repeatLen) i = 0;
+//        }
+//        if (flag == true && i == 0) return true;
+//        ++repeatLen;
+//    }
+//    return false;
+}
+
+bool isRectangleOverlap(int* rec1, int rec1Size, int* rec2, int rec2Size){
+    return (rec2[0] >= rec1[2] || rec2[2] <= rec1[0] || rec2[1] >= rec1[3] || rec2[3] <= rec1[1])?false:true;
+}
+
+int compareInt(void *a, void *b)
+{
+    return *(int*)a > *(int*)b;
+}
+
+int findLHS(int* nums, int numsSize){
+    if (numsSize < 2) return 0; 
+    qsort(nums, numsSize, sizeof(int), compareInt);
+    int maxlen = 0;
+    int lastNum = nums[0];
+    int lastCount = 0;
+    int curCount = 1;
+    for (int i = 1; i < numsSize; ++i) {
+        if (lastNum == nums[i]) {
+            ++curCount;
+        }else{
+            if (lastCount > 0 && curCount+lastCount > maxlen) maxlen = curCount+lastCount;
+            if (nums[i]-lastNum == 1) lastCount = curCount;
+            else lastCount = 0;
+            curCount = 1;
+            lastNum = nums[i];
+        }
+    }
+    if (lastCount > 0 && curCount+lastCount > maxlen) maxlen = curCount+lastCount;
+    return maxlen;
+}
+
+
+int yCache[9][9] = {0};
+int xCache[9][9] = {0};
+int bCache[9][9] = {0};
+bool isSudokuSolved = false;
+void sudokuBackTrace(char** board, int x, int y);
+bool sudokuCouldPlaceNum(int num, int x, int y) {
+    return xCache[x][num]+yCache[y][num]+bCache[x/3*3+y/3][num] == 0;
+}
+
+void sudokuPlaceNum(char** board, int num, int x, int y){
+    xCache[x][num] = 1;
+    yCache[y][num] = 1;
+    bCache[x/3*3+y/3][num] = 1;
+    board[x][y] = '1'+num;
+}
+
+void sudokuRemoveNum(char** board, int num, int x, int y){
+    xCache[x][num] = 0;
+    yCache[y][num] = 0;
+    bCache[x/3*3+y/3][num] = 0;
+    board[x][y] = '.';
+}
+
+void sudokuPlaceNextNum(char** board, int x, int y){
+    if (x == 8 && y == 8) {
+        isSudokuSolved = true;
+    }else{
+        if (y == 8) {
+            sudokuBackTrace(board, x+1, 0);
+        }else{
+            sudokuBackTrace(board, x, y+1);
+        }
+    }
+}
+
+void sudokuBackTrace(char** board, int x, int y) {
+    if (board[x][y] == '.') {
+        for (int d = 0; d < 9; ++d) {
+            if (sudokuCouldPlaceNum(d, x, y)) {
+                sudokuPlaceNum(board, d, x, y);
+                sudokuPlaceNextNum(board, x, y);
+                if (isSudokuSolved == false) {
+                    sudokuRemoveNum(board, d, x, y);
+                }else{
+                    return;
+                }
+            }
+        }
+    }else{
+        sudokuPlaceNextNum(board, x, y);
+    }
+}
+
+void solveSudoku(char** board, int boardSize, int* boardColSize){
+    int i, j;
+    
+    for (i = 0; i < 9; ++i) {
+        for (j = 0; j < 9; ++j) {
+            if (board[i][j] != '.') {
+                sudokuPlaceNum(board, board[i][j]-'1', i, j);
+            }
+        }
+    }
+    sudokuBackTrace(board, 0, 0);
+}

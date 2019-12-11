@@ -797,4 +797,25 @@ bool isOneBitCharacter(int* bits, int bitsSize);
 // 长按键入 https://leetcode-cn.com/problems/long-pressed-name/
 bool isLongPressedName(char * name, char * typed);
 
+// 二叉树中第二小的节点 https://leetcode-cn.com/problems/second-minimum-node-in-a-binary-tree/
+int findSecondMinimumValue(struct TreeNode* root);
+
+// 较大分组的位置 https://leetcode-cn.com/problems/positions-of-large-groups/
+int** largeGroupPositions(char * S, int* returnSize, int** returnColumnSizes);
+
+// 词典中最长的单词 https://leetcode-cn.com/problems/longest-word-in-dictionary/
+char * longestWord(char ** words, int wordsSize);
+
+// 重复的子字符串 https://leetcode-cn.com/problems/repeated-substring-pattern/
+bool repeatedSubstringPattern(char * s);
+
+// 矩形重叠 https://leetcode-cn.com/problems/rectangle-overlap/
+bool isRectangleOverlap(int* rec1, int rec1Size, int* rec2, int rec2Size);
+
+// 最长和谐子序列 https://leetcode-cn.com/problems/longest-harmonious-subsequence/
+int findLHS(int* nums, int numsSize);
+
+// 解数独 https://leetcode-cn.com/problems/sudoku-solver/
+void solveSudoku(char** board, int boardSize, int* boardColSize);
+
 #endif /* LeetCodeC_h */

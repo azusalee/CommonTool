@@ -818,4 +818,64 @@ int findLHS(int* nums, int numsSize);
 // 解数独 https://leetcode-cn.com/problems/sudoku-solver/
 void solveSudoku(char** board, int boardSize, int* boardColSize);
 
+// 回文素数 https://leetcode-cn.com/problems/prime-palindrome/
+int primePalindrome(int N);
+
+// 有效的完全平方数 https://leetcode-cn.com/problems/valid-perfect-square/
+bool isPerfectSquare(int num);
+
+// 不邻接植花 https://leetcode-cn.com/problems/flower-planting-with-no-adjacent/
+int* gardenNoAdj(int N, int** paths, int pathsSize, int* pathsColSize, int* returnSize);
+
+// 二叉搜索树中的众数 https://leetcode-cn.com/problems/find-mode-in-binary-search-tree/
+int* findMode(struct TreeNode* root, int* returnSize);
+
+// 数组形式的整数加法 https://leetcode-cn.com/problems/add-to-array-form-of-integer/
+int* addToArrayForm(int* A, int ASize, int K, int* returnSize);
+
+// 总持续时间可被 60 整除的歌曲 https://leetcode-cn.com/problems/pairs-of-songs-with-total-durations-divisible-by-60/
+int numPairsDivisibleBy60(int* time, int timeSize);
+
+// 最长连续递增序列 https://leetcode-cn.com/problems/longest-continuous-increasing-subsequence/
+int findLengthOfLCIS(int* nums, int numsSize);
+
+// 可被 5 整除的二进制前缀 https://leetcode-cn.com/problems/binary-prefix-divisible-by-5/
+bool* prefixesDivBy5(int* A, int ASize, int* returnSize);
+
+// 寻找比目标字母大的最小字母 https://leetcode-cn.com/problems/find-smallest-letter-greater-than-target/
+char nextGreatestLetter(char* letters, int lettersSize, char target);
+
+// 完美数 https://leetcode-cn.com/problems/perfect-number/
+bool checkPerfectNumber(int num);
+
+// 排列硬币 https://leetcode-cn.com/problems/arranging-coins/
+int arrangeCoins(int n);
+
+// 等价多米诺骨牌对的数量 https://leetcode-cn.com/problems/number-of-equivalent-domino-pairs/
+int numEquivDominoPairs(int** dominoes, int dominoesSize, int* dominoesColSize);
+
+// 至少是其他数字两倍的最大数 https://leetcode-cn.com/problems/largest-number-at-least-twice-of-others/
+int dominantIndex(int* nums, int numsSize);
+
+// 另一个树的子树 https://leetcode-cn.com/problems/subtree-of-another-tree/
+bool isSubtree(struct TreeNode* s, struct TreeNode* t);
+
+// 第三大的数 https://leetcode-cn.com/problems/third-maximum-number/
+int thirdMax(int* nums, int numsSize);
+
+// 移动石子直到连续 https://leetcode-cn.com/problems/moving-stones-until-consecutive/
+int* numMovesStones(int a, int b, int c, int* returnSize);
+
+// 第一个错误的版本 https://leetcode-cn.com/problems/first-bad-version/submissions/
+int firstBadVersion(int n);
+
+// 验证回文字符串 Ⅱ https://leetcode-cn.com/problems/valid-palindrome-ii/
+bool validPalindrome(char * s);
+
+// 单词规律 https://leetcode-cn.com/problems/word-pattern/ 
+bool wordPattern(char * pattern, char * str);
+
+// 压缩字符串 https://leetcode-cn.com/problems/string-compression/
+int compress(char* chars, int charsSize);
+
 #endif /* LeetCodeC_h */

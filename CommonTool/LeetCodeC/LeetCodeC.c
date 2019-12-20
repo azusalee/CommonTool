@@ -6781,8 +6781,13 @@ bool repeatedSubstringPattern(char * s){
     int len = strlen(s);
     char str[2 * len - 1];
     memset(str, 0, sizeof(str));
+    // 下面两次操作是把s叠两次，然后去掉头尾字符，赋值给str
     strncat(str, s + 1, len - 1);
     strncat(str, s, len - 1);
+    /*
+        假设重复部分是x，则有s = nx, str = 2nx-2，当n大于等于2是有效
+        
+    */
     
     return strstr(str, s);
 //    
@@ -6845,7 +6850,7 @@ int findLHS(int* nums, int numsSize){
     return maxlen;
 }
 
-
+// 解数独
 int yCache[9][9] = {0};
 int xCache[9][9] = {0};
 int bCache[9][9] = {0};
@@ -6873,11 +6878,8 @@ void sudokuPlaceNextNum(char** board, int x, int y){
     if (x == 8 && y == 8) {
         isSudokuSolved = true;
     }else{
-        if (y == 8) {
-            sudokuBackTrace(board, x+1, 0);
-        }else{
-            sudokuBackTrace(board, x, y+1);
-        }
+        if (y == 8) sudokuBackTrace(board, x+1, 0);
+        else sudokuBackTrace(board, x, y+1);
     }
 }
 
@@ -6887,11 +6889,8 @@ void sudokuBackTrace(char** board, int x, int y) {
             if (sudokuCouldPlaceNum(d, x, y)) {
                 sudokuPlaceNum(board, d, x, y);
                 sudokuPlaceNextNum(board, x, y);
-                if (isSudokuSolved == false) {
-                    sudokuRemoveNum(board, d, x, y);
-                }else{
-                    return;
-                }
+                if (isSudokuSolved == false) sudokuRemoveNum(board, d, x, y);
+                else return;
             }
         }
     }else{
@@ -6900,8 +6899,11 @@ void sudokuBackTrace(char** board, int x, int y) {
 }
 
 void solveSudoku(char** board, int boardSize, int* boardColSize){
+    isSudokuSolved = false;
+    memset(xCache, 0, sizeof(int)*81);
+    memset(yCache, 0, sizeof(int)*81);
+    memset(bCache, 0, sizeof(int)*81);
     int i, j;
-    
     for (i = 0; i < 9; ++i) {
         for (j = 0; j < 9; ++j) {
             if (board[i][j] != '.') {
@@ -6910,4 +6912,578 @@ void solveSudoku(char** board, int boardSize, int* boardColSize){
         }
     }
     sudokuBackTrace(board, 0, 0);
+}
+
+/// 是否素数
+bool isPrime(int num) {
+    if (num <= 3) {
+        return num > 1;
+    }
+    if (num % 6 != 1 && num % 6 != 5) {
+        return false;
+    }
+    int sqrtX = (int)sqrt(num);
+    for (int i = 5; i <= sqrtX; i += 6) {
+        if (num % i == 0 || num % (i + 2) == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+int primePalindrome(int N){
+    while (1) {
+        // 从实际数据来看，大于11的且位数为双数的数都不能同时满足素数和回文数两个条件，所以直接跳过
+        if (N >= 12 & N <= 100) return 101;
+        else if (N >= 1000 && N <= 10000) return 10301;
+        else if (N >= 100000 && N <= 1000000) return 1003001;
+        else if (N >= 10000000 && N <= 100000000) return 100030001;
+        if (isPalindrome(N) && isPrime(N)) {
+            return N;
+        } 
+        ++N;
+    }
+    return N;
+}
+
+bool isPerfectSquare(int num){
+    // 暴力法
+    int tmp;
+    int i = 1;
+    while (1) {
+        tmp = num/i;
+        if (tmp <= i) break;
+        ++i;
+    }
+    return (tmp == i && num%i == 0);
+    
+    // 数学方法 (1+3+5+...+(2n-1))=n^2
+//    int result = 0;
+//    int odd = 1;
+//    while (1) {
+//        result += odd;
+//        odd += 2;
+//        if (result > num) return false;
+//        if (result == num) return true;
+//    }
+
+    // 中值查找
+//    int l = 1;
+//    int r = num;
+//    int mid;
+//    if (num > 46340) {
+//        num = 46340;
+//    }
+//    while (l <= r) {
+//    mid = (l+r)/2;
+//        if (mid*mid > num) {
+//            r = mid-1;
+//        }else if (mid*mid < num) {
+//            l = mid+1;
+//        }else{
+//            return true;
+//        }
+//    }
+//    return false;
+    
+    //解法四：牛顿迭代法
+//    if(1 == num) return true;
+//    int i = num / 2;
+//    while((double)i * i > num){
+//        i = (i + num / i) / 2;
+//    }
+//    return i * i == num;
+    
+}
+
+int* gardenNoAdj(int N, int** paths, int pathsSize, int* pathsColSize, int* returnSize){
+    *returnSize = N;
+    int* result = malloc(sizeof(int)*(N+1));
+    memset(result, 0, sizeof(int)*(N+1));
+    int** map = malloc(sizeof(int*)*(N+1));
+    int i, j, index0, index1;
+    for (i = 0; i <= N; ++i) {
+        map[i] = malloc(sizeof(int)*3);
+        memset(map[i], 0, sizeof(int)*3);
+    }
+    
+    for (i = 0; i < pathsSize; ++i) {
+        index0 = paths[i][0];
+        index1 = paths[i][1];
+        if (map[index0][0] == 0) map[index0][0] = index1;
+        else if (map[index0][1] == 0) map[index0][1] = index1;
+        else if (map[index0][2] == 0) map[index0][2] = index1;
+        
+        if (map[index1][0] == 0) map[index1][0] = index0;
+        else if (map[index1][1] == 0) map[index1][1] = index0;
+        else if (map[index1][2] == 0) map[index1][2] = index0;
+    }
+    
+    for (i = 1; i <= N; ++i) {
+        for (j = 1; j <= 4; ++j) {
+            if (result[map[i][0]] != j && result[map[i][1]] != j && result[map[i][2]] != j) {
+                result[i] = j;
+                break;
+            }
+        }
+    }
+    
+    return result+1;
+}
+
+void findModeHelper(struct TreeNode* root, struct TreeNode** pre, int* curCount, int* maxCount, int* result, int *returnSize) {
+    // 中序历遍bts二叉树，是一个有序数组，等于把问题变成 -- “从一个有序数组中找出众数”
+    if (root == NULL) return;
+    findModeHelper(root->left, pre, curCount, maxCount, result, returnSize);
+    if (*pre != NULL) {
+        // 与前一个数做对比
+        if (root->val == (*pre)->val) {
+            *curCount = *curCount+1;
+        }else{
+            *curCount = 1;
+        }
+    }
+    if (*curCount == *maxCount) {
+        // 等于当前众数数量，插入数组
+        result[*returnSize] = root->val;
+        ++(*returnSize);
+    }else if(*curCount > *maxCount){
+        // 大于当前众数数量，清空数组后，插入
+        result[0] = root->val;
+        *returnSize = 1;
+        *maxCount = *curCount;
+    }
+    // 记录前一个数的指针
+    *pre = root;
+    findModeHelper(root->right, pre, curCount, maxCount, result, returnSize);
+}
+
+int* findMode(struct TreeNode* root, int* returnSize){
+    *returnSize = 0;
+    if (root == NULL) return NULL;
+    int* result = malloc(sizeof(int)*10000);
+    int maxCount = 0;
+    int curCount = 1;
+    struct TreeNode* pre = NULL;
+    findModeHelper(root, &pre, &curCount, &maxCount, result, returnSize);
+    
+    return result;
+}
+
+int* addToArrayForm(int* A, int ASize, int K, int* returnSize){
+    int size = 5;
+    if (ASize >= size) size = ASize+1;
+    int *result = malloc(sizeof(int)*size);
+    int i = ASize-1, j = size-1;
+    for (; i >= 0 && K > 0; --i, --j) {
+        K = A[i]+K;
+        result[j] = K%10;
+        K = K/10;
+    }
+    if (K > 0) {
+        while (K > 0) {
+            result[j--] = K%10;
+            K = K/10;
+        }
+    }else{
+        while (i >= 0) result[j--] = A[i--];
+    }
+    
+    *returnSize = size-j-1;
+    return result+j+1;
+}
+
+int numPairsDivisibleBy60(int* time, int timeSize){
+    int hash[60] = {0};
+    int i, count = 0;
+    for (i = 0; i < timeSize; ++i) ++hash[time[i]%60]; 
+    count += hash[0]*(hash[0]-1)/2;
+    count += hash[30]*(hash[30]-1)/2;
+    for (i = 1; i < 30; ++i) {
+        count += hash[i]*hash[60-i];
+    }
+    return count;
+}
+
+int findLengthOfLCIS(int* nums, int numsSize){
+    if (numsSize == 0) return 0;
+    int maxCount = 1;
+    int curCount = 1;
+    for (int i = 1; i < numsSize; ++i) {
+        if (nums[i] > nums[i-1]) {
+            ++curCount;
+            if (curCount > maxCount) maxCount = curCount;
+        }else{
+            curCount = 1;
+        }
+    }
+    return maxCount;
+}
+
+bool* prefixesDivBy5(int* A, int ASize, int* returnSize){
+    /*
+    0
+    101
+    1010
+    1111
+    10100
+    11001
+    11110
+    100011
+    101000
+    
+    n%5 == k;
+    (n*2)%5 == (k*2)%5
+    */
+    
+    *returnSize = ASize;
+    bool* result = malloc(sizeof(bool)*ASize);
+    int last = 0;
+    for (int i = 0; i < ASize; ++i) {
+        last = (last*2+A[i])%5;
+        result[i] = (last == 0);
+    }
+    return result;
+}
+
+char nextGreatestLetter(char* letters, int lettersSize, char target){
+    if (letters[lettersSize-1] <= target) return letters[0];
+    ++target;
+    int l = 0;
+    int r = lettersSize-1;
+    int m = 0;
+    while (l < r) {
+        m = (l+r)/2;
+        if (letters[m] == target) {
+            return letters[m];
+        }else if (letters[m] > target) {
+            r = m;
+        }else{
+            l = m+1;
+        }
+    }
+    return letters[r];
+    
+    // 如果數組無序
+//    int* hash[26] = {0};
+//    int i = 0;
+//    while (i < lettersSize) {
+//        hash[letters[i]-'a'] += 1;
+//        ++i;
+//    }
+//    i = (target-'a'+1)%26;
+//    while (1) {
+//        if (hash[i] > 0) return i+'a';
+//        ++i;
+//        if (i >= 26) i = i%26;
+//    }
+//    return 'a';
+}
+
+bool checkPerfectNumber(int num){
+    // 欧几里得-欧拉定理 每个偶完全数都可以写成 2^(p-1)*(2^p-1)，p是素數；而奇完全數暫時還沒有發現
+    // 由於在int的輸入範圍內，完全数不是很多，所以直接可以窮盡求解
+    int p[] = {2,3,5,7,11,13,17,19,31};
+    for (int i = 0; i < 9; ++i) {
+        if (pow(2, p[i]-1)*(pow(2, p[i])-1) == num) return true;
+    }
+    return false;
+    
+    // 找出所有因數相加，對比。（暴力法）
+    if (num < 5 || num&1) return false;
+    int sum = 0;
+    int target = num/2;
+    for (int i = 1; i <= target; ++i) {
+        if (num%i == 0) sum += i;
+    }
+    return sum==num;
+}
+
+int arrangeCoins(int n){
+    //1+2+...+n = n*(n+1)/2;
+    // n = m*(m+1)/2
+    // 2n = m^2+m -> 2n+0.25 = (m+0.5)^2
+    // m = sqrt(2n+0.25)-0.5
+    return sqrt(2.0*n+0.25)-0.5;
+//    int count = -1;
+//    int i = 1;
+//    while (n >= 0) {
+//        n = n-i;
+//        ++i;
+//        ++count;
+//    }
+//    return count;
+}
+
+int numEquivDominoPairs(int** dominoes, int dominoesSize, int* dominoesColSize){
+    int hash[91] = {0};
+    int i, j;
+    for (i = 0; i < dominoesSize; ++i) {
+        if (dominoes[i][0] > dominoes[i][1]) {
+            ++hash[dominoes[i][0]*9+dominoes[i][1]];
+        }else{
+            ++hash[dominoes[i][1]*9+dominoes[i][0]];
+        }
+    }
+    int count = 0;
+    for (i = 1; i <= 9; ++i) {
+        for (j = i; j >= 1; --j) {
+            count += hash[i*9+j]*(hash[i*9+j]-1)/2;
+        }
+    }
+    
+    return count;
+}
+
+int dominantIndex(int* nums, int numsSize){
+    int max1 = 0;
+    int max2 = 0;
+    int index = 0;
+    for (int i = 0; i < numsSize; ++i) {
+        if (nums[i] > max1) {
+            max2 = max1;
+            max1 = nums[i];
+            index = i;
+        }else if (nums[i] > max2){
+            max2 = nums[i];
+        }
+    }
+    
+    return max1>=2*max2?index:-1;
+}
+
+bool isSubtreeHelper(struct TreeNode* s, struct TreeNode* t) {
+    if (t == NULL && s == NULL) return true;
+    if (s == NULL || t == NULL) return false;
+    if (s->val == t->val) {
+        return isSubtreeHelper(s->left, t->left)&&isSubtreeHelper(s->right, t->right);
+    }else{
+        return false;
+    }
+}
+
+bool isSubtree(struct TreeNode* s, struct TreeNode* t){
+    if (s == NULL) return false;
+    return isSubtreeHelper(s, t)||isSubtree(s->left, t)||isSubtree(s->right, t);
+}
+
+int thirdMax(int* nums, int numsSize){
+    int max1 = nums[0], max2, max3;
+    bool hasSetMax2 = false;
+    bool hasSetMax3 = false;
+    for (int i = 1; i < numsSize; ++i) {
+        if (nums[i] > max1) {
+            if (hasSetMax2) {
+                max3 = max2;
+                hasSetMax3 = true;
+            }
+            max2 = max1;
+            hasSetMax2 = true;
+            max1 = nums[i];
+        }else if (nums[i] < max1 && ((hasSetMax2 && nums[i] > max2) || hasSetMax2 == false)) {
+            if (hasSetMax2) {
+                if (nums[i] > max2) {
+                    max3 = max2;
+                    hasSetMax3 = true;
+                    max2 = nums[i];
+                }
+            }else{
+                max2 = nums[i];
+                hasSetMax2 = true;
+            }
+        }else if (hasSetMax2 && nums[i] < max2) {
+            if (hasSetMax3) {
+                if (nums[i] > max3) {
+                    max3 = nums[i];
+                }
+            }else{
+                max3 = nums[i];
+                hasSetMax3 = true;
+            }
+        }
+    }
+    
+    return hasSetMax3?max3:max1;
+}
+
+int* numMovesStones(int a, int b, int c, int* returnSize){
+    if (a>b) a^=b^=a^=b;
+    if (a>c) a^=c^=a^=c;
+    if (b>c) b^=c^=b^=c;
+    int maxCount = 0;
+    int minCount = 0;
+    if (b-a == 2 || c-b == 2) minCount = 1;
+    else{
+        if (b-a > 1) ++minCount;
+        if (c-b > 1) ++minCount;
+    }
+    maxCount = maxCount+c-a-2;
+    int* result = malloc(sizeof(int)*2);
+    result[1] = maxCount;
+    result[0] = minCount;
+    *returnSize = 2;
+    return result;
+}
+
+bool isBadVersion(int version);
+
+int firstBadVersion(int n) {
+    long l = 1;
+    long r = n;
+    int m;
+    while (l < r) {
+        m = (l+r)/2;
+        if (isBadVersion(m) == true) {
+            r = m;
+        }else{
+            l = m+1;
+        }
+    }
+    return (l+r)/2;
+}
+
+bool validPalindrome(char * s){
+    int r = strlen(s)-1;
+    int l = 0;
+    bool hasDelete = false;
+    bool rightFlag = false;
+    int deleteL;
+    int deleteR;
+    while (l < r) {
+        if (s[l] != s[r]) {
+            if (hasDelete == false) {
+                if (s[l+1] == s[r]) {
+                    deleteL = l;
+                    deleteR = r;
+                    l += 2;
+                    --r;
+                }else{
+                    rightFlag = true;
+                    --r;
+                }
+                hasDelete = true;
+            }else{
+                if (rightFlag) return false;
+                l = deleteL;
+                r = deleteR-1;
+                rightFlag = true;
+            }
+        }else{
+            ++l;
+            --r;
+        }
+    }
+    return true;
+}
+
+bool wordPattern(char * pattern, char * str){
+    int i = 0, j, k, hashIndex;
+    int lastIndex = 0;
+    int pIndex = 0;
+    if (pattern[pIndex] == '\0' && str[lastIndex] != '\0') return false;
+    char** hash = malloc(sizeof(char*)*26);
+    for (j = 0; j < 26; ++j) hash[j] = NULL;
+    
+    while (str[i] != '\0') {
+        if (str[i] == ' ') {
+            hashIndex = pattern[pIndex]-'a';
+            if (hash[hashIndex] != NULL) {
+                j = 0;
+                k = lastIndex;
+                while (k < i) {
+                    if (hash[hashIndex][j++] != str[k++]) return false;
+                }
+            }else{
+                hash[hashIndex] = malloc(sizeof(char)*(i-lastIndex+1));
+                memcpy(hash[hashIndex], str+lastIndex, sizeof(char)*(i-lastIndex));
+                hash[hashIndex][i-lastIndex] = '\0';
+                
+                for (j = 0; j < 26; ++j) {
+                    if (hash[j] != NULL && hashIndex != j) {
+                        k = 0;
+                        while (hash[j][k] != '\0') {
+                            if (hash[hashIndex][k] != hash[j][k]) {
+                                break;
+                            }
+                            ++k;
+                        }
+                        if (hash[hashIndex][k] == hash[j][k]) return false;
+                    }
+                }
+            }
+            lastIndex = i+1;
+            ++pIndex;
+            if (pattern[pIndex] == '\0' && str[lastIndex] != '\0') return false;
+        }
+        ++i;
+    }
+    
+    hashIndex = pattern[pIndex]-'a';
+    if (hash[hashIndex] != NULL) {
+        j = 0;
+        k = lastIndex;
+        while (k < i) {
+            if (hash[hashIndex][j++] != str[k++]) return false;
+        }
+    }else{
+        hash[hashIndex] = malloc(sizeof(char)*(i-lastIndex+1));
+        memcpy(hash[hashIndex], str+lastIndex, sizeof(char)*(i-lastIndex));
+        hash[hashIndex][i-lastIndex] = '\0';
+        for (j = 0; j < 26; ++j) {
+            if (hash[j] != NULL && hashIndex != j) {
+                k = 0;
+                while (hash[j][k] != '\0') {
+                    if (hash[hashIndex][k] != hash[j][k]) {
+                        break;
+                    }
+                    ++k;
+                }
+                if (hash[hashIndex][k] == hash[j][k]) return false;
+            }
+        }
+    }
+    free(hash);
+    if (pattern[pIndex+1] != '\0') return false;
+    return true;
+}
+
+int compress(char* chars, int charsSize){
+    if (charsSize == 0) return 0;
+    char lastChar = chars[0];
+    int lastCount = 1;
+    int i = 1;
+    int result = 0;
+    while (i <= charsSize) {
+        if (i != charsSize && lastChar == chars[i]) {
+            ++lastCount;
+        }else{
+            chars[result] = chars[i-1];
+            ++result;
+            if (lastCount > 1) {
+                if (lastCount >= 1000) {
+                    chars[result] = lastCount/1000+'0';
+                    lastCount %= 1000;
+                    ++result;
+                }
+                if (lastCount >= 100) {
+                    chars[result] = lastCount/100+'0';
+                    lastCount %= 100;
+                    ++result;
+                }
+                if (lastCount >= 10) {
+                    chars[result] = lastCount/10+'0';
+                    lastCount %= 10;
+                    ++result;
+                }
+                chars[result] = lastCount+'0';
+                ++result;
+            }
+            if (i == charsSize) break;
+            lastChar = chars[i];
+            lastCount = 1;
+        }
+        ++i;
+    }
+    
+    return result;
 }

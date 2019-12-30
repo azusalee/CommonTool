@@ -878,4 +878,52 @@ bool wordPattern(char * pattern, char * str);
 // 压缩字符串 https://leetcode-cn.com/problems/string-compression/
 int compress(char* chars, int charsSize);
 
+// 给定数字能组成的最大时间 https://leetcode-cn.com/problems/largest-time-for-given-digits/
+char * largestTimeFromDigits(int* A, int ASize);
+
+// 寻找数组的中心索引 https://leetcode-cn.com/problems/find-pivot-index/
+int pivotIndex(int* nums, int numsSize);
+
+// 子数组最大平均数 I https://leetcode-cn.com/problems/maximum-average-subarray-i/
+double findMaxAverage(int* nums, int numsSize, int k);
+
+// 统计位数为偶数的数字 https://leetcode-cn.com/problems/find-numbers-with-even-number-of-digits/
+int findNumbers(int* nums, int numsSize);
+
+// 整数的各位积和之差 https://leetcode-cn.com/problems/subtract-the-product-and-sum-of-digits-of-an-integer/
+int subtractProductAndSum(int n);
+
+// 访问所有点的最小时间 https://leetcode-cn.com/problems/minimum-time-visiting-all-points/
+int minTimeToVisitAllPoints(int** points, int pointsSize, int* pointsColSize);
+
+// 二进制链表转整数 https://leetcode-cn.com/problems/convert-binary-number-in-a-linked-list-to-integer/
+int getDecimalValue(struct ListNode* head);
+
+// 二叉搜索树的范围和 https://leetcode-cn.com/problems/range-sum-of-bst/
+int rangeSumBST(struct TreeNode* root, int L, int R);
+
+// 奇数值单元格的数目 https://leetcode-cn.com/problems/cells-with-odd-values-in-a-matrix/
+int oddCells(int n, int m, int** indices, int indicesSize, int* indicesColSize);
+
+// 二叉搜索树中的搜索 https://leetcode-cn.com/problems/search-in-a-binary-search-tree/
+struct TreeNode* searchBST(struct TreeNode* root, int val);
+
+// 键盘行 https://leetcode-cn.com/problems/keyboard-row/
+char ** findWords(char ** words, int wordsSize, int* returnSize);
+
+// 字符的最短距离 https://leetcode-cn.com/problems/shortest-distance-to-a-character/
+int* shortestToChar(char * S, char C, int* returnSize);
+
+// 子域名访问计数 https://leetcode-cn.com/problems/subdomain-visit-count/
+char ** subdomainVisits(char ** cpdomains, int cpdomainsSize, int* returnSize);
+
+// 车的可用捕获量 https://leetcode-cn.com/problems/available-captures-for-rook/
+int numRookCaptures(char** board, int boardSize, int* boardColSize);
+
+// 有序数组中出现次数超过25%的元素 https://leetcode-cn.com/problems/element-appearing-more-than-25-in-sorted-array/
+int findSpecialInteger(int* arr, int arrSize);
+
+// 查询后的偶数和 https://leetcode-cn.com/problems/sum-of-even-numbers-after-queries/
+int* sumEvenAfterQueries(int* A, int ASize, int** queries, int queriesSize, int* queriesColSize, int* returnSize);
+
 #endif /* LeetCodeC_h */

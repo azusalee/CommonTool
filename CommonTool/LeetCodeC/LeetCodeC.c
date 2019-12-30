@@ -4901,16 +4901,12 @@ int findContentChildren(int* g, int gSize, int* s, int sSize){
 }
 
 int trailingZeroes(int n){
-    if (n == 0) return 1;
     int count = 0;
-    int tmp = 1;
-    for (int i = 2; i <= n; ++i) {
-        tmp *= i;
-        while (tmp%10 == 0) {
-            ++count;
-            tmp /= 10;
-        }
+    while (n >= 5) {
+        n /= 5;
+        count += n;
     }
+    
     return count;
 }
 
@@ -7325,22 +7321,22 @@ int* numMovesStones(int a, int b, int c, int* returnSize){
     return result;
 }
 
-bool isBadVersion(int version);
-
-int firstBadVersion(int n) {
-    long l = 1;
-    long r = n;
-    int m;
-    while (l < r) {
-        m = (l+r)/2;
-        if (isBadVersion(m) == true) {
-            r = m;
-        }else{
-            l = m+1;
-        }
-    }
-    return (l+r)/2;
-}
+//bool isBadVersion(int version);
+//
+//int firstBadVersion(int n) {
+//    long l = 1;
+//    long r = n;
+//    int m;
+//    while (l < r) {
+//        m = (l+r)/2;
+//        if (isBadVersion(m) == true) {
+//            r = m;
+//        }else{
+//            l = m+1;
+//        }
+//    }
+//    return (l+r)/2;
+//}
 
 bool validPalindrome(char * s){
     int r = strlen(s)-1;
@@ -7485,5 +7481,408 @@ int compress(char* chars, int charsSize){
         ++i;
     }
     
+    return result;
+}
+
+char * largestTimeFromDigits(int* A, int ASize){
+    quickSort(A, 0, ASize-1);
+    char* result = malloc(sizeof(char)*6);
+    result[5] = '\0';
+    result[2] = ':';
+    int i;
+    bool hasSet = false;
+    for (i = ASize-1; i >= 0; --i) {
+        if (A[i] <= 2) {
+            result[0] = A[i]+'0';
+            A[i] = -1;
+            hasSet = true;
+            break;
+        }
+    }
+    if (hasSet == false) return "";
+    hasSet = false;
+    for (i = ASize-1; i >= 0; --i) {
+        if (result[0] != '2') {
+            if (A[i] >= 0) {
+                result[1] = A[i]+'0';
+                A[i] = -1;
+                hasSet = true;
+                break;
+            }
+        }else{
+            if (A[i] >= 0 && A[i] <= 3) {
+                result[1] = A[i]+'0';
+                A[i] = -1;
+                hasSet = true;
+                break;
+            }
+        }
+    }
+    if (hasSet == false) return "";
+    hasSet = false;
+    for (i = ASize-1; i >= 0; --i) {
+        if (A[i] >= 0 && A[i] <= 5) {
+            result[3] = A[i]+'0';
+            A[i] = -1;
+            hasSet = true;
+            break;
+        }
+    }
+    if (hasSet == false) {
+        if (result[0] == '2' && (result[1] == '0' || result[1] == '1')) {
+            int hour10 = result[0];
+            result[0] = result[1];
+            result[3] = hour10;
+            for (i = ASize-1; i >= 0; --i) {
+                if (A[i] >= 0) {
+                    result[1] = A[i]+'0';
+                    A[i] = -1;
+                    hasSet = true;
+                    break;
+                }
+            }
+            if (hasSet == false) return "";
+        }else{
+            return "";
+        }
+    }
+    for (i = ASize-1; i >= 0; --i) {
+        if (A[i] >= 0) {
+            result[4] = A[i]+'0';
+            A[i] = -1;
+            break;
+        }
+    }
+    
+    return result;
+}
+
+int pivotIndex(int* nums, int numsSize){
+    int i;
+    int leftNum = 0;
+    int total = 0;
+    for (i = 0; i < numsSize; ++i) total += nums[i];
+    for (i = 0; i < numsSize; ++i) {
+        leftNum += nums[i];
+        if (total-leftNum+nums[i] == leftNum) return i;
+    }
+    return -1;
+}
+
+double findMaxAverage(int* nums, int numsSize, int k){
+    int maxSum = 0;
+    int sum = 0;
+    int i;
+    for (i = 0; i < k; ++i) sum += nums[i];
+    
+    maxSum = sum;
+    for (i = k; i < numsSize; ++i) {
+        sum = sum-nums[i-k]+nums[i];
+        if (sum > maxSum) maxSum = sum;
+    }
+    
+    
+    return (double)maxSum/k;
+}
+
+int findNumbers(int* nums, int numsSize){
+    int count = 0;
+    int dig;
+    int tmp;
+    for (int i = 0; i < numsSize; ++i) {
+        if (nums[i] == 0) continue;
+        dig = 0;
+        tmp = nums[i];
+        while (tmp != 0) {
+            tmp /= 10;
+            ++dig;
+        }
+        if (dig%2 == 0) ++count;
+    }
+    return count;
+}
+
+int subtractProductAndSum(int n){
+    int muti = 1;
+    int plus = 0;
+    int tmp;
+    while (n) {
+        tmp = n%10;
+        muti *= tmp;
+        plus += tmp;
+        n /= 10;
+    }
+    
+    return muti-plus;
+}
+
+int minTimeToVisitAllPoints(int** points, int pointsSize, int* pointsColSize){
+    int result = 0;
+    for (int i = 1; i < pointsSize; ++i) {
+        result += max(abs(points[i-1][0]-points[i][0]), abs(points[i-1][1]-points[i][1])); 
+    }
+    return result;
+}
+
+int getDecimalValue(struct ListNode* head){
+    int result = 0;
+    while (head) {
+        result = result*2+head->val;
+        head = head->next;
+    }
+    return result;
+}
+
+int rangeSumBST(struct TreeNode* root, int L, int R){
+    if (root != NULL) {
+        if (root->val >= L && root->val <= R) {
+            return root->val+rangeSumBST(root->left, L, R)+rangeSumBST(root->right, L, R);
+        }else if (root->val < L) {
+            return rangeSumBST(root->right, L, R);
+        }else{
+            return rangeSumBST(root->left, L, R);
+        }
+    }
+    return 0;
+}
+
+int oddCells(int n, int m, int** indices, int indicesSize, int* indicesColSize){
+    // r[1,1] c[0,2,0]
+    int* r = malloc(sizeof(int)*n);
+    int* c = malloc(sizeof(int)*m);
+    memset(r, 0, sizeof(int)*n);
+    memset(c, 0, sizeof(int)*m);
+    int i,j;
+    for (i = 0; i < indicesSize; ++i) {
+        r[indices[i][0]] += 1;
+        c[indices[i][1]] += 1;
+    }
+    
+    int result = 0;
+    for (i = 0; i < n; ++i) {
+        for (j = 0; j < m; ++j) {
+            if ((r[i]+c[j])%2 == 1) ++result;
+        }
+    }
+    free(r);
+    free(c);
+    return result;
+}
+
+struct TreeNode* searchBST(struct TreeNode* root, int val){
+    if (root == NULL) return NULL;
+    if (root->val == val) return root;
+    else if (root->val < val) return searchBST(root->right, val);
+    else return searchBST(root->left, val);
+}
+
+char ** findWords(char ** words, int wordsSize, int* returnSize){
+    int alphabet[26] = {1,2,2,1,0,1,1,1,0,1,1,1,2,2,0,0,0,0,1,0,0,2,0,2,0,2};
+    int firstCharLine;
+    int j;
+    char **result = malloc(sizeof(char*)*wordsSize);
+    *returnSize = 0;
+    for (int i = 0; i < wordsSize; ++i) {
+        if (words[i][0] > 'Z') firstCharLine = alphabet[words[i][0]-'a'];
+        else firstCharLine = alphabet[words[i][0]-'A'];
+        j = 1;
+        while (words[i][j] != '\0') {
+            if (words[i][j] > 'Z'){
+                if (firstCharLine != alphabet[words[i][j]-'a']) break;
+            }
+            else if (firstCharLine != alphabet[words[i][j]-'A']) break;
+            ++j;
+        }
+        if (words[i][j] == '\0') result[(*returnSize)++] = words[i];
+    }
+    
+    return result;
+}
+
+int* shortestToChar(char * S, char C, int* returnSize){
+    int len = strlen(S);
+    int* result = malloc(sizeof(int)*len);
+    *returnSize = len;
+    int i = 0, j = 0, lastEIndex = -1;
+    while (S[i] != '\0') {
+        if (S[i] == C) {
+            if (lastEIndex < 0) {
+                for (; j <= i; ++j) result[j] = i-j;
+            }else{
+                for (; j <= i; ++j) {
+                    if (i-j < j-lastEIndex) result[j] = i-j;
+                    else result[j] = j-lastEIndex;
+                }
+            }
+            lastEIndex = i;
+        }
+        ++i;
+    }
+    for (; j < len; ++j) result[j] = j-lastEIndex;
+    return result;
+}
+
+char ** subdomainVisits(char ** cpdomains, int cpdomainsSize, int* returnSize){
+    char **result = malloc(sizeof(char*)*300);
+    int *counts = malloc(sizeof(int)*300);
+    *returnSize = 0;
+    int i, j, k, l, count;
+    bool hasGetCount, isSameDomain;
+    for (i = 0; i < cpdomainsSize; ++i) {
+        j = 0;
+        count = 0;
+        hasGetCount = false;
+        while (cpdomains[i][j] != '\0') {
+            if (cpdomains[i][j] == ' ' || cpdomains[i][j] == '.') {
+                hasGetCount = true;
+                isSameDomain = false;
+                ++j;
+                for (k = 0; k < *returnSize; ++k) {
+                    l = 0;
+                    while (result[k][l] != '\0' && cpdomains[i][j+l] != '\0') {
+                        if (result[k][l] != cpdomains[i][j+l]) break;
+                        ++l;
+                    }
+                    if (result[k][l] == '\0' && cpdomains[i][j+l] == '\0') {
+                        isSameDomain = true;
+                        counts[k] += count;
+                        break;
+                    }
+                }
+                if (isSameDomain == false) {
+                    result[*returnSize] = malloc(sizeof(char)*110);
+                    l = 0;
+                    while (cpdomains[i][j+l] != '\0') {
+                        result[*returnSize][l] = cpdomains[i][j+l];
+                        ++l;
+                    }
+                    result[*returnSize][l] = '\0';
+                    counts[*returnSize] = count;
+                    *returnSize += 1;
+                }
+            }else{
+                if (hasGetCount == false) count = count*10+cpdomains[i][j]-'0';
+            }
+            ++j;
+        }
+    }
+    
+    char *countChar = malloc(sizeof(char)*10);
+    int countCharLen;
+    int tmpCount;
+    char tmpChar;
+    int len;
+    for (i = 0; i < *returnSize; ++i) {
+        countCharLen = 0;
+        j = 0;
+        tmpCount = counts[i];
+        while (tmpCount != 0) {
+            countChar[j++] = tmpCount%10+'0';
+            tmpCount /= 10;
+        }
+        k = 0;
+        countChar[j] = '\0';
+        countCharLen = j;
+        --j;
+        while (k < j) {
+            tmpChar = countChar[j];
+            countChar[j] = countChar[k];
+            countChar[k] = tmpChar;
+            ++k;
+            --j;
+        }
+        len = strlen(result[i]);
+        for (l = len; l >= 0; --l) {
+            result[i][l+countCharLen+1] = result[i][l];
+        }
+        for (l = 0; l < countCharLen; ++l) {
+            result[i][l] = countChar[l];
+        }
+        result[i][l] = ' ';
+    }
+    
+    return result;
+}
+
+int numRookCaptures(char** board, int boardSize, int* boardColSize){
+    int i, j;
+    int ri, rj;
+    int count = 0;
+    for (i = 0; i < boardSize; ++i) {
+        for (j = 0; j < boardColSize[0]; ++j) {
+            if (board[i][j] == 'R') {
+                ri = i;
+                rj = j;
+                for (i = ri+1; i < boardSize; ++i) {
+                    if (board[i][rj] == 'B') {
+                        break;
+                    }else if (board[i][rj] == 'p') {
+                        ++count;
+                        break;
+                    }
+                }
+                for (i = ri-1; i >= 0; --i) {
+                    if (board[i][rj] == 'B') {
+                        break;
+                    }else if (board[i][rj] == 'p') {
+                        ++count;
+                        break;
+                    }
+                }
+                for (j = rj+1; j < boardColSize[0]; ++j) {
+                    if (board[ri][j] == 'B') {
+                        break;
+                    }else if (board[ri][j] == 'p') {
+                        ++count;
+                        break;
+                    }
+                }
+                for (j = rj-1; j >= 0; --j) {
+                    if (board[ri][j] == 'B') {
+                        break;
+                    }else if (board[ri][j] == 'p') {
+                        ++count;
+                        break;
+                    }
+                }
+                return count;
+            }
+        }
+    }
+    
+    return count;
+}
+
+int findSpecialInteger(int* arr, int arrSize){
+    int targetSize = arrSize/4;
+    int count = 0;
+    for (int i = 1; i < arrSize; ++i) {
+        if (arr[i] != arr[i-1]) {
+            count = 1;
+        }else{
+            ++count;
+            if (count > targetSize) {
+                return arr[i];
+            }
+        }
+    }
+    
+    return arr[0];
+}
+
+int* sumEvenAfterQueries(int* A, int ASize, int** queries, int queriesSize, int* queriesColSize, int* returnSize){
+    int sum = 0;
+    int i;
+    for (i = 0; i < ASize; ++i) {
+        if (A[i]%2 == 0) sum += A[i];
+    }
+    int* result = malloc(sizeof(int)*queriesSize);
+    for (i = 0; i < queriesSize; ++i) {
+        if (A[queries[i][1]]%2 == 0) sum -= A[queries[i][1]];
+        A[queries[i][1]] += queries[i][0];
+        if (A[queries[i][1]]%2 == 0) sum += A[queries[i][1]];
+        result[i] = sum;
+    }
+    *returnSize = queriesSize;
     return result;
 }

@@ -25,6 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
     rotatedDigits(857);
     int nums[] = {1,3};
     lastStoneWeight(nums, 2);

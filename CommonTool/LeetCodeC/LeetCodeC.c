@@ -7886,3 +7886,64 @@ int* sumEvenAfterQueries(int* A, int ASize, int** queries, int queriesSize, int*
     *returnSize = queriesSize;
     return result;
 }
+
+int* fraction(int* cont, int contSize, int* returnSize){
+    *returnSize = 2;
+    int* result = malloc(sizeof(int)*2);
+    result[0] = 1;
+    result[1] = 0;
+    int tmp;
+    for (int i = contSize-1; i >= 0; --i) {
+        tmp = result[0];
+        result[0] = result[1];
+        result[1] = tmp;
+        result[0] += result[1]*cont[i];
+    }
+    return result;
+}
+
+void getMinimumDifferenceHelper(struct TreeNode* root, int* preValue, int* result){
+    if (root == NULL) return;
+    getMinimumDifferenceHelper(root->left, preValue, result);
+    if (*preValue != -1) {
+        if (*result == -1 || *result > root->val-*preValue) {
+            *result = root->val-*preValue;
+        }
+    }
+    *preValue = root->val;
+    getMinimumDifferenceHelper(root->right, preValue, result);
+}
+
+int getMinimumDifference(struct TreeNode* root){
+    int preValue = -1, result = -1;
+    getMinimumDifferenceHelper(root, &preValue, &result);
+    return result;
+}
+
+int** shiftGrid(int** grid, int gridSize, int* gridColSize, int k, int* returnSize, int** returnColumnSizes){
+    int totalCount = gridSize*gridColSize[0];
+    k = k%totalCount;
+    *returnSize = gridSize;
+    *returnColumnSizes = gridColSize;
+    if (k == 0) return grid;
+    int i = 0, j = 0, m, n;
+    int** result = malloc(sizeof(int*)*gridSize);
+    for (i = 0; i < gridSize; ++i) {
+        result[i] = malloc(sizeof(int)*gridColSize[0]);
+    }
+    i = 0;
+    int tmp;
+    while (totalCount--) {
+        tmp = grid[i][j];
+        m = i;
+        n = j+k;
+        m += n/gridColSize[0];
+        n = n%gridColSize[0];
+        m = m%gridSize;
+        result[m][n] = tmp;
+        ++j;
+        i += j/gridColSize[0];
+        j = j%gridColSize[0];
+    }
+    return result;
+}

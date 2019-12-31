@@ -926,4 +926,13 @@ int findSpecialInteger(int* arr, int arrSize);
 // 查询后的偶数和 https://leetcode-cn.com/problems/sum-of-even-numbers-after-queries/
 int* sumEvenAfterQueries(int* A, int ASize, int** queries, int queriesSize, int* queriesColSize, int* returnSize);
 
+// 分式化简 https://leetcode-cn.com/problems/deep-dark-fraction/
+int* fraction(int* cont, int contSize, int* returnSize);
+
+// 二叉搜索树的最小绝对差 https://leetcode-cn.com/problems/minimum-absolute-difference-in-bst/
+int getMinimumDifference(struct TreeNode* root);
+
+// 二维网格迁移 https://leetcode-cn.com/problems/shift-2d-grid/
+int** shiftGrid(int** grid, int gridSize, int* gridColSize, int k, int* returnSize, int** returnColumnSizes);
+
 #endif /* LeetCodeC_h */

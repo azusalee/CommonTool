@@ -7947,3 +7947,192 @@ int** shiftGrid(int** grid, int gridSize, int* gridColSize, int k, int* returnSi
     }
     return result;
 }
+
+int sumOfLeftLeaves(struct TreeNode* root){
+    if (root == NULL) return 0;
+    int result = 0;
+    if (root->left) {
+        if (root->left->left == NULL && root->left->right == NULL) {
+            result += root->left->val;
+        }else{
+            result += sumOfLeftLeaves(root->left);
+        }
+    }
+    if (root->right) {
+        result += sumOfLeftLeaves(root->right);
+    }
+    return result;
+}
+
+bool findTargetHelper(struct TreeNode* root, struct TreeNode* curNode, int k){
+    if (curNode == NULL) return false;
+    int target = k-curNode->val;
+    struct TreeNode* tmp = root;
+    while (tmp) {
+        if (tmp->val == target) {
+            if (tmp == curNode) {
+                break;
+            }
+            return true;
+        }else if (tmp->val < target){
+            tmp = tmp->right;
+        }else{
+            tmp = tmp->left;
+        }
+    }
+    return findTargetHelper(root, curNode->left, k) || findTargetHelper(root, curNode->right, k);
+}
+
+bool findTarget(struct TreeNode* root, int k){
+    return findTargetHelper(root, root, k);
+}
+
+typedef struct {
+    int val;
+    int pos;
+}ValuePos;
+
+int compareContainsNearbyDuplicate(const void * a, const void * b){
+    if((*(ValuePos*)a).val >= (*(ValuePos*)b).val){
+        return 1;
+    }else{
+        return -1;
+    }
+}
+/// 排序后再对比，复杂度O(nlog(n))
+bool containsNearbyDuplicate(int* nums, int numsSize, int k) {
+    if(0 >= numsSize){
+        return false;
+    }
+    ValuePos *vp = (ValuePos*)malloc(sizeof(ValuePos) * numsSize);
+    int i;
+    for(i=0; i<numsSize; i++){
+        vp[i].pos = i;
+        vp[i].val = nums[i];
+    }
+
+    qsort(vp, numsSize, sizeof(vp[0]), compareContainsNearbyDuplicate);
+
+    for(i=0; i<numsSize-1; i++){
+        if(vp[i].val != vp[i+1].val){
+            continue;
+        }else{
+            if(abs(vp[i+1].pos - vp[i].pos) <= k){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+/// 时间复杂度为O(n*k)，效率比较低， 几乎超时
+//bool containsNearbyDuplicate(int* nums, int numsSize, int k){
+//    int j;
+//    if (k >= numsSize) k = numsSize-1;
+//    for (int i = k; i <= numsSize; ++i) {
+//        for (j = 1; j < k; ++j) {
+//            if (nums[i] == nums[i-j]) return true;
+//        }
+//    }
+//    return false;
+//}
+int* findErrorNums(int* nums, int numsSize, int* returnSize){
+    *returnSize = 2;
+    int* result = malloc(sizeof(int)*2);
+    int* hash = malloc(sizeof(int)*(numsSize+1));
+    memset(hash, 0, sizeof(int)*(numsSize+1));
+    for (int i = 0; i < numsSize; ++i) {
+        if (hash[nums[i]] == 1) result[0] = nums[i];
+        hash[nums[i]] += 1;
+    }
+    for (int i = 1; i <= numsSize; ++i) {
+        if (hash[i] == 0) {
+            result[1] = i;
+            break;
+        }
+    }
+    free(hash);
+    return result;
+//    qsort(nums, numsSize, sizeof(int), compare);
+//    int* result = malloc(sizeof(int)*2);
+//    result[0] = 0;
+//    result[1] = 0;
+//    int j = 1;
+//    for (int i = 0; i < numsSize-1; ++i) {
+//        if (result[1] == 0 && j != nums[i]) result[1] = j;
+//        if (nums[i] == nums[i+1]) {
+//            result[0] = nums[i];
+//        }else{
+//            ++j;
+//        }
+//        if (result[0] != 0 && result[1] != 0) break;
+//    }
+//    if (result[1] == 0) {
+//        if (nums[numsSize-1] == numsSize) {
+//            result[1] = numsSize-1;
+//        }else{
+//            result[1] = numsSize;
+//        }
+//    }
+//    
+//    *returnSize = 2;
+//    return result;
+}
+
+char * convertToTitle(int n){
+    int len = 0;
+    char* result = malloc(sizeof(char)*8);
+    while (n > 0) {
+        result[len++] = 'A'+(n-1)%26;
+        n = (n-1)/26;
+    }
+    result[len] = '\0';
+    int l = 0;
+    int r = len-1;
+    char tmp;
+    while (l < r) {
+        tmp = result[l];
+        result[l] = result[r];
+        result[r] = tmp;
+        ++l;
+        --r;
+    }
+    
+    return result;
+}
+
+char * licenseKeyFormatting(char * S, int K){
+    int space = 'a'-'A';
+    int len = strlen(S);
+    int i = len-1;
+    int j = 0;
+    char* result = malloc(sizeof(char)*len*2);
+    int count = 0;
+    while (i >= 0) {
+        if (S[i] != '-') {
+            if (count == K) {
+                result[j++] = '-';
+                count = 0;
+            }
+            if (S[i] >= 'a' && S[i] <= 'z') {
+                result[j++] = S[i]-space;
+            }else{
+                result[j++] = S[i];
+            }
+            ++count;
+        }
+        --i;
+    }
+    result[j] = '\0';
+    int l = 0;
+    int r = j-1;
+    char tmp;
+    while (l < r) {
+        tmp = result[l];
+        result[l] = result[r];
+        result[r] = tmp;
+        ++l;
+        --r;
+    }
+    
+    return result;
+}

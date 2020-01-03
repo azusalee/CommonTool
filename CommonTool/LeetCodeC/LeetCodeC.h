@@ -935,4 +935,22 @@ int getMinimumDifference(struct TreeNode* root);
 // 二维网格迁移 https://leetcode-cn.com/problems/shift-2d-grid/
 int** shiftGrid(int** grid, int gridSize, int* gridColSize, int k, int* returnSize, int** returnColumnSizes);
 
+// 左叶子之和 https://leetcode-cn.com/problems/sum-of-left-leaves/
+int sumOfLeftLeaves(struct TreeNode* root);
+
+// 两数之和 IV - 输入 BST https://leetcode-cn.com/problems/two-sum-iv-input-is-a-bst/
+bool findTarget(struct TreeNode* root, int k);
+
+// 存在重复元素 II https://leetcode-cn.com/problems/contains-duplicate-ii/
+bool containsNearbyDuplicate(int* nums, int numsSize, int k);
+
+// 错误的集合 https://leetcode-cn.com/problems/set-mismatch/
+int* findErrorNums(int* nums, int numsSize, int* returnSize);
+
+// Excel表列名称 https://leetcode-cn.com/problems/excel-sheet-column-title/
+char * convertToTitle(int n);
+
+// 密钥格式化 https://leetcode-cn.com/problems/license-key-formatting/
+char * licenseKeyFormatting(char * S, int K);
+
 #endif /* LeetCodeC_h */

@@ -8136,3 +8136,203 @@ char * licenseKeyFormatting(char * S, int K){
     
     return result;
 }
+
+int* powerfulIntegers(int x, int y, int bound, int* returnSize){
+    int* result = malloc(sizeof(int)*bound);
+    int* hash = malloc(sizeof(int)*(bound+1));
+    memset(hash, 0, sizeof(int)*(bound+1));
+    *returnSize = 0;
+    int tmpX = 1, tmpY = 1, sum;
+    while (tmpX < bound) {
+        tmpY = 1;
+        while (1) {
+            sum = tmpX+tmpY;
+            if (sum > bound) break;
+            if (hash[sum] == 0){
+                result[(*returnSize)++] = sum;
+                hash[sum] = 1;
+            }
+            if (y == 1) break;
+            tmpY *= y;
+        }
+        if (x == 1) break;
+        tmpX *= x;
+    }
+    free(hash);
+    return result;
+}
+
+int maxDistToClosest(int* seats, int seatsSize){
+    int maxLen = 0;
+    int tmpLen = 0;
+    int i = 0, j;
+    for (i = 0; i < seatsSize; ++i) {
+        if (seats[i] == 1) {
+            maxLen = i;
+            break;
+        }
+    }
+    for (j = seatsSize-1; j >= 0; --j) {
+        if (seats[j] == 1) {
+            if (seatsSize-j-1 > maxLen) maxLen = seatsSize-j-1;
+            break;
+        }
+    }
+    
+    for (i = i+1; i < j; ++i) {
+        if (seats[i] == 0) {
+            ++tmpLen;
+        }else{
+            if ((tmpLen+1)/2 > maxLen) maxLen = (tmpLen+1)/2;
+            tmpLen = 0;
+        }
+    }
+    if ((tmpLen+1)/2 > maxLen) maxLen = (tmpLen+1)/2;
+    return maxLen;
+}
+
+bool isBoomerang(int** points, int pointsSize, int* pointsColSize){
+    return (points[2][1]-points[1][1])*(points[1][0]-points[0][0])!=(points[1][1]-points[0][1])*(points[2][0]-points[1][0]);
+}
+
+int longestUnivaluePathHelper(struct TreeNode* root, int* result){
+    if (root == NULL) return 0;
+    int left = longestUnivaluePathHelper(root->left, result);
+    int right = longestUnivaluePathHelper(root->right, result);
+    
+    if (root->left && root->left->val == root->val) {
+        ++left;
+    }else{
+        left = 0;
+    }
+    
+    if (root->right && root->right->val == root->val) {
+        ++right;
+    }else{
+        right = 0;
+    }
+    
+    if (left+right > *result) *result = left+right;
+    return left>right?left:right;
+}
+
+int longestUnivaluePath(struct TreeNode* root){
+    int result = 0;
+    longestUnivaluePathHelper(root, &result);
+    return result;
+}
+
+typedef struct {
+    char* str;
+    int count;
+}MyWord;
+
+char * mostCommonWord(char * paragraph, char ** banned, int bannedSize){
+    int space = 'a'-'A';
+    int i = 0, j, k;
+    int start = 0, maxCount = 0;
+    char tmp;
+    char* result;
+    bool isContain;
+    MyWord *words = malloc(sizeof(MyWord)*1000);
+    for (i = 0; i < 1000; ++i) {
+        words[i].count = 0;
+    }
+    i = 0;
+    int count = 0;
+    while (1) {
+        tmp = paragraph[i];
+        if (tmp >= 'A' && tmp <= 'Z') {
+            tmp += space;
+            paragraph[i] = tmp;
+        }
+        if (tmp >= 'a' && tmp <= 'z') {
+            
+        }else{
+            if (start != i) {
+                isContain = false;
+                for (j = 0; j < bannedSize; ++j) {
+                    k = 0;
+                    while (k+start < i) {
+                        if (banned[j][k] != paragraph[start+k]) {
+                            break;
+                        }
+                        ++k;
+                    }
+                    if (banned[j][k] == '\0' && k+start == i) {
+                        isContain = true;
+                        break;
+                    }
+                }
+                if (isContain == false) {
+                    for (j = 0; j < count; ++j) {
+                        k = 0;
+                        while (k+start < i) {
+                            if (words[j].str[k] != paragraph[start+k]) {
+                                break;
+                            }
+                            ++k;
+                        }
+                        if (words[j].str[k] == '\0' && k+start == i) {
+                            isContain = true;
+                            break;
+                        }
+                    }
+                    if (isContain == false) {
+                        words[count].str = malloc(sizeof(char)*(i-start+1));
+                        memcpy(words[count].str, paragraph+start, sizeof(char)*(i-start));
+                        words[count].str[i-start] = '\0';
+                        words[count].count = 1;
+                        if (maxCount < words[count].count) {
+                            maxCount = words[count].count;
+                            result = words[count].str;
+                        }
+                        ++count;
+                        
+                    }else{
+                        words[j].count += 1;
+                        if (maxCount < words[j].count) {
+                            maxCount = words[j].count;
+                            result = words[j].str;
+                        }
+                    }
+                }
+            }
+            start = i+1;
+        }
+        if (paragraph[i] == '\0') break;
+        ++i;
+    }
+    
+    return result;
+}
+
+int findUnsortedSubarray(int* nums, int numsSize){
+    int begin = numsSize-1, end = 0;
+    int max = nums[0], min = nums[numsSize-1];
+    for (int i = 1; i < numsSize; ++i) {
+        if (max <= nums[i]) max = nums[i];
+        else end = i;
+    }
+    for (int i = end; i >= 0; --i) {
+        if (min >= nums[i]) min = nums[i];
+        else begin = i;
+    }
+    return end>begin?end-begin+1:0;
+}
+
+bool judgeSquareSum(int c){
+    long i = sqrt(c);
+    long j = sqrt(c-i*i);
+    long tmp;
+    while (j<=i) {
+        tmp = i*i+j*j;
+        if (tmp == c) return true;
+        else if (tmp > c) {
+            --i;
+            continue;
+        }
+        ++j;
+    }
+    return false;
+}

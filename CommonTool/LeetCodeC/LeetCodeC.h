@@ -953,4 +953,22 @@ char * convertToTitle(int n);
 // 密钥格式化 https://leetcode-cn.com/problems/license-key-formatting/
 char * licenseKeyFormatting(char * S, int K);
 
+// 强整数 https://leetcode-cn.com/problems/powerful-integers/
+int* powerfulIntegers(int x, int y, int bound, int* returnSize);
+
+// 到最近的人的最大距离 https://leetcode-cn.com/problems/maximize-distance-to-closest-person/
+int maxDistToClosest(int* seats, int seatsSize);
+
+// 有效的回旋镖 https://leetcode-cn.com/problems/valid-boomerang/
+bool isBoomerang(int** points, int pointsSize, int* pointsColSize);
+
+// 最常见的单词 https://leetcode-cn.com/problems/most-common-word/
+char * mostCommonWord(char * paragraph, char ** banned, int bannedSize);
+
+// 最短无序连续子数组 https://leetcode-cn.com/problems/shortest-unsorted-continuous-subarray/
+int findUnsortedSubarray(int* nums, int numsSize);
+
+// 平方数之和 https://leetcode-cn.com/problems/sum-of-square-numbers/
+bool judgeSquareSum(int c);
+
 #endif /* LeetCodeC_h */

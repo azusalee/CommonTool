@@ -971,4 +971,31 @@ int findUnsortedSubarray(int* nums, int numsSize);
 // 平方数之和 https://leetcode-cn.com/problems/sum-of-square-numbers/
 bool judgeSquareSum(int c);
 
+// 非递减数列 https://leetcode-cn.com/problems/non-decreasing-array/
+bool checkPossibility(int* nums, int numsSize);
+
+// 卡牌分组 https://leetcode-cn.com/problems/x-of-a-kind-in-a-deck-of-cards/
+bool hasGroupsSizeX(int* deck, int deckSize);
+
+// 字符串中的单词数 https://leetcode-cn.com/problems/number-of-segments-in-a-string/
+int countSegments(char * s);
+
+// 模拟行走机器人 https://leetcode-cn.com/problems/walking-robot-simulation/
+int robotSim(int* commands, int commandsSize, int** obstacles, int obstaclesSize, int* obstaclesColSize);
+
+// 亲密字符串 https://leetcode-cn.com/problems/buddy-strings/ 
+bool buddyStrings(char * A, char * B);
+
+// 重复叠加字符串匹配 https://leetcode-cn.com/problems/repeated-string-match/
+int repeatedStringMatch(char * A, char * B);
+
+// 供暖器 https://leetcode-cn.com/problems/heaters/
+int findRadius(int* houses, int housesSize, int* heaters, int heatersSize);
+
+// 矩阵中的幻方 https://leetcode-cn.com/problems/magic-squares-in-grid/
+int numMagicSquaresInside(int** grid, int gridSize, int* gridColSize);
+
+// 种花问题 https://leetcode-cn.com/problems/can-place-flowers/
+bool canPlaceFlowers(int* flowerbed, int flowerbedSize, int n);
+
 #endif /* LeetCodeC_h */

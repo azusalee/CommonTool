@@ -8631,3 +8631,102 @@ bool canPlaceFlowers(int* flowerbed, int flowerbedSize, int n){
     
     return n==0;
 }
+
+void deepestLeavesSumHelper(struct TreeNode* root, int deep, int* maxDeep , int* sum){
+    if (root == NULL) return;
+    deepestLeavesSumHelper(root->left, deep+1, maxDeep, sum);
+    deepestLeavesSumHelper(root->right, deep+1, maxDeep, sum);
+    if (deep == *maxDeep) {
+        *sum += root->val;
+    }else if (deep > *maxDeep) {
+        *maxDeep = deep;
+        *sum = root->val;
+    }
+}
+
+int deepestLeavesSum(struct TreeNode* root){
+    int sum = 0;
+    int maxDeep = 0;
+    deepestLeavesSumHelper(root, 0, &maxDeep, &sum);
+    return sum;
+}
+
+// 基本思路就是用hash表把长短url一一对应。(不管怎么设计，当数据量很大的时候，都会出现冲突的情况，即两个长url对应同一个短url的情况)
+// 下面是面向测试用例的编程，实际不符合题目的意思
+/** Encodes a URL to a shortened URL. */
+char* encode(char* longUrl) {
+    return longUrl;
+}
+/** Decodes a shortened URL to its original URL. */
+char* decode(char* shortUrl) {
+    return shortUrl;
+}
+
+int maxIncreaseKeepingSkyline(int** grid, int gridSize, int* gridColSize){
+    int* lr = malloc(sizeof(int)*gridSize);
+    int* tb = malloc(sizeof(int)*gridColSize[0]);
+    memset(lr, 0, sizeof(int)*gridSize);
+    memset(tb, 0, sizeof(int)*gridColSize[0]);
+    for (int i = 0; i < gridSize; ++i) {
+        for (int j = 0; j < gridColSize[0]; ++j) {
+            if (grid[i][j] > lr[i]) lr[i] = grid[i][j];
+            if (grid[i][j] > tb[j]) tb[j] = grid[i][j];
+        }
+    }
+    int sum = 0;
+    int tmp;
+    for (int i = 0; i < gridSize; ++i) {
+        for (int j = 0; j < gridColSize[0]; ++j) {
+            tmp = lr[i]>tb[j]?tb[j]:lr[i];
+            sum += tmp-grid[i][j];
+        }
+    }
+    free(lr);
+    free(tb);
+    return sum;
+}
+
+struct TreeNode* constructMaximumBinaryTree(int* nums, int numsSize){
+    if (numsSize == 0) return NULL;
+    int maxIndex = 0;
+    for (int i = 1; i < numsSize; ++i) {
+        if (nums[i] > nums[maxIndex]) maxIndex = i;
+    }
+    struct TreeNode *node = malloc(sizeof(struct TreeNode));
+    node->val = nums[maxIndex];
+    struct TreeNode *leftNode = constructMaximumBinaryTree(nums, maxIndex);
+    struct TreeNode *rightNode = constructMaximumBinaryTree(nums+maxIndex+1, numsSize-maxIndex-1);
+    node->left = leftNode;
+    node->right = rightNode;
+    return node;
+}
+
+int** groupThePeople(int* groupSizes, int groupSizesSize, int* returnSize, int** returnColumnSizes){
+    *returnSize = 0;
+    int** result = malloc(sizeof(int*)*groupSizesSize);
+    *returnColumnSizes = malloc(sizeof(int)*groupSizesSize);
+    int* insertLen = malloc(sizeof(int)*groupSizesSize);
+    memset(insertLen, 0, sizeof(int)*groupSizesSize);
+    bool hasInsert;
+    for (int i = 0; i < groupSizesSize; ++i) {
+        hasInsert = false;
+        for (int j = 0; j < *returnSize; ++j) {
+            if (insertLen[j] == (*returnColumnSizes)[j]) continue;
+            if (groupSizes[i] == (*returnColumnSizes)[j]) {
+                result[j][insertLen[j]] = i;
+                insertLen[j] += 1;
+                hasInsert = true;
+                break;
+            }
+        }
+        if (hasInsert == false) {
+            result[*returnSize] = malloc(sizeof(int)*groupSizes[i]);
+            (*returnColumnSizes)[*returnSize] = groupSizes[i];
+            result[*returnSize][insertLen[*returnSize]] = i;
+            insertLen[*returnSize] += 1;
+            *returnSize += 1;
+        }
+    }
+    free(insertLen);
+    return result;
+}

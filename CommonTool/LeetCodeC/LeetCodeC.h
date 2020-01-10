@@ -998,4 +998,22 @@ int numMagicSquaresInside(int** grid, int gridSize, int* gridColSize);
 // 种花问题 https://leetcode-cn.com/problems/can-place-flowers/
 bool canPlaceFlowers(int* flowerbed, int flowerbedSize, int n);
 
+// 层数最深叶子节点的和 https://leetcode-cn.com/problems/deepest-leaves-sum/
+int deepestLeavesSum(struct TreeNode* root);
+
+// TinyURL 的加密与解密 https://leetcode-cn.com/problems/encode-and-decode-tinyurl/
+/** Encodes a URL to a shortened URL. */
+char* encode(char* longUrl);
+/** Decodes a shortened URL to its original URL. */
+char* decode(char* shortUrl);
+
+// 保持城市天际线 https://leetcode-cn.com/problems/max-increase-to-keep-city-skyline/
+int maxIncreaseKeepingSkyline(int** grid, int gridSize, int* gridColSize);
+
+// 最大二叉树 https://leetcode-cn.com/problems/maximum-binary-tree/
+struct TreeNode* constructMaximumBinaryTree(int* nums, int numsSize);
+
+// 用户分组 https://leetcode-cn.com/problems/group-the-people-given-the-group-size-they-belong-to/
+int** groupThePeople(int* groupSizes, int groupSizesSize, int* returnSize, int** returnColumnSizes);
+
 #endif /* LeetCodeC_h */

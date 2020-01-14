@@ -8730,3 +8730,323 @@ int** groupThePeople(int* groupSizes, int groupSizesSize, int* returnSize, int**
     free(insertLen);
     return result;
 }
+
+int* deckRevealedIncreasing(int* deck, int deckSize, int* returnSize){
+    int* result = malloc(sizeof(int)*deckSize);
+    *returnSize = deckSize;
+    qsort(deck, deckSize, sizeof(int), compare);
+    int i;
+    int* deckIndexs = malloc(sizeof(int)*deckSize);
+    for (i = 0; i < deckSize; ++i) deckIndexs[i] = i;
+    
+    int indexsSize = deckSize;
+    int tmpLen = 0, j = 0, target = 0;
+    i = 0;
+    while (1) {
+        if (i%2 == target) result[deckIndexs[i]] = deck[j++];
+        else deckIndexs[tmpLen++] = deckIndexs[i];
+        
+        if (++i == indexsSize) {
+            if (tmpLen == 0) break;
+            if (target == 0) target = indexsSize%2;
+            else target = 1-indexsSize%2;
+            
+            indexsSize = tmpLen;
+            tmpLen = 0;
+            i = 0;
+        }
+    }
+    free(deckIndexs);
+    return result;
+}
+
+void allPathsSourceTargetHelper(int** graph, int graphSize, int* graphColSize, int* oriPath, int oriPathLen, int** result, int* returnSize, int** returnColumnSizes) {
+    int lastValue = oriPath[oriPathLen-1];
+    for (int i = 0; i < graphColSize[lastValue]; ++i) {
+        int *path = malloc(sizeof(int)*(oriPathLen+1));
+        memcpy(path, oriPath, sizeof(int)*oriPathLen);
+        path[oriPathLen] = graph[lastValue][i];
+        if (path[oriPathLen] == graphSize-1) {
+            result[*returnSize] = path;
+            (*returnColumnSizes)[*returnSize] = oriPathLen+1;
+            *returnSize += 1;
+        }else{
+            allPathsSourceTargetHelper(graph, graphSize, graphColSize, path, oriPathLen+1, result, returnSize, returnColumnSizes);
+        }
+    }
+    free(oriPath);
+}
+
+int** allPathsSourceTarget(int** graph, int graphSize, int* graphColSize, int* returnSize, int** returnColumnSizes){
+    int maxLen = pow(2, graphSize-2);
+    int** result = malloc(sizeof(int*)*maxLen);
+    *returnColumnSizes = malloc(sizeof(int)*maxLen);
+    *returnSize = 0;
+    int* path = malloc(sizeof(int));
+    path[0] = 0;
+    allPathsSourceTargetHelper(graph, graphSize, graphColSize, path, 1, result, returnSize, returnColumnSizes);
+    
+    return result;
+}
+
+int* countBits(int num, int* returnSize){
+    *returnSize = num+1;
+    int* result = malloc(sizeof(int)*(*returnSize));
+    result[0] = 0;
+    for (int i = 1; i <= num; ++i) {
+        result[i] = result[i&(i-1)]+1;
+    }
+    return result;
+}
+
+int findPairs(int* nums, int numsSize, int k){
+    if (k < 0) return 0;
+    qsort(nums, numsSize, sizeof(int), compare);
+    int count = 0;
+    int l = 0, r = 1;
+    while (r < numsSize) {
+        if (nums[r]-nums[l] == k) {
+            ++count;
+            ++l;
+            ++r;
+            while (r < numsSize && nums[r] == nums[r-1]) ++r;
+            while (l < numsSize && nums[l] == nums[l-1]) ++l;
+            if (l >= r) r = l+1;
+        }else if (nums[r]-nums[l] < k){
+            ++r;
+        }else{
+            ++l;
+            if (l >= r) r = l+1;
+        }
+    }
+    return count;
+}
+
+int sumEvenGrandparent(struct TreeNode* root){
+    if (root == NULL) return 0;
+    int sum = 0;
+    if (root->val%2 == 0) {
+        if (root->left) {
+            if (root->left->left) sum += root->left->left->val;
+            if (root->left->right) sum += root->left->right->val;
+        }
+        if (root->right) {
+            if (root->right->left) sum += root->right->left->val;
+            if (root->right->right) sum += root->right->right->val;
+        }
+    }
+    sum += sumEvenGrandparent(root->left);
+    sum += sumEvenGrandparent(root->right);
+    
+    return sum;
+}
+
+void getAllElementsHelper(struct TreeNode* root1, int* returnSize, int* result) {
+    if (root1 == NULL) return;
+    getAllElementsHelper(root1->left, returnSize, result);
+    result[*returnSize] = root1->val;
+    (*returnSize) += 1;
+    getAllElementsHelper(root1->right, returnSize, result);
+}
+
+int* getAllElements(struct TreeNode* root1, struct TreeNode* root2, int* returnSize){
+    int* nums1 = malloc(sizeof(int)*5000);
+    int size1 = 0;
+    int* nums2 = malloc(sizeof(int)*5000);
+    int size2 = 0;
+    getAllElementsHelper(root1, &size1, nums1);
+    getAllElementsHelper(root2, &size2, nums2);
+    
+    int* result = malloc(sizeof(int)*(size1+size2));
+    *returnSize = 0;
+    int i = 0, j = 0;
+    while (i < size1 && j < size2) {
+        if (nums1[i] < nums2[j]) {
+            result[(*returnSize)++] = nums1[i++];
+        }else{
+            result[(*returnSize)++] = nums2[j++];
+        }
+    }
+    while (i < size1) result[(*returnSize)++] = nums1[i++];
+    while (j < size2) result[(*returnSize)++] = nums2[j++];
+    free(nums1);
+    free(nums2);
+    return result;
+}
+
+struct TreeNode** allPossibleFBTHelper(int N, struct TreeNode*** memo, int* memoLen){
+    if (N%2 == 0) return NULL;
+    if (memo[N] != NULL) return memo[N];
+
+    if (N == 1) {
+        struct TreeNode** result = malloc(sizeof(struct TreeNode*));
+        struct TreeNode* rootNode = malloc(sizeof(struct TreeNode));
+        rootNode->val = 0;
+        rootNode->left = NULL;
+        rootNode->right = NULL;
+        result[0] = rootNode;
+        memo[N] = result;
+        memoLen[N] = 1;
+        return result;
+    }else{
+        // 1 1 2 5 14 
+        // 1 3 5 7 9  11  13  15  17
+        int po = (N-3)/2;
+        struct TreeNode** result = malloc(sizeof(struct TreeNode*)*pow(3, po));
+        int resultLen = 0;
+        int i = 1;
+        int j = N-2;
+        while (j > 0) {
+            struct TreeNode** memoi = allPossibleFBTHelper(i, memo, memoLen);
+            struct TreeNode** memoj = allPossibleFBTHelper(j, memo, memoLen);
+            for (int k = 0; k < memoLen[i]; ++k) {
+                for (int l = 0; l < memoLen[j]; ++l) {
+                    struct TreeNode* newNode = malloc(sizeof(struct TreeNode));
+                    newNode->val = 0;
+                    newNode->left = memoi[k];
+                    newNode->right = memoj[l];
+                    result[resultLen++] = newNode;
+                }
+            }
+            i += 2;
+            j -= 2;
+        }
+        memo[N] = result;
+        memoLen[N] = resultLen;
+        return result;
+    }
+}
+
+struct TreeNode** allPossibleFBT(int N, int* returnSize){
+    if (N%2 == 0) {
+        *returnSize = 0;
+        return NULL;
+    }
+    struct TreeNode*** memo = malloc(sizeof(struct TreeNode**)*21);
+    int* memoLen = malloc(sizeof(int)*21);
+    for (int i = 0; i < 21; ++i) memo[i] = NULL;
+    struct TreeNode** result = allPossibleFBTHelper(N, memo, memoLen);
+    *returnSize = memoLen[N];
+    free(memo);
+    free(memoLen);
+    return result;
+}
+
+int matrixScore(int** A, int ASize, int* AColSize){
+    for (int i = 0; i < ASize; ++i) {
+        if (A[i][0] == 0) {
+            for (int j = 0; j < AColSize[i]; ++j) A[i][j] ^= 1;
+        }
+    }
+    int tmp = pow(2, AColSize[0]-1);
+    int sum = tmp*ASize;
+    for (int j = 1; j < AColSize[0]; ++j) {
+        int count = 0;
+        for (int i = 0; i < ASize; ++i) {
+            if (A[i][j] == 1) ++count;
+        }
+        if ((count<<1) < ASize) count = ASize-count;
+        tmp = tmp>>1;
+        sum += tmp*count;
+    }
+    return sum;
+}
+
+void combineHelper(int n, int min, int leftCount, int k, int** result, int* preNums, int* returnSize) {
+    if (leftCount == 0) {
+        int *nums = malloc(sizeof(int)*k);
+        memcpy(nums, preNums, sizeof(int)*k);
+        result[(*returnSize)++] = nums;
+        return;
+    }
+    for (int i = min; i <= n; ++i) {
+        preNums[k-leftCount] = i;
+        combineHelper(n+1, i+1, leftCount-1, k, result, preNums, returnSize);
+    }
+}
+
+int** combine(int n, int k, int* returnSize, int** returnColumnSizes){
+    // C(k,n) = (n-k+1)*...*n/(1*2*..*k)
+    *returnSize = 0;
+    if (k < 1) return NULL;
+    int total = 1;
+    for (int i = 1; i <= k; ++i) total = total*(n-i+1)/i;
+    int** result = malloc(sizeof(int*)*total);
+    *returnColumnSizes = malloc(sizeof(int)*total);
+    for (int i = 0; i < total; ++i) (*returnColumnSizes)[i] = k;
+    int* preNums = malloc(sizeof(int)*k);
+    combineHelper(n-k+1, 1, k, k, result, preNums, returnSize);
+    free(preNums);
+    return result;
+}
+
+int numTilePossibilitiesHelper(int* hash, int hashLen) {
+    int result = 0;
+    for (int i = 0; i < hashLen; ++i) {
+        if (hash[i] == 0) continue;
+        ++result;
+        hash[i] -= 1;
+        result += numTilePossibilitiesHelper(hash, hashLen);
+        hash[i] += 1;
+    }
+    return result;
+}
+
+int numTilePossibilities(char * tiles){
+    int hash[26] = {0};
+    int i = 0;
+    while (tiles[i] != '\0') {
+        hash[tiles[i++]-'A'] += 1;
+    }
+    int len = i;
+    if (len == 1) return 1;
+    int diffCount = 0;
+    for (i = 0; i < 26; ++i) {
+        if (hash[i] != 0) hash[diffCount++] = hash[i];
+    }
+    if (diffCount == 1) return len;
+    return numTilePossibilitiesHelper(hash, diffCount);
+}
+
+
+void bstToGstHelper(struct TreeNode* root, int* sum){
+    if (root == NULL) return;
+    bstToGstHelper(root->right, sum);
+    *sum += root->val;
+    root->val = *sum;
+    bstToGstHelper(root->left, sum);
+}
+
+struct TreeNode* bstToGst(struct TreeNode* root){
+    int sum = 0;
+    bstToGstHelper(root, &sum);
+    return root;
+}
+
+struct TreeNode* pruneTree(struct TreeNode* root){
+    if (root == NULL) return NULL;
+    pruneTree(root->left);
+    if (root->left && root->left->left == NULL && root->left->right == NULL && root->left->val == 0) {
+        root->left = NULL;
+    }
+    pruneTree(root->right);
+    if (root->right && root->right->left == NULL && root->right->right == NULL && root->right->val == 0) {
+        root->right = NULL;
+    }
+    return root;
+}
+
+struct TreeNode* bstFromPreorderHelper(int* preorder, int preorderSize, int* idx, int low, int high) {
+    if (*idx == preorderSize || preorder[*idx] < low || preorder[*idx] > high) return NULL;
+    struct TreeNode* root = malloc(sizeof(struct TreeNode));
+    root->val = preorder[*idx];
+    *idx += 1;
+    root->left = bstFromPreorderHelper(preorder, preorderSize, idx, low, root->val);
+    root->right = bstFromPreorderHelper(preorder, preorderSize, idx, root->val, high);
+    return root;
+}
+
+struct TreeNode* bstFromPreorder(int* preorder, int preorderSize){
+    int idx = 0;
+    return bstFromPreorderHelper(preorder, preorderSize, &idx, -2147483648, 2147483647);
+}

@@ -1016,4 +1016,43 @@ struct TreeNode* constructMaximumBinaryTree(int* nums, int numsSize);
 // 用户分组 https://leetcode-cn.com/problems/group-the-people-given-the-group-size-they-belong-to/
 int** groupThePeople(int* groupSizes, int groupSizesSize, int* returnSize, int** returnColumnSizes);
 
+// 按递增顺序显示卡牌 https://leetcode-cn.com/problems/reveal-cards-in-increasing-order/
+int* deckRevealedIncreasing(int* deck, int deckSize, int* returnSize);
+
+// 所有可能的路径 https://leetcode-cn.com/problems/all-paths-from-source-to-target/
+int** allPathsSourceTarget(int** graph, int graphSize, int* graphColSize, int* returnSize, int** returnColumnSizes);
+
+// 比特位计数 https://leetcode-cn.com/problems/counting-bits/
+int* countBits(int num, int* returnSize);
+
+// 数组中的K-diff数对 https://leetcode-cn.com/problems/k-diff-pairs-in-an-array/ 
+int findPairs(int* nums, int numsSize, int k);
+
+// 祖父节点值为偶数的节点和 https://leetcode-cn.com/problems/sum-of-nodes-with-even-valued-grandparent/
+int sumEvenGrandparent(struct TreeNode* root);
+
+// 两棵二叉搜索树中的所有元素 https://leetcode-cn.com/problems/all-elements-in-two-binary-search-trees/
+int* getAllElements(struct TreeNode* root1, struct TreeNode* root2, int* returnSize);
+
+// 所有可能的满二叉树 https://leetcode-cn.com/problems/all-possible-full-binary-trees/
+struct TreeNode** allPossibleFBT(int N, int* returnSize);
+
+// 翻转矩阵后的得分 https://leetcode-cn.com/problems/score-after-flipping-matrix/
+int matrixScore(int** A, int ASize, int* AColSize);
+
+// 组合 https://leetcode-cn.com/problems/combinations/
+int** combine(int n, int k, int* returnSize, int** returnColumnSizes);
+
+// 活字印刷 https://leetcode-cn.com/problems/letter-tile-possibilities/
+int numTilePossibilities(char * tiles);
+
+// 从二叉搜索树到更大和树 https://leetcode-cn.com/problems/binary-search-tree-to-greater-sum-tree/
+struct TreeNode* bstToGst(struct TreeNode* root);
+
+// 二叉树剪枝 https://leetcode-cn.com/problems/binary-tree-pruning/
+struct TreeNode* pruneTree(struct TreeNode* root);
+
+// 先序遍历构造二叉树 https://leetcode-cn.com/problems/construct-binary-search-tree-from-preorder-traversal/
+struct TreeNode* bstFromPreorder(int* preorder, int preorderSize);
+
 #endif /* LeetCodeC_h */

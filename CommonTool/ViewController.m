@@ -25,6 +25,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    int size = 0;
+    diffWaysToCompute("1+1+1+1+1+1+1+1+1+1", &size);
     
     rotatedDigits(857);
     int nums[] = {1,3};

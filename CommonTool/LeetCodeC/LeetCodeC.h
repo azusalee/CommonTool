@@ -1055,4 +1055,31 @@ struct TreeNode* pruneTree(struct TreeNode* root);
 // 先序遍历构造二叉树 https://leetcode-cn.com/problems/construct-binary-search-tree-from-preorder-traversal/
 struct TreeNode* bstFromPreorder(int* preorder, int preorderSize);
 
+// 二叉搜索树中的插入操作 https://leetcode-cn.com/problems/insert-into-a-binary-search-tree/
+struct TreeNode* insertIntoBST(struct TreeNode* root, int val);
+
+// 甲板上的战舰 https://leetcode-cn.com/problems/battleships-in-a-board/
+int countBattleships(char** board, int boardSize, int* boardColSize);
+
+// 矩阵区域和 https://leetcode-cn.com/problems/matrix-block-sum/
+int** matrixBlockSum(int** mat, int matSize, int* matColSize, int K, int* returnSize, int** returnColumnSizes);
+
+// 为运算表达式设计优先级 https://leetcode-cn.com/problems/different-ways-to-add-parentheses/
+int* diffWaysToCompute(char * input, int* returnSize);
+
+// 生命游戏 https://leetcode-cn.com/problems/game-of-life/
+void gameOfLife(int** board, int boardSize, int* boardColSize);
+
+// 组合总和 III https://leetcode-cn.com/problems/combination-sum-iii/
+int** combinationSum3(int k, int n, int* returnSize, int** returnColumnSizes);
+
+// 有序链表转换二叉搜索树 https://leetcode-cn.com/problems/convert-sorted-list-to-binary-search-tree/
+struct TreeNode* sortedListToBST(struct ListNode* head);
+
+// 二叉树的中序遍历 https://leetcode-cn.com/problems/binary-tree-inorder-traversal/
+int* inorderTraversal(struct TreeNode* root, int* returnSize);
+
+// 只出现一次的数字 III https://leetcode-cn.com/problems/single-number-iii/
+int* singleNumber3(int* nums, int numsSize, int* returnSize);
+
 #endif /* LeetCodeC_h */

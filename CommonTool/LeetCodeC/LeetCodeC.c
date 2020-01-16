@@ -9050,3 +9050,328 @@ struct TreeNode* bstFromPreorder(int* preorder, int preorderSize){
     int idx = 0;
     return bstFromPreorderHelper(preorder, preorderSize, &idx, -2147483648, 2147483647);
 }
+
+struct TreeNode* insertIntoBST(struct TreeNode* root, int val){
+    if (root->val < val) {
+        if (root->right == NULL) {
+            struct TreeNode* node = malloc(sizeof(struct TreeNode));
+            node->val = val;
+            node->left = NULL;
+            node->right = NULL;
+            root->right = node;
+        }else{
+            insertIntoBST(root->right, val);
+        }
+    }else{
+        if (root->left == NULL) {
+            struct TreeNode* node = malloc(sizeof(struct TreeNode));
+            node->val = val;
+            node->left = NULL;
+            node->right = NULL;
+            root->left = node;
+        }else{
+            insertIntoBST(root->left, val);
+        }
+    }
+    return root;
+}
+
+int countBattleships(char** board, int boardSize, int* boardColSize){
+    int result = 0, j;
+    for (int i = 0; i < boardSize; ++i) {
+        for (j = 0; j < boardColSize[i]; ++j) {
+            if (board[i][j] != 'X') continue;
+            if (i > 0 && board[i-1][j] == 'X') continue;
+            if (j > 0 && board[i][j-1] == 'X') continue;
+            ++result;
+        }
+    }
+    return result;
+}
+
+int** matrixBlockSum(int** mat, int matSize, int* matColSize, int K, int* returnSize, int** returnColumnSizes){
+    int i, j, m, n;
+    int** result = malloc(sizeof(int*)*matSize);
+    *returnColumnSizes = malloc(sizeof(int)*matSize);
+    *returnSize = matSize;
+    for (i = 0; i < matSize; ++i) {
+        result[i] = malloc(sizeof(int)*matColSize[0]);
+        (*returnColumnSizes)[i] = matColSize[0];
+    }
+    int sum, maxM, maxN;
+    sum = 0;
+    maxM = K;
+    maxN = K;
+    if (maxM >= matSize) maxM = matSize-1;
+    if (maxN >= matColSize[0]) maxN = matColSize[0]-1;
+    for (m = (-K)>0?-K:0; m <= maxM; ++m) {
+        for (n = (-K)>0?-K:0; n <= maxN; ++n) {
+            sum += mat[m][n];
+        }
+    }
+    result[0][0] = sum;
+    for (i = 0; i < matSize; ++i) {
+        for (j = 0; j < matColSize[0]; ++j) {
+            if (j == 0) {
+                if (i == 0) continue;
+                sum = result[i-1][j];
+                m = i-K-1;
+                maxN = j+K;
+                if (maxN >= matColSize[0]) maxN = matColSize[0]-1;
+                if (m >= 0) {
+                    for (n = (j-K)>0?j-K:0; n <= maxN; ++n) {
+                        sum -= mat[m][n];
+                    }
+                }
+                m = i+K;
+                if (m < matSize) {
+                    for (n = (j-K)>0?j-K:0; n <= maxN; ++n) {
+                        sum += mat[m][n];
+                    }
+                }
+                result[i][j] = sum;
+            }else{
+                sum = result[i][j-1];
+                n = j-K-1;
+                maxM = i+K;
+                if (maxM >= matSize) maxM = matSize-1;
+                if (n >= 0) {
+                    for (m = (i-K)>0?i-K:0; m <= maxM; ++m) {
+                        sum -= mat[m][n];
+                    }
+                }
+                n = j+K;
+                if (n < matColSize[0]) {
+                    for (m = (i-K)>0?i-K:0; m <= maxM; ++m) {
+                        sum += mat[m][n];
+                    }
+                }
+                result[i][j] = sum;
+            }
+        }
+    }
+    
+    return result;
+}
+
+int* diffWaysToComputeHelper(int* nums, int numsCount, char* ops, int opsCount, int* sizeMemo, int returnSize) {
+    int* result = malloc(sizeof(int)*returnSize);
+    int index = 0;
+    for (int i = 0; i < opsCount; ++i) {
+        int res1Size = sizeMemo[i];
+        int* res1 = diffWaysToComputeHelper(nums, i+1, ops, i, sizeMemo, res1Size);
+        int res2Size = sizeMemo[opsCount-i-1];
+        int* res2 = diffWaysToComputeHelper(nums+i+1, numsCount-i-1, ops+i+1, opsCount-i-1, sizeMemo, res2Size);
+        for (int j = 0; j < res1Size; ++j) {
+            for (int k = 0; k < res2Size; ++k) {
+                if (ops[i] == '+') {
+                    result[index++] = res1[j]+res2[k];
+                }else if (ops[i] == '-') {
+                    result[index++] = res1[j]-res2[k];
+                }else if (ops[i] == '*') {
+                    result[index++] = res1[j]*res2[k];
+                }
+            }
+        }
+        free(res1);
+        free(res2);
+    }
+    if (opsCount == 0) {
+        result[0] = nums[0];
+    }
+    
+    return result;
+}
+
+int* diffWaysToCompute(char * input, int* returnSize){
+    int i = 0;
+    int numCount = 0;
+    int opCount = 0;
+    int num = 0;
+    int* nums = malloc(sizeof(int)*10);
+    char* ops = malloc(sizeof(char)*10);
+    while (input[i] != '\0') {
+        if (input[i] >= '0' && input[i] <= '9') {
+            num = num*10+(input[i]-'0');
+        }else{
+            nums[numCount++] = num;
+            ops[opCount++] = input[i];
+            num = 0;
+        }
+        ++i;
+    }
+    nums[numCount++] = num;
+    ops[opCount] = '\0';
+    if (opCount == 0) {
+        int* result = malloc(sizeof(int));
+        result[0] = nums[0];
+        *returnSize = 1;
+        free(nums);
+        free(ops);
+        return result;
+    }
+    int sizeMemo[10] = {1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862};
+    *returnSize = sizeMemo[opCount];
+    // 結果數 1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862
+    // 操作數 0  1  2  3  4   5   6    7    8     9
+    int* result = diffWaysToComputeHelper(nums, numCount, ops, opCount, sizeMemo, *returnSize);
+    free(nums);
+    free(ops);
+    return result;
+}
+
+void gameOfLife(int** board, int boardSize, int* boardColSize){
+    int count, i, j;
+    for (i = 0; i < boardSize; ++i) {
+        for (j = 0; j < boardColSize[0]; ++j) {
+            count = 0;
+            if (i > 0) {
+                if (board[i-1][j] > 0) ++count;
+                if (j > 0 && board[i-1][j-1] > 0) ++count;
+                if (j < boardColSize[0]-1 && board[i-1][j+1] > 0) ++count;
+            }
+            if (j > 0 && board[i][j-1] > 0) ++count;
+            if (j < boardColSize[0]-1 && board[i][j+1] > 0) ++count;
+            if (i < boardSize-1) {
+                if (board[i+1][j] > 0) ++count;
+                if (j > 0 && board[i+1][j-1] > 0) ++count;
+                if (j < boardColSize[0]-1 && board[i+1][j+1] > 0) ++count;
+            }
+            if (board[i][j] == 1) board[i][j] = count+1;
+            else board[i][j] = -count;
+        }
+    }
+    for (i = 0; i < boardSize; ++i) {
+        for (j = 0; j < boardColSize[0]; ++j){
+            if (board[i][j] > 0) {
+                if (board[i][j] == 3 || board[i][j] == 4) board[i][j] = 1;
+                else board[i][j] = 0;
+            }else{
+                if (board[i][j] == -3) board[i][j] = 1;
+                else board[i][j] = 0;
+            }
+        }
+    }
+}
+
+void combinationSum3Helper(int k, int n, int min, int* preNums, int preNumCount, int** result, int* returnSize) {
+    if (--k == 0) {
+        if (min <= n && n <= 9) {
+            int* nums = malloc(sizeof(int)*(preNumCount+1));
+            if (preNums) memcpy(nums, preNums, sizeof(int)*preNumCount);
+            nums[preNumCount] = n;
+            result[(*returnSize)++] = nums;
+        }
+        return;
+    }
+    for (int i = min; i < 9; ++i) {
+        if (i > n) break;
+        int* nums = malloc(sizeof(int)*(preNumCount+1));
+        if (preNums) memcpy(nums, preNums, sizeof(int)*preNumCount);
+        nums[preNumCount] = i;
+        combinationSum3Helper(k, n-i, i+1, nums, preNumCount+1, result, returnSize);
+        free(nums);
+    }
+}
+
+int** combinationSum3(int k, int n, int* returnSize, int** returnColumnSizes){
+    if (n > 45 || n <= 0 || k == 0 || k > 9) {
+        *returnSize = 0;
+        return NULL;
+    }
+    int** result = malloc(sizeof(int*)*15);
+    *returnSize = 0;
+    combinationSum3Helper(k, n, 1, NULL, 0, result, returnSize);
+    *returnColumnSizes = malloc(sizeof(int)*(*returnSize));
+    for (int i = 0; i < *returnSize; ++i) {
+        (*returnColumnSizes)[i] = k;
+    }
+    return result;
+}
+
+struct TreeNode* sortedListToBSTHelper(int* nums, int listLen) {
+    if (listLen == 0) return NULL;
+    
+    int halfLen = listLen/2;
+    //struct ListNode* tmp = head;
+    //for (int i = 0; i < halfLen; ++i) tmp = tmp->next;
+    
+    struct TreeNode* treeNode = malloc(sizeof(struct TreeNode));
+    treeNode->val = nums[halfLen];
+    treeNode->left = sortedListToBSTHelper(nums, halfLen);
+    treeNode->right = sortedListToBSTHelper(nums+halfLen+1, listLen-halfLen-1);
+    return treeNode;
+}
+
+struct TreeNode* sortedListToBST(struct ListNode* head){
+    int listLen = 0;
+    struct ListNode* tmp = head;
+    while (tmp) {
+        ++listLen;
+        tmp = tmp->next;
+    }
+    int* nums = malloc(sizeof(int)*listLen);
+    tmp = head;
+    for (int i = 0; i < listLen; ++i) {
+        nums[i] = tmp->val;
+        tmp = tmp->next;
+    }
+    
+    struct TreeNode* root = sortedListToBSTHelper(nums, listLen);
+    free(nums);
+    return root;
+}
+
+void inorderTraversalHelper(struct TreeNode* root, int* result, int* returnSize){
+    if (root == NULL) return;
+    inorderTraversalHelper(root->left, result, returnSize);
+    result[(*returnSize)++] = root->val;
+    inorderTraversalHelper(root->right, result, returnSize);
+}
+
+int* inorderTraversal(struct TreeNode* root, int* returnSize){
+    int* result = malloc(sizeof(int)*1000);
+    *returnSize = 0;
+    // 递归中序历遍
+    //inorderTraversalHelper(root, result, returnSize);
+    // 莫里斯中序历遍
+    struct TreeNode* cur = root;
+    struct TreeNode* pre = NULL;
+    while (cur != NULL) {
+        if (cur->left == NULL) {
+            result[(*returnSize)++] = cur->val;
+            cur = cur->right;
+        }else{
+            pre = cur->left;
+            while (pre->right != NULL && pre->right != cur) {
+                pre = pre->right;
+            }
+            if (pre->right == NULL) {
+                pre->right = cur;
+                cur = cur->left;
+            }
+            if (pre->right == cur) {
+                pre->right = NULL;
+                result[(*returnSize)++] = cur->val;
+                cur = cur->right;
+            }
+        }
+    }
+    return result;
+}
+
+int* singleNumber3(int* nums, int numsSize, int* returnSize){
+    *returnSize = 2;
+    int tmp1 = nums[0];
+    for (int i = 1; i < numsSize; ++i) tmp1 ^= nums[i];
+    int* result = malloc(sizeof(int)*2);
+    // 保留最后的1的位置，这个
+    int diff = tmp1&(-tmp1);
+    int x = 0;
+    for (int i = 0; i < numsSize; ++i) {
+        if (nums[i]&diff) x ^= nums[i];
+    }
+    result[0] = x;
+    result[1] = tmp1^x;
+    return result;
+}

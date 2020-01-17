@@ -1082,4 +1082,31 @@ int* inorderTraversal(struct TreeNode* root, int* returnSize);
 // 只出现一次的数字 III https://leetcode-cn.com/problems/single-number-iii/
 int* singleNumber3(int* nums, int numsSize, int* returnSize);
 
+// 使括号有效的最少添加 https://leetcode-cn.com/problems/minimum-add-to-make-parentheses-valid/
+int minAddToMakeValid(char * S);
+
+// 二叉搜索树中第K小的元素 https://leetcode-cn.com/problems/kth-smallest-element-in-a-bst/
+int kthSmallest(struct TreeNode* root, int k);
+
+// 查找和替换模式 https://leetcode-cn.com/problems/find-and-replace-pattern/
+char ** findAndReplacePattern(char ** words, int wordsSize, char * pattern, int* returnSize);
+
+// 划分字母区间 https://leetcode-cn.com/problems/partition-labels/
+int* partitionLabels(char * S, int* returnSize);
+
+// 找树左下角的值 https://leetcode-cn.com/problems/find-bottom-left-tree-value/
+int findBottomLeftValue(struct TreeNode* root);
+
+// 格雷编码 https://leetcode-cn.com/problems/gray-code/
+int* grayCode(int n, int* returnSize);
+
+// 字典序排数 https://leetcode-cn.com/problems/lexicographical-numbers/
+int* lexicalOrder(int n, int* returnSize);
+
+// 石子游戏 https://leetcode-cn.com/problems/stone-game/
+bool stoneGame(int* piles, int pilesSize);
+
+// 复数乘法 https://leetcode-cn.com/problems/complex-number-multiplication/
+char * complexNumberMultiply(char * a, char * b);
+
 #endif /* LeetCodeC_h */

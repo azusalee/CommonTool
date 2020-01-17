@@ -26,6 +26,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     int size = 0;
+    grayCode(3, &size);
     diffWaysToCompute("1+1+1+1+1+1+1+1+1+1", &size);
     
     rotatedDigits(857);

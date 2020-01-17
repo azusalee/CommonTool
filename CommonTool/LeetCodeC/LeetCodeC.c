@@ -9365,13 +9365,322 @@ int* singleNumber3(int* nums, int numsSize, int* returnSize){
     int tmp1 = nums[0];
     for (int i = 1; i < numsSize; ++i) tmp1 ^= nums[i];
     int* result = malloc(sizeof(int)*2);
-    // 保留最后的1的位置，这个
+    // 保留最后的1的位置，这个1必定来自两个唯一数的其中一个
     int diff = tmp1&(-tmp1);
     int x = 0;
+    // 通过diff，筛选出其中一个唯一数x
     for (int i = 0; i < numsSize; ++i) {
         if (nums[i]&diff) x ^= nums[i];
     }
     result[0] = x;
     result[1] = tmp1^x;
+    return result;
+}
+
+int minAddToMakeValid(char * S){
+    int i = 0;
+    int count = 0;
+    int tmp = 0;
+    while (S[i] != '\0') {
+        if (S[i] == ')') {
+            --tmp;
+        }else{
+            if (tmp < 0) {
+                count -= tmp;
+                tmp = 1;
+            }else{
+                ++tmp;
+            }
+        }
+        ++i;
+    }
+    count += abs(tmp);
+    return count;
+}
+
+int kthSmallestHelper(struct TreeNode* root, int k, int* index){
+    if (root == NULL) return 0;
+    int val = kthSmallestHelper(root->left, k, index);
+    if (*index == k) return val;
+    if (++(*index) == k) return root->val;
+    return kthSmallestHelper(root->right, k, index);
+}
+
+int kthSmallest(struct TreeNode* root, int k){
+    int index = 0;
+    return kthSmallestHelper(root, k, &index);
+}
+
+char ** findAndReplacePattern(char ** words, int wordsSize, char * pattern, int* returnSize){
+    int i, j;
+    bool flag;
+    *returnSize = 0;
+    char hashWToP[128] = {0};
+    char hashPToW[128] = {0};
+    for (i = 0; i < wordsSize; ++i) {
+        j = 0;
+        flag = true;
+        memset(hashWToP, 0, sizeof(char)*128);
+        memset(hashPToW, 0, sizeof(char)*128);
+        while (words[i][j] != '\0') {
+            if (hashWToP[words[i][j]] != 0) {
+                if (hashWToP[words[i][j]] != pattern[j]) {
+                    flag = false;
+                    break;
+                }
+            }else{
+                if (hashPToW[pattern[j]] != 0) {
+                    flag = false;
+                    break;
+                }
+                hashWToP[words[i][j]] = pattern[j];
+                hashPToW[pattern[j]] = words[i][j];
+            }
+            ++j;
+        }
+        if (flag) words[(*returnSize)++] = words[i];
+    }
+    return words;
+}
+
+int* partitionLabels(char * S, int* returnSize){
+    int hash[26] = {-1};
+    int i = 0;
+    while (S[i] != '\0') {
+        hash[S[i]-'a'] = i;
+        ++i;
+    }
+    *returnSize = 0;
+    int *result = malloc(sizeof(int)*26);
+    i = 0;
+    int startIndex = 0, lastIndex = -1;
+    while (S[i] != '\0') {
+        if (hash[S[i]-'a'] > lastIndex) lastIndex = hash[S[i]-'a'];
+        if (i == lastIndex) {
+            result[(*returnSize)++] = lastIndex-startIndex+1;
+            startIndex = lastIndex+1;
+        }
+        ++i;
+    }
+    return result;
+}
+
+void findBottomLeftValueHelper(struct TreeNode* root, int* result, int deep, int* maxDeep){
+    if (root == NULL) return;
+    if (deep > *maxDeep) {
+        *maxDeep = deep;
+        *result = root->val;
+    }
+    findBottomLeftValueHelper(root->left, result, deep+1, maxDeep);
+    findBottomLeftValueHelper(root->right, result, deep+1, maxDeep);
+}
+
+int findBottomLeftValue(struct TreeNode* root){
+    int result = 0, maxDeep = -1;
+    findBottomLeftValueHelper(root, &result, 0, &maxDeep);
+    return result;
+}
+
+int* grayCode(int n, int* returnSize){
+    *returnSize = pow(2, n);
+    int* result = malloc(sizeof(int)*(*returnSize));
+    result[0] = 0;
+    int i, j, index = 1, maxCount = 1;
+    //公式解法
+//    for (i = 0; i < *returnSize; ++i) {
+//        result[i] = i^(i>>1);
+//    }
+    //每多一位多一倍，新增数为当前最高位置1然后与之前已有数相加得到。(动态规划)
+    for (i = 0; i < n; ++i) {
+        for (j = maxCount-1; j >= 0; --j) {
+            result[index++] = maxCount+result[j];
+        }
+        maxCount = maxCount<<1;
+    }
+    return result;
+}
+
+void lexicalOrderHelper(int n, int preNum, int* result, int* returnSize) {
+    result[(*returnSize)++] = preNum;
+    int tmp;
+    for (int i = 0; i < 10; ++i) {
+        tmp = preNum*10+i;
+        if (tmp > n) return;
+        lexicalOrderHelper(n, tmp, result, returnSize);
+    }
+}
+
+int* lexicalOrder(int n, int* returnSize){
+    int* result = malloc(sizeof(int)*n);
+    *returnSize = 0;
+    // 10叉树的先序历遍
+    for (int i = 1; i < 10; ++i) {
+        if (i > n) break;
+        lexicalOrderHelper(n, i, result, returnSize);
+    }
+    return result;
+//    *returnSize = n;
+//    int index = 0;
+//    int last = 1;
+//    int bit = 0;
+//    int tmp = 0;
+//    while (last <= n) {
+//        result[index++] = last;
+//        last *= 10;
+//    }
+//    last /= 10;
+//    while (index < n) {
+//        if (last >= n) {
+//            last = last/10+1;
+//        }else{
+//            ++last;
+//        }
+//        tmp = last;
+//        bit = 0;
+//        while (tmp%10 == 0) {
+//            tmp /= 10;
+//            ++bit;
+//        }
+//        while (bit != 0) {
+//            result[index++] = tmp;
+//            tmp *= 10;
+//            --bit;
+//        }
+//        result[index++] = last;
+//    }
+//    
+//    return result;
+}
+
+bool stoneGame(int* piles, int pilesSize){
+    // 数学归纳：pilesSize为偶数，先选的可以做到选择所有的奇数位或所有的偶数位石碓，而这两组中必然有一组较大，所以先选的必胜
+    return true;
+}
+
+char * complexNumberMultiply(char * a, char * b){
+    // 使用库的函数
+    {
+        int aNum = atoi(a);
+        int aiNum = atoi(strchr(a, '+')+1);
+        int bNum = atoi(b);
+        int biNum = atoi(strchr(b, '+')+1);
+        char* result = malloc(sizeof(char)*20);
+        sprintf(result, "%d+%di", aNum*bNum-aiNum*biNum, aNum*biNum+bNum*aiNum);
+        return result;
+    }
+    
+    // 不使用库的函数
+    int aNum = 0;
+    int aiNum = 0;
+    int bNum = 0;
+    int biNum = 0;
+    bool isMinus = false;
+    bool flag = false;
+    if (a[0] == '-') {
+        isMinus = true;
+        ++a;
+    }
+    while (*a != 'i') {
+        if (*a != '+') {
+            if (flag) {
+                if (*a == '-') {
+                    isMinus = true;
+                }else{
+                    aiNum = aiNum*10+(*a-'0');
+                }
+            }else{
+                aNum = aNum*10+(*a-'0');
+            }
+        }else{
+            if (isMinus) {
+                aNum = -aNum;
+            }
+            flag = true;
+            isMinus = false;
+        }
+        ++a;
+    }
+    if (isMinus) {
+        aiNum = -aiNum;
+    }
+    
+    isMinus = false;
+    flag = false;
+    if (b[0] == '-') {
+        isMinus = true;
+        ++b;
+    }
+    while (*b != 'i') {
+        if (*b != '+') {
+            if (flag) {
+                if (*b == '-') {
+                    isMinus = true;
+                }else{
+                    biNum = biNum*10+(*b-'0');
+                }
+            }else{
+                bNum = bNum*10+(*b-'0');
+            }
+        }else{
+            if (isMinus) {
+                bNum = -bNum;
+            }
+            flag = true;
+            isMinus = false;
+        }
+        ++b;
+    }
+    if (isMinus) {
+        biNum = -biNum;
+    }
+    int rNum = aNum*bNum-biNum*aiNum;
+    int riNum = aNum*biNum+bNum*aiNum;
+    char* result = malloc(sizeof(int)*100);
+    int index = 0;
+    if (rNum < 0) {
+        result[index++] = '-';
+        rNum = -rNum;
+    }
+    int l = index;
+    if (rNum == 0) {
+        result[index++] = '0';
+    }
+    while (rNum) {
+        result[index++] = rNum%10+'0';
+        rNum /= 10;
+    }
+    int r = index-1;
+    char tmp;
+    while (l < r) {
+        tmp = result[l];
+        result[l] = result[r];
+        result[r] = tmp;
+        ++l;
+        --r;
+    }
+    result[index++] = '+';
+    if (riNum < 0) {
+        result[index++] = '-';
+        riNum = -riNum;
+    }
+    l = index;
+    if (riNum == 0) {
+        result[index++] = '0';
+    }
+    while (riNum) {
+        result[index++] = riNum%10+'0';
+        riNum /= 10;
+    }
+    r = index-1;
+    while (l < r) {
+        tmp = result[l];
+        result[l] = result[r];
+        result[r] = tmp;
+        ++l;
+        --r;
+    }
+    result[index++] = 'i';
+    result[index] = '\0';
+    
     return result;
 }

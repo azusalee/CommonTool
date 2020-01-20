@@ -9505,7 +9505,7 @@ void lexicalOrderHelper(int n, int preNum, int* result, int* returnSize) {
     int tmp;
     for (int i = 0; i < 10; ++i) {
         tmp = preNum*10+i;
-        if (tmp > n) return;
+        if (tmp > n) return; // 剪枝，递归结束条件
         lexicalOrderHelper(n, tmp, result, returnSize);
     }
 }
@@ -9683,4 +9683,395 @@ char * complexNumberMultiply(char * a, char * b){
     result[index] = '\0';
     
     return result;
+}
+
+int* pathInZigZagTree(int label, int* returnSize){
+    // 1+2+4+8+...+2^n = (2^(n+1))-1
+    int tmp = label;
+    int count = 1;
+    while (tmp >= 2) {
+        tmp = tmp>>1;
+        ++count;
+    }
+    int* result = malloc(sizeof(int)*count);
+    *returnSize = count;
+    int rowmax = pow(2, count-1)-1;
+    while (count > 0) {
+        result[--count] = label;
+        rowmax = rowmax>>1;
+        label = rowmax^(label>>1);
+    }
+    return result;
+}
+
+void maxLevelSumHelper(struct TreeNode* root, int level, int* levelSum, int* maxLevel) {
+    if (root == NULL) return;
+    if (level > *maxLevel) *maxLevel = level;
+    levelSum[level] += root->val;
+    maxLevelSumHelper(root->left, level+1, levelSum, maxLevel);
+    maxLevelSumHelper(root->right, level+1, levelSum, maxLevel);
+}
+
+int maxLevelSum(struct TreeNode* root){
+    int maxLevel = 0;
+    int* levelSum = malloc(sizeof(int)*1024);
+    maxLevelSumHelper(root, 0, levelSum, &maxLevel);
+    int index = 0;
+    for (int i = 1; i < maxLevel; ++i) {
+        if (levelSum[i] > levelSum[index]) index = i;
+    }
+    free(levelSum);
+    return index+1;
+}
+
+void flattenHelper(struct TreeNode* root, struct TreeNode** preNode){
+    if (root == NULL) return;
+    //先序
+//    struct TreeNode* left = root->left;
+//    struct TreeNode* right = root->right;
+//    if (*preNode != NULL) {
+//        (*preNode)->right = root;
+//        (*preNode)->left = NULL;
+//    }
+//    *preNode = root;
+//    flattenHelper(left, preNode);
+//    flattenHelper(right, preNode);
+    
+    // 后序
+    flattenHelper(root->right, preNode);
+    flattenHelper(root->left, preNode);
+    root->right = *preNode;
+    root->left = NULL;
+    *preNode = root;
+}
+
+void flatten(struct TreeNode* root){
+    struct TreeNode* preNode = NULL;
+    // 用递归进行历遍, 空间复杂度O(n), 时间复杂度O(n)
+    flattenHelper(root, &preNode);
+    
+    // 用类似morris历遍的方式历遍，空间复杂度O(1), 时间复杂度O(n)
+    while (root != NULL) { 
+        //左子树为 null，直接考虑下一个节点
+        if (root->left == NULL) {
+            root = root->right;
+        } else {
+            // 找左子树最右边的节点
+            preNode = root->left;
+            while (preNode->right != NULL) {
+                preNode = preNode->right;
+            } 
+            //将原来的右子树接到左子树的最右边节点
+            preNode->right = root->right;
+            // 将左子树插入到右子树的地方
+            root->right = root->left;
+            root->left = NULL;
+            // 考虑下一个节点
+            root = root->right;
+        }
+    }
+}
+
+struct TreeNode* buildTree(int* inorder, int inorderSize, int* postorder, int postorderSize){
+    /*
+    中序历遍特点 左根右
+    后序历遍特点 左右根
+    后序数组最后一个数是根，找到中序数组里的根的位置，就可以对左子树和右子树分别做递归处理
+    递归n次，每次要从n里找出对应的位置，要运算n次，合计1+2+...+n=n*(n+1)/2，时间复杂度O(n^2)
+     */
+    if (inorderSize == 0) return NULL;
+    {
+        int i = 0;
+        while (inorder[i] != postorder[postorderSize-1]) ++i;
+        struct TreeNode* node = malloc(sizeof(struct TreeNode));
+        node->val = postorder[postorderSize-1];
+        node->left = buildTree(inorder, i, postorder, i);
+        node->right = buildTree(inorder+i+1, inorderSize-i-1, postorder+i, inorderSize-i-1);
+        return node;
+    }
+    
+    // 不用递归，时间复杂度O(n^3)
+    struct TreeNode* root = malloc(sizeof(struct TreeNode));
+    root->left = NULL;
+    root->right = NULL;
+    struct TreeNode** nodeList = malloc(sizeof(struct TreeNode*)*inorderSize);
+    int* indexList = malloc(sizeof(int)*inorderSize);
+    root->val = postorder[postorderSize-1];
+    int rootIndex = 0;
+    for (int i = 0; i < inorderSize; ++i) {
+        if (root->val == inorder[i]) {
+            rootIndex = i;
+            break;
+        }
+    }
+    nodeList[0] = root;
+    indexList[0] = rootIndex;
+    int listCount = 1;
+    int k;
+    int j = postorderSize-2;
+    int type;
+    struct TreeNode* preRoot = NULL;
+    while (j >= 0) {
+        for (int i = 0; i < inorderSize; ++i) {
+            if (postorder[j] == inorder[i]) {
+                struct TreeNode* node = malloc(sizeof(struct TreeNode));
+                node->left = NULL;
+                node->right = NULL;
+                node->val = postorder[j];
+                type = 0;
+                for (k = listCount-1; k >= 0; --k) {
+                    if (i > indexList[k]) {
+                        if (type == 1) {
+                            break;
+                        }else if (type == 0){
+                            preRoot = nodeList[k];
+                            type = 2;
+                        }
+                    }else{
+                        if (type == 2) {
+                            break;
+                        }
+                        preRoot = nodeList[k];
+                        type = 1;
+                    }
+                }
+                if (type == 2) {
+                    while (preRoot->right != NULL) {
+                        preRoot = preRoot->right;
+                    }
+                    preRoot->right = node;
+                }else{
+                    while (preRoot->left != NULL) {
+                        preRoot = preRoot->left;
+                    }
+                    preRoot->left = node;
+                }
+                nodeList[listCount] = node;
+                indexList[listCount++] = i;
+                break;
+            }
+        }
+        --j;
+    }
+    return root;
+}
+
+int* maxDepthAfterSplit(char * seq, int* returnSize){
+    int len = strlen(seq);
+    int* result = malloc(sizeof(int)*len);
+    *returnSize = len;
+    // 记录两个的最大深度，尽可能使两个深度尽可能接近
+    int count0 = 0, count1 = 0;
+    for (int i = 0; i < len; ++i) {
+        if (seq[i] == '(') {
+            if (count0 <= count1) {
+                result[i] = 0;
+                ++count0;
+            }else{
+                result[i] = 1;
+                ++count1;
+            }
+        }else{
+            if (count0 > count1) {
+                result[i] = 0;
+                --count0;
+            }else{
+                result[i] = 1;
+                --count1;
+            }
+        }
+    }
+    
+    return result;
+}
+
+int* productExceptSelf(int* nums, int numsSize, int* returnSize){
+    int* result = malloc(sizeof(int)*numsSize);
+    *returnSize = numsSize;
+    int total = 1, i;
+    for (i = 0; i < numsSize; ++i) {
+        result[i] = total;
+        total *= nums[i];
+    }
+    
+    total = 1;
+    for (i = numsSize-1; i >= 0; --i) {
+        result[i] = result[i]*total;
+        total *= nums[i];
+    }
+    
+    return result;
+}
+
+int countNodesHelper(struct TreeNode* root){
+    if (root == NULL) return 0;
+    int count = 0;
+    while (root) {
+        root = root->left;
+        ++count;
+    }
+    return count;
+}
+
+int countNodes(struct TreeNode* root){
+    // 层数h从0计起
+    // 2^h-1+(1~2^h)
+    // 需要计算层数和最后一层的节点数
+    // O((logn)^2)
+    if (root == NULL) return 0;
+    
+    int l = countNodesHelper(root->left);
+    int r = countNodesHelper(root->right);
+    if (l == r) {
+        return countNodes(root->right)+(1<<l);
+    }else{
+        return countNodes(root->left)+(1<<r);
+    }
+}
+
+int singleNumber2(int* nums, int numsSize){
+    int b1 = 0, b2 = 0;
+    for (int i = 0; i < numsSize; ++i) {
+        b1 = (b1^nums[i])&~b2;
+        b2 = (b2^nums[i])&~b1;
+    }
+    return b1;
+}
+
+struct TreeNode* removeLeafNodes(struct TreeNode* root, int target){
+    if (root == NULL) return NULL;
+    root->left = removeLeafNodes(root->left, target);
+    root->right = removeLeafNodes(root->right, target);
+    if (root->left == NULL && root->right == NULL && root->val == target) return NULL;
+    return root;
+}
+
+bool partitionHelper(char * s, int end) {
+    int l = 0;
+    while (l < end) {
+        if (s[l] != s[end]) return false;
+        ++l;
+        --end;
+    }
+    return true;
+}
+
+int partitionMaxLen = 16;
+
+void partitionHelper2(char * s, bool** memo, int start, char**** result, int* returnSize, int** returnColumnSizes, char** tmpRecord, int recordLen){
+    int i = start;
+    int j, len;
+    while (s[i] != '\0') {
+        /* 判断s[0]~s[i] 是否回文
+            是回文，把s[i+1]~s[n]递归
+            不是，直接下一个
+        */
+        if (memo[start][i]) {
+            memcpy(tmpRecord[recordLen], s+start, sizeof(char)*(i-start+1));
+            tmpRecord[recordLen][i-start+1] = '\0';
+            if (s[i+1] == '\0') {
+                if (*returnSize >= partitionMaxLen) {
+                    partitionMaxLen *= 2;
+                    *result = realloc(*result, sizeof(char**)*partitionMaxLen);
+                    *returnColumnSizes = realloc(*returnColumnSizes, sizeof(int)*partitionMaxLen);
+                }
+                (*result)[*returnSize] = malloc(sizeof(char*)*(recordLen+1));
+                (*returnColumnSizes)[*returnSize] = recordLen+1;
+                for (j = 0; j <= recordLen; ++j) {
+                    len = (int)strlen(tmpRecord[j])+1;
+                    (*result)[*returnSize][j] = malloc(sizeof(char)*len);
+                    memcpy((*result)[*returnSize][j], tmpRecord[j], sizeof(char)*len);
+                }
+                ++(*returnSize);
+            }else{
+                partitionHelper2(s, memo, i+1, result, returnSize, returnColumnSizes, tmpRecord, recordLen+1);
+            }
+        }
+        ++i;
+    }
+}
+
+char *** partition(char * s, int* returnSize, int** returnColumnSizes){
+    int len = (int)strlen(s);
+    bool** memo = malloc(sizeof(bool*)*len);
+    char** tmpRecord = malloc(sizeof(char*)*len);
+    for (int i = 0; i < len; ++i) {
+        memo[i] = malloc(sizeof(bool)*len);
+        tmpRecord[i] = malloc(sizeof(char)*(len+1));
+    }
+    for (int i = 1; i <= len; ++i) {
+        for (int j = 0; j <= len-i; ++j) {
+            memo[j][j+i-1] = (s[j]==s[j+i-1])&&(i<3||memo[j+1][j+i-2]);
+        }
+    }
+    partitionMaxLen = 16;
+    *returnSize = 0;
+    char*** result = malloc(sizeof(char**)*partitionMaxLen);
+    *returnColumnSizes = malloc(sizeof(int)*partitionMaxLen);
+    partitionHelper2(s, memo, 0, &result, returnSize, returnColumnSizes, tmpRecord, 0);
+    for (int i = 0; i < len; ++i) {
+        free(tmpRecord[i]);
+        free(memo[i]);
+    }
+    free(tmpRecord);
+    free(memo);
+    return result;
+//    int maxLen = 16;
+//    char *** result = malloc(sizeof(char**)*maxLen);
+//    *returnColumnSizes = malloc(sizeof(int)*maxLen);
+//    int i = 0;
+//    int count = 0;
+//    int j, k;
+//    while (s[i] != '\0') {
+//        /* 判断s[0]~s[i] 是否回文
+//            是回文，把s[i+1]~s[n]递归
+//            不是，直接下一个
+//        */
+//        if (partitionHelper(s, i)) {
+//            int tmpSize;
+//            int* tmpColumnSizes;
+//            if (s[i+1] == '\0') {
+//                if (count >= maxLen) {
+//                    maxLen *= 2;
+//                    result = realloc(result, sizeof(char**)*maxLen);
+//                    *returnColumnSizes = realloc(*returnColumnSizes, sizeof(int)*maxLen);
+//                }
+//                result[count] = malloc(sizeof(char*));
+//                (*returnColumnSizes)[count] = 1;
+//                result[count][0] = malloc(sizeof(char)*(i+2));
+//                memcpy(result[count][0], s, sizeof(char)*(i+1));
+//                result[count][0][i+1] = '\0';
+//                ++count;
+//            }else{
+//                char *** tmp = partition(s+i+1, &tmpSize, &tmpColumnSizes);
+//                for (j = 0; j < tmpSize; ++j) {
+//                    if (count >= maxLen) {
+//                        maxLen *= 2;
+//                        result = realloc(result, sizeof(char**)*maxLen);
+//                        *returnColumnSizes = realloc(*returnColumnSizes, sizeof(int)*maxLen);
+//                    }
+//                    result[count] = malloc(sizeof(char*)*(1+tmpColumnSizes[j]));
+//                    (*returnColumnSizes)[count] = 1+tmpColumnSizes[j];
+//                    result[count][0] = malloc(sizeof(char)*(i+2));
+//                    memcpy(result[count][0], s, sizeof(char)*(i+1));
+//                    result[count][0][i+1] = '\0';
+//                    for (k = 0; k < tmpColumnSizes[j]; ++k) {
+//                        len = (int)strlen(tmp[j][k]);
+//                        result[count][k+1] = malloc(sizeof(char)*(len+1));
+//                        memcpy(result[count][k+1], tmp[j][k], sizeof(char)*len);
+//                        result[count][k+1][len] = '\0';
+//                        free(tmp[j][k]);
+//                    }
+//                    free(tmp[j]);
+//                    ++count;
+//                }
+//                free(tmp);
+//                free(tmpColumnSizes);
+//            }
+//        }
+//        ++i;
+//    }
+//    *returnSize = count;
+//    
+//    return result;
 }

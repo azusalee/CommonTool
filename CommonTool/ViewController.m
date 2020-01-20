@@ -25,6 +25,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    int tmpSize;
+    int* tmpColumnSizes;
+    partition("cdd", &tmpSize, &tmpColumnSizes);
     int size = 0;
     grayCode(3, &size);
     diffWaysToCompute("1+1+1+1+1+1+1+1+1+1", &size);

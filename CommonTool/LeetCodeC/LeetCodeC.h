@@ -1109,4 +1109,34 @@ bool stoneGame(int* piles, int pilesSize);
 // 复数乘法 https://leetcode-cn.com/problems/complex-number-multiplication/
 char * complexNumberMultiply(char * a, char * b);
 
+// 二叉树寻路 https://leetcode-cn.com/problems/path-in-zigzag-labelled-binary-tree/
+int* pathInZigZagTree(int label, int* returnSize);
+
+// 最大层内元素和 https://leetcode-cn.com/problems/maximum-level-sum-of-a-binary-tree/
+int maxLevelSum(struct TreeNode* root);
+
+// 二叉树展开为链表 https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/ 
+void flatten(struct TreeNode* root);
+
+// 从中序与后序遍历序列构造二叉树 https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/
+struct TreeNode* buildTree(int* inorder, int inorderSize, int* postorder, int postorderSize);
+
+// 有效括号的嵌套深度 https://leetcode-cn.com/problems/maximum-nesting-depth-of-two-valid-parentheses-strings/
+int* maxDepthAfterSplit(char * seq, int* returnSize);
+
+// 除自身以外数组的乘积 https://leetcode-cn.com/problems/product-of-array-except-self/
+int* productExceptSelf(int* nums, int numsSize, int* returnSize);
+
+// 完全二叉树的节点个数 https://leetcode-cn.com/problems/count-complete-tree-nodes/
+int countNodes(struct TreeNode* root);
+
+// 只出现一次的数字 II https://leetcode-cn.com/problems/single-number-ii/
+int singleNumber(int* nums, int numsSize);
+
+// 删除给定值的叶子节点 https://leetcode-cn.com/problems/delete-leaves-with-a-given-value/
+struct TreeNode* removeLeafNodes(struct TreeNode* root, int target);
+
+// 分割回文串 https://leetcode-cn.com/problems/palindrome-partitioning/
+char *** partition(char * s, int* returnSize, int** returnColumnSizes);
+
 #endif /* LeetCodeC_h */

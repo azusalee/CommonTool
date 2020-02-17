@@ -10,10 +10,21 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol ALPageViewControllerDelegate <NSObject>
+
+// 页面滑动会回调
+- (void)alPageViewControllerPageDidScroll:(CGPoint)offset percentage:(double)percentage pageIndex:(NSInteger)pageIndex;
+
+@end
+
 @interface ALPageViewController : UIViewController
 
 @property (nonatomic, strong) NSArray *vcArray;
 @property (nonatomic, assign) CGSize cellSize;
+
+@property (nonatomic, weak) id<ALPageViewControllerDelegate> pageDelegate;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

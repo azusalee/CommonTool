@@ -33,7 +33,9 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    
+    if (self.vcArray.count > 0) {
+        [self.pageDelegate alPageViewControllerPageDidScroll:scrollView.contentOffset percentage:scrollView.contentOffset.x/(self.vcArray.count*self.cellSize.width) pageIndex:(scrollView.contentOffset.x/self.cellSize.width+0.5)];
+    }
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{

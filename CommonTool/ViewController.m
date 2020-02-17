@@ -10,6 +10,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import "LeetCodeC.h"
 #import "CompileSourceParse.h"
+#import "ALLabelCollectionDemoViewController.h"
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
@@ -142,5 +143,9 @@
     return dist;
 }
 
+- (IBAction)jumptoDemo:(id)sender {
+   UIViewController *controller = [[ALLabelCollectionDemoViewController alloc] init];
+   [self.navigationController pushViewController:controller animated:YES];
+}
 
 @end

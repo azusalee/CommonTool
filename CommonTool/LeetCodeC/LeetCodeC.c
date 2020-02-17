@@ -10075,3 +10075,94 @@ char *** partition(char * s, int* returnSize, int** returnColumnSizes){
 //    
 //    return result;
 }
+
+int countSquares(int** matrix, int matrixSize, int* matrixColSize){
+    int i, j, count = 0;
+    int** f = malloc(sizeof(int*)*matrixSize);
+    for (i = 0; i < matrixSize; ++i) {
+        f[i] = malloc(sizeof(int*)*matrixColSize[0]);
+    }
+    for (i = 0; i < matrixSize; ++i) {
+        for (j = 0; j < matrixColSize[0]; ++j) {
+            if (i == 0 || j == 0) {
+                f[i][j] = matrix[i][j];
+            }else if (matrix[i][j] == 0){
+                f[i][j] = 0;
+            }else{
+                f[i][j] = min(min(f[i-1][j], f[i][j-1]), f[i-1][j-1])+1;
+            }
+            count += f[i][j];
+        }
+    }
+    free(f);
+    return count;
+}
+
+int distributeCoinsHelper(struct TreeNode* root, int *result) {
+    if (root == NULL) return 0;
+    int L = distributeCoinsHelper(root->left, result);
+    int R = distributeCoinsHelper(root->right, result);
+    *result += abs(L)+abs(R);
+    return root->val+L+R-1;
+}
+
+int distributeCoins(struct TreeNode* root){
+    int result = 0;
+    distributeCoinsHelper(root, &result);
+    return result;
+}
+
+char * customSortString(char * S, char * T){
+    int slen = strlen(S);
+    int tlen = strlen(T);
+    int i = 0;
+    int hash[26] = {-1};
+    for (i = 0; i < 26; ++i) hash[i] = -1;
+    i = 0;
+    int counts[26] = {0};
+    while (S[i] != '\0') {
+        hash[S[i]-'a'] = i;
+        ++i;
+    }
+    i = 0;
+    int index = tlen-1;
+    char* result = malloc(sizeof(char)*(tlen+1));
+    result[tlen] = '\0';
+    while (T[i] != '\0') {
+        if (hash[T[i]-'a'] == -1) {
+            result[index--] = T[i];
+        }else{
+            counts[T[i]-'a'] += 1;
+        }
+        ++i;
+    }
+    index = 0;
+    for (i = 0; i < slen; ++i) {
+        for (int j = 0; j < counts[S[i]]; ++j) {
+            result[index++] = S[i];
+        }
+    }
+    
+    return result;
+}
+
+int numTrees(int n){
+
+    /*
+    1    1
+    2     2
+    5       3
+    14      4
+    42      5
+    132     6
+     */
+     // G(n) = G(0)G(n-1)+G(1)G(n-2)+...+G(n-1)G(0);
+     // G(n+1) = G(0)G(n)+G(1)G(n-1)+...+G(n)G(0);
+     // 卡塔兰数 C(n+1) = C(n)*2*(2*n+1)/(n+2)
+    long C = 1;
+    for (int i = 1; i < n; ++i) {
+        C = C*2*(2*i+1)/(i+2);
+    }
+    
+    return (int)C;
+}

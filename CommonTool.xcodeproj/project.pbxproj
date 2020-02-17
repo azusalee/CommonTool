@@ -27,6 +27,8 @@
 		8CC206A323FA4D3500AD3E2E /* ALLabelCollectionCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC206A223FA4D3500AD3E2E /* ALLabelCollectionCellModel.m */; };
 		8CC206A823FA688D00AD3E2E /* ALLabelCollectionDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC206A623FA688D00AD3E2E /* ALLabelCollectionDemoViewController.m */; };
 		8CC206A923FA688D00AD3E2E /* ALLabelCollectionDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CC206A723FA688D00AD3E2E /* ALLabelCollectionDemoViewController.xib */; };
+		8CC206AD23FA6E4000AD3E2E /* ALPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC206AC23FA6E4000AD3E2E /* ALPageViewController.m */; };
+		8CC206B123FA6E5900AD3E2E /* ALControllerCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC206B023FA6E5900AD3E2E /* ALControllerCollectionViewCell.m */; };
 		8CE4570122D867B7002EA4CF /* NSObject+ALSwizzing.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE4570022D867B7002EA4CF /* NSObject+ALSwizzing.m */; };
 		8CE4570522D867CD002EA4CF /* UIView+ALInController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE4570322D867CD002EA4CF /* UIView+ALInController.m */; };
 		8CE4570922D867E5002EA4CF /* NSString+ALHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE4570722D867E5002EA4CF /* NSString+ALHelper.m */; };
@@ -123,6 +125,10 @@
 		8CC206A523FA688D00AD3E2E /* ALLabelCollectionDemoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ALLabelCollectionDemoViewController.h; sourceTree = "<group>"; };
 		8CC206A623FA688D00AD3E2E /* ALLabelCollectionDemoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ALLabelCollectionDemoViewController.m; sourceTree = "<group>"; };
 		8CC206A723FA688D00AD3E2E /* ALLabelCollectionDemoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ALLabelCollectionDemoViewController.xib; sourceTree = "<group>"; };
+		8CC206AB23FA6E4000AD3E2E /* ALPageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ALPageViewController.h; sourceTree = "<group>"; };
+		8CC206AC23FA6E4000AD3E2E /* ALPageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ALPageViewController.m; sourceTree = "<group>"; };
+		8CC206AF23FA6E5900AD3E2E /* ALControllerCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ALControllerCollectionViewCell.h; sourceTree = "<group>"; };
+		8CC206B023FA6E5900AD3E2E /* ALControllerCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ALControllerCollectionViewCell.m; sourceTree = "<group>"; };
 		8CE456FF22D867B7002EA4CF /* NSObject+ALSwizzing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ALSwizzing.h"; sourceTree = "<group>"; };
 		8CE4570022D867B7002EA4CF /* NSObject+ALSwizzing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ALSwizzing.m"; sourceTree = "<group>"; };
 		8CE4570322D867CD002EA4CF /* UIView+ALInController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ALInController.m"; sourceTree = "<group>"; };
@@ -244,6 +250,7 @@
 				8CC0ABA722BCBBAB001BB84D /* AppDelegate.m */,
 				8CC0ABA922BCBBAB001BB84D /* ViewController.h */,
 				8CC0ABAA22BCBBAB001BB84D /* ViewController.m */,
+				8CC206AA23FA6E2700AD3E2E /* ALPageController */,
 				8CC206A423FA687500AD3E2E /* Demo */,
 				8CC2069623FA47D800AD3E2E /* ALLabelCollect */,
 				8C6D795523570E09004FFF4A /* Localizable.strings */,
@@ -286,6 +293,25 @@
 				8CC206A723FA688D00AD3E2E /* ALLabelCollectionDemoViewController.xib */,
 			);
 			path = Demo;
+			sourceTree = "<group>";
+		};
+		8CC206AA23FA6E2700AD3E2E /* ALPageController */ = {
+			isa = PBXGroup;
+			children = (
+				8CC206AE23FA6E4400AD3E2E /* Cell */,
+				8CC206AB23FA6E4000AD3E2E /* ALPageViewController.h */,
+				8CC206AC23FA6E4000AD3E2E /* ALPageViewController.m */,
+			);
+			path = ALPageController;
+			sourceTree = "<group>";
+		};
+		8CC206AE23FA6E4400AD3E2E /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				8CC206AF23FA6E5900AD3E2E /* ALControllerCollectionViewCell.h */,
+				8CC206B023FA6E5900AD3E2E /* ALControllerCollectionViewCell.m */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		8CE456FD22D86776002EA4CF /* Cate */ = {
@@ -528,6 +554,7 @@
 			files = (
 				8CC0ABAB22BCBBAB001BB84D /* ViewController.m in Sources */,
 				8CC206A323FA4D3500AD3E2E /* ALLabelCollectionCellModel.m in Sources */,
+				8CC206AD23FA6E4000AD3E2E /* ALPageViewController.m in Sources */,
 				8CE4571822D87331002EA4CF /* UINavigationController+AZLPop.m in Sources */,
 				8C0C003723614D5C007EA32E /* UIScrollView+ALKeyboard.swift in Sources */,
 				8CE4570122D867B7002EA4CF /* NSObject+ALSwizzing.m in Sources */,
@@ -542,6 +569,7 @@
 				8CE4571422D871DE002EA4CF /* NSURL+AZLProcess.m in Sources */,
 				8CC0ABA822BCBBAB001BB84D /* AppDelegate.m in Sources */,
 				8CC206A823FA688D00AD3E2E /* ALLabelCollectionDemoViewController.m in Sources */,
+				8CC206B123FA6E5900AD3E2E /* ALControllerCollectionViewCell.m in Sources */,
 				8CF75FEA22FBDD5F002E9CCE /* LeetCodeC.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

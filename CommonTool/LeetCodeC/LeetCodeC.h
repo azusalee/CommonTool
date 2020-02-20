@@ -1142,4 +1142,16 @@ char *** partition(char * s, int* returnSize, int** returnColumnSizes);
 // 组合总和 II https://leetcode-cn.com/problems/combination-sum-ii/
 int** combinationSum2(int* candidates, int candidatesSize, int target, int* returnSize, int** returnColumnSizes);
 
+// 统计全为 1 的正方形子矩阵 https://leetcode-cn.com/problems/count-square-submatrices-with-all-ones/
+int countSquares(int** matrix, int matrixSize, int* matrixColSize);
+
+// 在二叉树中分配硬币 https://leetcode-cn.com/problems/distribute-coins-in-binary-tree/
+int distributeCoins(struct TreeNode* root);
+
+// 自定义字符串排序 https://leetcode-cn.com/problems/custom-sort-string/
+char * customSortString(char * S, char * T);
+
+// 不同的二叉搜索树 https://leetcode-cn.com/problems/unique-binary-search-trees/
+int numTrees(int n);
+
 #endif /* LeetCodeC_h */

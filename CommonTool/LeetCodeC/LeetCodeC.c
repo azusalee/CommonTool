@@ -10075,3 +10075,33 @@ char *** partition(char * s, int* returnSize, int** returnColumnSizes){
 //    
 //    return result;
 }
+
+void combinationSum2Helper(int* candidates, int candidatesSize, int target, int* returnSize, int** returnColumnSizes, int** result, int* pre, int sum, int preCount){
+    
+    for (int i = 0; i < candidatesSize; ++i) {
+        if ((i == 0 || candidates[i] != candidates[i-1]) && candidates[i] <= target-sum) {
+            int* tmpNums = malloc(sizeof(int)*(preCount+1));
+            if (pre != NULL) memcpy(tmpNums, pre, sizeof(int)*preCount);
+            tmpNums[preCount] = candidates[i];
+            if (sum+candidates[i] == target) {
+                result[*returnSize] = tmpNums;
+                (*returnColumnSizes)[*returnSize] = preCount+1;
+                *returnSize += 1;
+            }else{
+                combinationSum2Helper(candidates+i+1, candidatesSize-i-1, target, returnSize, returnColumnSizes, result, tmpNums, sum+candidates[i], preCount+1);
+                free(tmpNums);
+            }
+        }
+    }
+}
+
+int** combinationSum2(int* candidates, int candidatesSize, int target, int* returnSize, int** returnColumnSizes){
+    qsort(candidates, candidatesSize, sizeof(int), compare);
+    
+    int** result = malloc(sizeof(int*)*1000);
+    *returnSize = 0;
+    *returnColumnSizes = malloc(sizeof(int)*1000);
+    combinationSum2Helper(candidates, candidatesSize, target, returnSize, returnColumnSizes, result, NULL, 0, 0);
+    
+    return result;
+}

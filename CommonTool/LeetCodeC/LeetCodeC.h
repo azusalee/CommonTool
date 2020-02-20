@@ -1139,4 +1139,7 @@ struct TreeNode* removeLeafNodes(struct TreeNode* root, int target);
 // 分割回文串 https://leetcode-cn.com/problems/palindrome-partitioning/
 char *** partition(char * s, int* returnSize, int** returnColumnSizes);
 
+// 组合总和 II https://leetcode-cn.com/problems/combination-sum-ii/
+int** combinationSum2(int* candidates, int candidatesSize, int target, int* returnSize, int** returnColumnSizes);
+
 #endif /* LeetCodeC_h */

@@ -10196,3 +10196,52 @@ int numTrees(int n){
     
     return (int)C;
 }
+
+int sumNums(int n){
+    n > 1 && (n += sumNums(n-1));
+    return n;
+}
+
+bool canFinish(int numCourses, int** prerequisites, int prerequisitesSize, int* prerequisitesColSize){
+    int finishCoursesCount = 0;
+    
+    int coursesIn[numCourses];
+    memset(coursesIn, 0, sizeof(int)*numCourses);
+    int coursesOut[numCourses][numCourses];
+    int coursesOutCount[numCourses];
+    memset(coursesOutCount, 0, sizeof(int)*numCourses);
+    
+    int zeroInCourses[numCourses];
+    int zeroInCoursesCount = 0;
+    
+    for (int i = 0; i < prerequisitesSize; ++i) {
+        coursesIn[prerequisites[i][0]] += 1;
+        coursesOut[prerequisites[i][1]][coursesOutCount[prerequisites[i][1]]] = prerequisites[i][0];
+        coursesOutCount[prerequisites[i][1]] += 1;
+    }
+    
+    for (int i = 0; i < numCourses; ++i) {
+        if (coursesIn[i] == 0) {
+            zeroInCourses[zeroInCoursesCount++] = i;
+            finishCoursesCount += 1;
+        }
+    }
+    
+    int tmpCourse, zeroInCourse;
+    while (zeroInCoursesCount > 0 && finishCoursesCount<numCourses) {
+        zeroInCourse = zeroInCourses[zeroInCoursesCount-1];
+        zeroInCoursesCount -= 1;
+        
+        while (coursesOutCount[zeroInCourse] > 0) {
+            tmpCourse = coursesOut[zeroInCourse][coursesOutCount[zeroInCourse]-1];
+            coursesIn[tmpCourse] -= 1;
+            if (coursesIn[tmpCourse] == 0) {
+                zeroInCourses[zeroInCoursesCount++] = tmpCourse;
+                finishCoursesCount += 1;
+            }
+            coursesOutCount[zeroInCourse] -= 1;
+        }
+    }
+    
+    return finishCoursesCount==numCourses;
+}

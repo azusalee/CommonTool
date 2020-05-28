@@ -1127,31 +1127,37 @@ int* maxDepthAfterSplit(char * seq, int* returnSize);
 // 除自身以外数组的乘积 https://leetcode-cn.com/problems/product-of-array-except-self/
 int* productExceptSelf(int* nums, int numsSize, int* returnSize);
 
-// 完全二叉树的节点个数 https://leetcode-cn.com/problems/count-complete-tree-nodes/
+// 222.完全二叉树的节点个数 https://leetcode-cn.com/problems/count-complete-tree-nodes/
 int countNodes(struct TreeNode* root);
 
-// 只出现一次的数字 II https://leetcode-cn.com/problems/single-number-ii/
+// 137.只出现一次的数字 II https://leetcode-cn.com/problems/single-number-ii/
 int singleNumber(int* nums, int numsSize);
 
-// 删除给定值的叶子节点 https://leetcode-cn.com/problems/delete-leaves-with-a-given-value/
+// 1325.删除给定值的叶子节点 https://leetcode-cn.com/problems/delete-leaves-with-a-given-value/
 struct TreeNode* removeLeafNodes(struct TreeNode* root, int target);
 
-// 分割回文串 https://leetcode-cn.com/problems/palindrome-partitioning/
+// 131.分割回文串 https://leetcode-cn.com/problems/palindrome-partitioning/
 char *** partition(char * s, int* returnSize, int** returnColumnSizes);
 
-// 组合总和 II https://leetcode-cn.com/problems/combination-sum-ii/
+// 40.组合总和 II https://leetcode-cn.com/problems/combination-sum-ii/
 int** combinationSum2(int* candidates, int candidatesSize, int target, int* returnSize, int** returnColumnSizes);
 
-// 统计全为 1 的正方形子矩阵 https://leetcode-cn.com/problems/count-square-submatrices-with-all-ones/
+// 1277.统计全为 1 的正方形子矩阵 https://leetcode-cn.com/problems/count-square-submatrices-with-all-ones/
 int countSquares(int** matrix, int matrixSize, int* matrixColSize);
 
-// 在二叉树中分配硬币 https://leetcode-cn.com/problems/distribute-coins-in-binary-tree/
+// 979.在二叉树中分配硬币 https://leetcode-cn.com/problems/distribute-coins-in-binary-tree/
 int distributeCoins(struct TreeNode* root);
 
-// 自定义字符串排序 https://leetcode-cn.com/problems/custom-sort-string/
+// 791.自定义字符串排序 https://leetcode-cn.com/problems/custom-sort-string/
 char * customSortString(char * S, char * T);
 
-// 不同的二叉搜索树 https://leetcode-cn.com/problems/unique-binary-search-trees/
+// 96.不同的二叉搜索树 https://leetcode-cn.com/problems/unique-binary-search-trees/
 int numTrees(int n);
+
+// 面试题64. 求 1+2+...+n ，要求不能使用乘除法、for、while、if、else、switch、case等关键字及条件判断语句（A?B:C）。 https://leetcode-cn.com/problems/qiu-12n-lcof/
+int sumNums(int n);
+
+// 207.课程表
+bool canFinish(int numCourses, int** prerequisites, int prerequisitesSize, int* prerequisitesColSize);
 
 #endif /* LeetCodeC_h */

@@ -10245,3 +10245,103 @@ bool canFinish(int numCourses, int** prerequisites, int prerequisitesSize, int* 
     
     return finishCoursesCount==numCourses;
 }
+
+int* findOrder(int numCourses, int** prerequisites, int prerequisitesSize, int* prerequisitesColSize, int* returnSize){
+    int* result = malloc(sizeof(int)*numCourses);
+    int finishCoursesCount = 0;
+    
+    int coursesIn[numCourses];
+    memset(coursesIn, 0, sizeof(int)*numCourses);
+    int coursesOut[numCourses][numCourses];
+    int coursesOutCount[numCourses];
+    memset(coursesOutCount, 0, sizeof(int)*numCourses);
+    int zeroInCourses[numCourses];
+    int zeroInCoursesCount = 0;
+    
+    for (int i = 0; i < prerequisitesSize; ++i) {
+        coursesIn[prerequisites[i][0]] += 1;
+        coursesOut[prerequisites[i][1]][coursesOutCount[prerequisites[i][1]]] = prerequisites[i][0];
+        coursesOutCount[prerequisites[i][1]] += 1;
+    }
+    
+    for (int i = 0; i < numCourses; ++i) {
+        if (coursesIn[i] == 0) {
+            zeroInCourses[zeroInCoursesCount++] = i;
+            result[finishCoursesCount] = i;
+            finishCoursesCount += 1;
+        }
+    }
+    
+    int tmpCourse, zeroInCourse;
+    while (zeroInCoursesCount > 0 && finishCoursesCount<numCourses) {
+        zeroInCourse = zeroInCourses[zeroInCoursesCount-1];
+        zeroInCoursesCount -= 1;
+        
+        while (coursesOutCount[zeroInCourse] > 0) {
+            tmpCourse = coursesOut[zeroInCourse][coursesOutCount[zeroInCourse]-1];
+            coursesIn[tmpCourse] -= 1;
+            if (coursesIn[tmpCourse] == 0) {
+                zeroInCourses[zeroInCoursesCount++] = tmpCourse;
+                result[finishCoursesCount] = tmpCourse;
+                finishCoursesCount += 1;
+            }
+            coursesOutCount[zeroInCourse] -= 1;
+        }
+    }
+    if (finishCoursesCount==numCourses) {
+        *returnSize = finishCoursesCount;
+    }else{
+        *returnSize = 0;
+    }
+    return result;
+}
+
+void permuteUniqueDFS(int* nums, int numsSize, int* used, int* returnSize, int** result, int* tmpPath, int pathLen){
+    if (pathLen == numsSize) {
+        int* path = malloc(sizeof(int)*numsSize);
+        memcpy(path, tmpPath, sizeof(int)*numsSize);
+        result[*returnSize] = path;
+        (*returnSize) += 1;
+        return;
+    }
+    for (int i = 0; i < numsSize; ++i) {
+        if (i > 0 && nums[i] == nums[i-1] && used[i-1] == 0) {
+            continue;
+        }
+        if (used[i] == 1) {
+            continue;
+        }
+        used[i] = 1;
+        tmpPath[pathLen] = nums[i];
+        permuteUniqueDFS(nums, numsSize, used, returnSize, result, tmpPath, pathLen+1);
+        used[i] = 0;
+    }
+}
+
+int** permuteUnique(int* nums, int numsSize, int* returnSize, int** returnColumnSizes){
+    if (numsSize == 0) {
+        *returnSize = 0;
+        return NULL;
+    }
+    // C(n1, numSize)*C(n2, numSize-n1)*...*C(n3,n3)
+    
+    qsort(nums, numsSize, sizeof(*nums), compare);
+    int maxCount = 1;
+    for (int i = 2; i <= numsSize; ++i) {
+        maxCount *= i;
+    }
+    int** result = malloc(sizeof(int*)*maxCount);
+    *returnSize = 0;
+    int* used = malloc(sizeof(int)*numsSize);
+    memset(used, 0, sizeof(int)*numsSize);
+    int* tmpPath = malloc(sizeof(int)*numsSize);
+    permuteUniqueDFS(nums, numsSize, used, returnSize, result, tmpPath, 0);
+    
+    *returnColumnSizes = malloc(sizeof(int)*(*returnSize));
+    for (int i = 0; i < *returnSize; ++i) {
+        (*returnColumnSizes)[i] = numsSize;
+    }
+    return result;
+}
+
+

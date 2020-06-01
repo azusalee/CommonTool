@@ -1159,5 +1159,10 @@ int sumNums(int n);
 
 // 207.课程表
 bool canFinish(int numCourses, int** prerequisites, int prerequisitesSize, int* prerequisitesColSize);
+// 210. 课程表 II
+int* findOrder(int numCourses, int** prerequisites, int prerequisitesSize, int* prerequisitesColSize, int* returnSize);
+
+// 47. 全排列 II
+int** permuteUnique(int* nums, int numsSize, int* returnSize, int** returnColumnSizes);
 
 #endif /* LeetCodeC_h */

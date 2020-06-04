@@ -10344,4 +10344,24 @@ int** permuteUnique(int* nums, int numsSize, int* returnSize, int** returnColumn
     return result;
 }
 
-
+// f(n)=(f(n+1)+f(n+2)+...f(n+W))/W
+// f(n-1)=(f(n)+f(n)*W-f(n+W))/W
+double new21Game(int N, int K, int W){
+    if (K == 0 || K+W-1 <= N) return 1;
+    double* hash = malloc(sizeof(double)*(K));
+    hash[K-1] = (N-K+1)/(double)W;
+    int end;
+    for (int i = K-2; i >= 0; --i) {
+        end = i+1+W;
+        if (end < K) {
+            hash[i] = (hash[i+1]*(1+W)-hash[end])/W;
+        }else if (end > N) {
+            hash[i] = (hash[i+1]*(1+W))/W;
+        }else{
+            hash[i] = (hash[i+1]*(1+W)-1)/W;
+        }
+    }
+    double res = hash[0];
+    free(hash);
+    return res;
+}

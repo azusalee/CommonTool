@@ -1165,4 +1165,7 @@ int* findOrder(int numCourses, int** prerequisites, int prerequisitesSize, int* 
 // 47. 全排列 II
 int** permuteUnique(int* nums, int numsSize, int* returnSize, int** returnColumnSizes);
 
+// 837. 新21点
+double new21Game(int N, int K, int W);
+
 #endif /* LeetCodeC_h */

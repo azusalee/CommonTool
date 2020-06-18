@@ -1168,4 +1168,7 @@ int** permuteUnique(int* nums, int numsSize, int* returnSize, int** returnColumn
 // 837. 新21点
 double new21Game(int N, int K, int W);
 
+// 1028. 从先序遍历还原二叉树
+struct TreeNode* recoverFromPreorder(char * S);
+
 #endif /* LeetCodeC_h */

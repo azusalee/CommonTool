@@ -10365,3 +10365,40 @@ double new21Game(int N, int K, int W){
     free(hash);
     return res;
 }
+
+struct TreeNode* recoverFromPreorder(char * S){
+    struct TreeNode **nodeList = malloc(sizeof(struct TreeNode*)*1000);
+    struct TreeNode *fatherNode;
+    
+    int i = 0, level = 0, val = 0;
+    while (1) {
+        if (S[i] == '-' || S[i] == '\0') {
+            if (val != 0) {
+                struct TreeNode *node = malloc(sizeof(struct TreeNode));
+                node->val = val;
+                node->left = NULL;
+                node->right = NULL;
+                nodeList[level] = node;
+                if (level > 0) {
+                    fatherNode = nodeList[level-1];
+                    if (fatherNode->left == NULL) {
+                        fatherNode->left = node;
+                    }else{
+                        fatherNode->right = node;
+                    }
+                }
+                level = 0;
+                val = 0;
+            }
+            if (S[i] == '\0') break;
+            level += 1;
+        }else{
+            val = val*10+S[i]-'0';
+        }
+        ++i;
+    }
+    
+    fatherNode = nodeList[0];
+    free(nodeList);
+    return fatherNode;
+}

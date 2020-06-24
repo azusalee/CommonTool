@@ -1180,4 +1180,7 @@ char* serialize(struct TreeNode* root);
 /** Decodes your encoded data to tree. */
 struct TreeNode* deserialize(char* data);
 
+// 面试题 16.18. 模式匹配
+bool patternMatching(char* pattern, char* value);
+
 #endif /* LeetCodeC_h */

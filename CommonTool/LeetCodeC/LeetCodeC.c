@@ -10593,3 +10593,96 @@ struct TreeNode* deserialize(char* data) {
     }
     return nodeStack[0];
 }
+
+bool patternMatching(char* pattern, char* value){
+    int aIndex[1000] = {0};
+    int bIndex[1000] = {0};
+    int aCount = 0;
+    int bCount = 0;
+    int i = 0;
+    
+    while (pattern[i] != '\0') {
+        if (pattern[i] == 'a') {
+            aIndex[aCount++] = i;
+        }else{
+            bIndex[bCount++] = i;
+        }
+        ++i;
+    }
+    if ((aCount == 1 || bCount == 1) && value[0] != '\0') {
+        return true;
+    }
+    if ((aCount > 0 && bCount > 0) && value[0] == '\0') {
+        return false;
+    }
+    
+    i = 0;
+    while (value[i] != '\0') ++i;
+    int valueLen = i;
+    
+    if (aCount != 0) {
+        if (bCount == 0 && valueLen%aCount != 0) {
+            return false;
+        }
+    }else{
+        if (bCount != 0) {
+            if (valueLen%bCount != 0) return false;
+        }else{
+            if (valueLen > 0) {
+                return false;
+            }else{
+                return true;
+            }
+        }
+    }
+    
+    int alen = 0;
+    int maxalen = 0;
+    if (aCount > 0) maxalen = valueLen/aCount;
+
+    int blen = 0;
+    if (bCount == 0) alen = maxalen;
+    
+    while (alen <= maxalen) {
+        if (bCount > 0 && (valueLen-alen*aCount)%bCount != 0) {
+            ++alen;
+            continue;
+        }
+        if (bCount > 0) {
+            blen = (valueLen-alen*aCount)/bCount;
+        }
+        
+        bool isEqual = true;
+        int startOffset = aIndex[0]*blen;
+        for (i = 1; i < aCount; ++i) {
+            int offset = (aIndex[i]-aIndex[0]-i)*blen+i*alen;
+            for (int j = 0; j < alen; ++j) {
+                if (value[offset+j+startOffset] != value[j+startOffset]) {
+                    isEqual = false;
+                    break;
+                }
+            }
+            if (isEqual == false) break;
+        }
+        if (isEqual == false) {
+            ++alen;
+            continue;
+        }
+        
+        startOffset = bIndex[0]*alen;
+        for (i = 1; i < bCount; ++i) {
+            int offset = (bIndex[i]-bIndex[0]-i)*alen+i*blen;
+            for (int j = 0; j < blen; ++j) {
+                if (value[offset+j+startOffset] != value[j+startOffset]) {
+                    isEqual = false;
+                    break;
+                }
+            }
+            if (isEqual == false) break;
+        }
+        if (isEqual == true) return true;
+        ++alen;
+    }
+    
+    return false;
+}

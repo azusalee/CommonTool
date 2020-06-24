@@ -1171,4 +1171,13 @@ double new21Game(int N, int K, int W);
 // 1028. 从先序遍历还原二叉树
 struct TreeNode* recoverFromPreorder(char * S);
 
+// 1014. 最佳观光组合
+int maxScoreSightseeingPair(int* A, int ASize);
+
+// 297. 二叉树的序列化与反序列化
+/** Encodes a tree to a single string. */
+char* serialize(struct TreeNode* root);
+/** Decodes your encoded data to tree. */
+struct TreeNode* deserialize(char* data);
+
 #endif /* LeetCodeC_h */

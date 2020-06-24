@@ -10402,3 +10402,194 @@ struct TreeNode* recoverFromPreorder(char * S){
     free(nodeList);
     return fatherNode;
 }
+
+int maxScoreSightseeingPair(int* A, int ASize){
+    int ans = 0, mx = A[0];
+    for (int i = 1; i < ASize; ++i) {
+        if (ans < mx+A[i]-i) ans = mx+A[i]-i;
+        if (mx < A[i]+i) mx = A[i]+i;
+    }
+    return ans;
+//    int** hash = malloc(sizeof(int*)*1001);
+//    int* hashCount = malloc(sizeof(int*)*1001);
+//    memset(hashCount, 0, sizeof(int*)*1001);
+//    
+//    int maxNum = 0, minNum = 1000;
+//    for (int i = 0; i < ASize; ++i) {
+//        hashCount[A[i]] += 1;
+//        if (A[i] > maxNum) maxNum = A[i];
+//        if (A[i] < minNum) minNum = A[i];
+//    }
+//    for (int i = minNum; i <= maxNum; ++i) {
+//        if (hashCount[i] > 0) {
+//            hash[i] = malloc(sizeof(int)*hashCount[i]);
+//        }
+//    }
+//    memset(hashCount, 0, sizeof(int*)*1001);
+//    for (int i = 0; i < ASize; ++i) {
+//        hash[A[i]][hashCount[A[i]]] = i;
+//        hashCount[A[i]] += 1;
+//    }
+//    
+//    int minLen = ASize;
+//    int tmp = 0, max = 0;
+//    int left = 0, right = 0, center = 0;
+//    for (int i = maxNum; i >= minNum; --i) {
+//        if (i*2-1 <= max) break;
+//        if (hashCount[i] == 0) continue;
+//        
+//        if (hashCount[i] > 1) {
+//            minLen = ASize;
+//            for (int j = 1; j < hashCount[i]; ++j) {
+//                tmp = hash[i][j]-hash[i][j-1];
+//                if (tmp < minLen) minLen = tmp;
+//            }
+//            tmp = i*2-minLen;
+//            if (tmp > max) max = tmp;
+//        }
+//        for (int j = i-1; j >= minNum; --j) {
+//            if (i+j-1 <= max) break;
+//            if (hashCount[j] == 0) continue;
+//            
+//            for (int k = 0; k < hashCount[i]; ++k) {
+//                left = 1;
+//                right = hashCount[j]-1;
+//                center = 0;
+//                minLen = abs(hash[j][0]-hash[i][k]);
+//                while (left <= right) {
+//                    center = (left+right) >> 1;
+//                    tmp = hash[j][center] - hash[i][k];
+//                    if (tmp < 0) {
+//                        if (-tmp < minLen) minLen = -tmp;
+//                        left = center+1;
+//                    }else{
+//                        if (tmp < minLen) minLen = tmp;
+//                        right = center-1;
+//                    }
+//                }
+//                tmp = i+j-minLen;
+//                if (tmp > max) max = tmp;
+//            }
+//        }
+//    }
+//    
+//    return max;
+}
+
+void serializeProcessHelper(struct TreeNode* root, char* data, int* dataLen){
+    if (root == NULL) {
+        data[*dataLen] = 'n';
+        (*dataLen) += 1;
+        return;
+    }else{
+        char tmp[20];
+        int tmpLen = 0;
+        
+        if (root->val == 0) {
+            data[*dataLen] = '0';
+            (*dataLen) += 1;
+        }else{
+            int val = root->val;
+            if (val < 0) {
+                data[*dataLen] = '-';
+                (*dataLen) += 1;
+                val = -val;
+            }
+            while (val > 0) {
+                tmp[tmpLen] = val%10+'0';
+                ++tmpLen;
+                val = val/10;
+            }
+            while (tmpLen > 0) {
+                data[*dataLen] = tmp[tmpLen-1];
+                (*dataLen) += 1;
+                --tmpLen;
+            }
+        }
+        
+        data[*dataLen] = ',';
+        (*dataLen) += 1;
+    }
+}
+
+void serializeHelper(struct TreeNode* root, char* data, int* dataLen) {
+    serializeProcessHelper(root, data, dataLen);
+    if (root == NULL) return;
+    serializeHelper(root->left, data, dataLen);
+    serializeHelper(root->right, data, dataLen);
+}
+
+/** Encodes a tree to a single string. */
+char* serialize(struct TreeNode* root) {
+    char* data = malloc(sizeof(char)*60000);
+    int dataLen = 0;
+    serializeHelper(root, data, &dataLen);
+    data[dataLen] = '\0';
+    return data;
+}
+
+/** Decodes your encoded data to tree. */
+struct TreeNode* deserialize(char* data) {
+    if (data[0] == 'n') return NULL;
+    int startFlag = 1, isminus = 0, i = 0, tmp = 0;
+    struct TreeNode *nodeStack[1000];
+    int leftSet[1000] = {0};
+    int rightSet[1000] = {0};
+    int level = 0;
+    
+    while (data[i] != '\0') {
+        if (startFlag == 1) {
+            if (data[i] == '-') {
+                isminus = 1;
+                startFlag = 0;
+            }else if (data[i] == 'n'){
+                if (leftSet[level-1] == 0) {
+                    nodeStack[level-1]->left = NULL;
+                    leftSet[level-1] = 1;
+                }else if (rightSet[level-1] == 0) {
+                    nodeStack[level-1]->right = NULL;
+                    rightSet[level-1] = 1;
+                    --level;
+                    while (level > 0 && leftSet[level-1] == 1 && rightSet[level-1] == 1) {
+                        --level;
+                    }
+                }
+                isminus = 0;
+                tmp = 0;
+                startFlag = 1;
+            }else{
+                tmp = tmp*10+data[i]-'0';
+                startFlag = 0;
+            }
+        }else{
+            if (data[i] == ',') {
+                struct TreeNode *node = malloc(sizeof(struct TreeNode));
+                if (isminus) {
+                    node->val = -tmp;
+                }else{
+                    node->val = tmp;
+                }
+                nodeStack[level] = node;
+                leftSet[level] = 0;
+                rightSet[level] = 0;
+                if (level > 0) {
+                    if (leftSet[level-1] == 0) {
+                        nodeStack[level-1]->left = node;
+                        leftSet[level-1] = 1;
+                    }else if (rightSet[level-1] == 0) {
+                        nodeStack[level-1]->right = node;
+                        rightSet[level-1] = 1;
+                    }
+                }
+                ++level;
+                isminus = 0;
+                tmp = 0;
+                startFlag = 1;
+            }else{
+                tmp = tmp*10+data[i]-'0';
+            }
+        }
+        ++i;
+    }
+    return nodeStack[0];
+}

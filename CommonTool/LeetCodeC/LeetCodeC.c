@@ -10686,3 +10686,172 @@ bool patternMatching(char* pattern, char* value){
     
     return false;
 }
+
+int minSubArrayLen(int s, int* nums, int numsSize){
+    int minNum = numsSize+1;
+    int tmp = 0, l = 0, r = 0;
+    while (r < numsSize) {
+        tmp += nums[r];
+        while (tmp >= s) {
+            if (r-l+1 < minNum) minNum = r-l+1;
+            tmp -= nums[l];
+            ++l;
+        }
+        ++r;
+    }
+    return (minNum == numsSize+1)?0:minNum;
+}
+
+int findLength(int* A, int ASize, int* B, int BSize){
+    // 暴力解法 O(m^2*n)
+    
+    // 动态规划 O(m*n)
+    int maxLen = 0;
+    int i, j, m = ASize+1, n = BSize+1;
+    int* dp0 = malloc(sizeof(int)*n);
+    memset(dp0, 0, sizeof(int)*n);
+    int* dp1 = malloc(sizeof(int)*n);
+    memset(dp1, 0, sizeof(int)*n);
+    
+    for (i = 1; i < m; ++i) {
+        for (j = 1; j < n; ++j) {
+            dp1[j] = A[i-1] == B[j-1]?dp0[j-1]+1:0;
+            if (dp1[j] > maxLen) maxLen = dp1[j];
+        }
+        int* dpt = dp0;
+        dp0 = dp1;
+        dp1 = dpt;
+    }
+    
+    free(dp0);
+    free(dp1);
+//    int maxLen = 0;
+//    int i, j, offset = 0;
+//    int** hashB = malloc(sizeof(int*)*100);
+//    int* countB = malloc(sizeof(int)*100);
+//    memset(countB, 0, sizeof(int)*100);
+//    for (i = 0; i < 100; ++i) {
+//        hashB[i] = malloc(sizeof(int)*BSize);
+//    }
+//    for (i = 0; i < BSize; ++i) {
+//        hashB[B[i]][countB[B[i]]] = i;
+//        countB[B[i]] += 1;
+//    }
+//    
+//    for (i = 0; i+maxLen < ASize; ++i) {
+//        for (j = 0; j < countB[A[i]] && hashB[A[i]][j]+maxLen < BSize; ++j) {
+//            offset = 1;
+//            while (i+offset < ASize && hashB[A[i]][j]+offset < BSize && A[i+offset] == B[hashB[A[i]][j]+offset]) {
+//                ++offset;
+//            }
+//            if (offset > maxLen) maxLen = offset;
+//        }
+//    }
+    
+    return maxLen;
+}
+
+bool kthSmallest2Helper(int** matrix, int n, int mid, int k) {
+    int count = 0;
+    int i = n-1, j = 0;
+    while (i >= 0 && j < n) {
+        if (matrix[i][j] <= mid) {
+            count += i+1;
+            ++j;
+        }else{
+            --i;
+        }
+    }
+    return count>=k;
+}
+
+int kthSmallest2(int** matrix, int matrixSize, int* matrixColSize, int k){
+    int left = matrix[0][0];
+    int right = matrix[matrixSize-1][matrixSize-1];
+    int mid;
+    while (left < right) {
+        mid = (left+right)>>1;
+        if (kthSmallest2Helper(matrix, matrixSize, mid, k)) {
+            right = mid;
+        }else{
+            left = mid+1;
+        }
+    }
+    return left;
+}
+
+CQueue* cQueueCreate() {
+    CQueue *queue = malloc(sizeof(CQueue));
+    queue->first = NULL;
+    queue->last = NULL;
+    return queue;
+}
+
+void cQueueAppendTail(CQueue* obj, int value) {
+    struct ListNode *node = malloc(sizeof(struct ListNode));
+    node->val = value;
+    node->next = NULL;
+    if (obj->first == NULL) {
+        obj->first = node;
+    }else{
+        obj->last->next = node;
+    }
+    
+    obj->last = node;
+}
+
+int cQueueDeleteHead(CQueue* obj) {
+    if (obj->first == NULL) {
+        return -1;
+    }else{
+        struct ListNode *node = obj->first;
+        obj->first = node->next;
+        if (obj->first == NULL) obj->last = NULL;
+        int value = node->val;
+        free(node);
+        return value;
+    }
+}
+
+void cQueueFree(CQueue* obj) {
+    struct ListNode *node = obj->first;
+    struct ListNode *tmpNode;
+    while (node != NULL) {
+        tmpNode = node;
+        node = node->next;
+        free(tmpNode);
+    }
+    free(obj);
+}
+
+bool isBipartite(int** graph, int graphSize, int* graphColSize){
+    int* graphColor = malloc(sizeof(int)*graphSize);
+    memset(graphColor, 0, sizeof(int)*graphSize);
+    int* queue = malloc(sizeof(int)*graphSize);
+    int l, r, i, j, node, nextColor;
+    for (i = 0; i < graphSize; ++i) {
+        if (graphColor[i] == 0) {
+            graphColor[i] = 1;
+            l = 0;
+            r = 0;
+            queue[0] = i;
+            while (l <= r) {
+                node = queue[l++];
+                nextColor = graphColor[node]+((graphColor[node]&1)<<1)-1;
+                for (j = 0; j < graphColSize[node]; ++j) {
+                    if (graphColor[graph[node][j]] == 0) {
+                        graphColor[graph[node][j]] = nextColor;
+                        queue[++r] = graph[node][j];
+                    }else if (graphColor[graph[node][j]] != nextColor){
+                        free(graphColor);
+                        free(queue);
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+    free(graphColor);
+    free(queue);
+    return true;
+}

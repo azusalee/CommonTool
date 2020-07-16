@@ -1183,4 +1183,30 @@ struct TreeNode* deserialize(char* data);
 // 面试题 16.18. 模式匹配
 bool patternMatching(char* pattern, char* value);
 
+// 209. 长度最小的子数组
+int minSubArrayLen(int s, int* nums, int numsSize);
+
+//718. 最长重复子数组
+int findLength(int* A, int ASize, int* B, int BSize);
+
+//378. 有序矩阵中第K小的元素
+int kthSmallest2(int** matrix, int matrixSize, int* matrixColSize, int k);
+
+//剑指 Offer 09. 用两个栈实现队列
+typedef struct {
+    struct ListNode *first;
+    struct ListNode *last;
+} CQueue;
+
+CQueue* cQueueCreate(void);
+
+void cQueueAppendTail(CQueue* obj, int value);
+
+int cQueueDeleteHead(CQueue* obj);
+
+void cQueueFree(CQueue* obj);
+
+// 785. 判断二分图
+bool isBipartite(int** graph, int graphSize, int* graphColSize);
+
 #endif /* LeetCodeC_h */

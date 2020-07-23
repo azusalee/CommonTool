@@ -1209,4 +1209,10 @@ void cQueueFree(CQueue* obj);
 // 785. 判断二分图
 bool isBipartite(int** graph, int graphSize, int* graphColSize);
 
+// 剑指 Offer 11. 旋转数组的最小数字
+int minArray(int* numbers, int numbersSize);
+
+// 95. 不同的二叉搜索树 II
+struct TreeNode** generateTrees(int n, int* returnSize);
+
 #endif /* LeetCodeC_h */

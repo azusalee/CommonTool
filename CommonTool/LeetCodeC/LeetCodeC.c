@@ -1995,25 +1995,17 @@ int minPathHelp(int** grid, int gridSize, int colSize, int i, int j) {
 int minPathSum(int** grid, int gridSize, int* gridColSize){
     if (gridSize == 0 || gridColSize[0] == 0) return 0;
     int colSize = gridColSize[0];
-    int i = --gridSize;
     int j = --colSize-1;
-    while (i >= 0) {
+    for (int i = --gridSize; i >= 0; --i) {
         while (j >= 0) {
             if (i != gridSize && j != colSize) {
-                if (grid[i+1][j] < grid[i][j+1]) {
-                    grid[i][j] = grid[i][j]+grid[i+1][j];
-                }else{
-                    grid[i][j] = grid[i][j]+grid[i][j+1];
-                }
-            } else if (j != colSize) {
-                grid[i][j] = grid[i][j]+grid[i][j+1];
+                grid[i][j] = (grid[i+1][j] < grid[i][j+1])?grid[i][j]+grid[i+1][j]:grid[i][j]+grid[i][j+1];
             } else {
-                grid[i][j] = grid[i][j]+grid[i+1][j];
+                grid[i][j] = (j != colSize)?grid[i][j]+grid[i][j+1]:grid[i][j]+grid[i+1][j];
             }
             --j;
         }
         j = colSize;
-        --i;
     }
     
     return grid[0][0];
@@ -10854,4 +10846,88 @@ bool isBipartite(int** graph, int graphSize, int* graphColSize){
     free(graphColor);
     free(queue);
     return true;
+}
+
+int minArray(int* numbers, int numbersSize){
+    int left = 0;
+    int right = numbersSize-1;
+    int center;
+    while (left < right) {
+        center = (left+right)/2;
+        if (numbers[center] < numbers[right]) {
+            right = center;
+        }else if (numbers[center] > numbers[right]){
+            left = center+1;
+        }else{
+            --right;
+        }
+    }
+    return numbers[left];
+}
+
+struct TreeNode** generateTreesHelper(int min, int max, int* returnSize){
+    if (min > max) return NULL;
+    
+    int size = 0;
+    struct TreeNode** result = malloc(sizeof(struct TreeNode**));
+    int index = 0;
+    for (int i = min; i <= max; ++i) {
+        int rightSize = 0;
+        struct TreeNode** rightTrees = generateTreesHelper(i+1, max, &rightSize);
+        int leftSize = 0;
+        struct TreeNode** leftTrees = generateTreesHelper(min, i-1, &leftSize);
+        
+        if (leftSize == 0 && rightSize == 0) {
+            size += 1;
+            struct TreeNode *node = malloc(sizeof(struct TreeNode));
+            node->val = i;
+            node->left = NULL;
+            node->right = NULL;
+            result[index++] = node;
+        }else if (leftSize == 0) {
+            size += rightSize;
+            result = realloc(result, sizeof(struct TreeNode**)*size);
+            for (int j = 0; j < rightSize; ++j) {
+                struct TreeNode *node = malloc(sizeof(struct TreeNode));
+                node->val = i;
+                node->left = NULL;
+                node->right = rightTrees[j];
+                result[index++] = node;
+            }
+            free(rightTrees);
+        }else if (rightSize == 0) {
+            size += leftSize;
+            result = realloc(result, sizeof(struct TreeNode**)*size);
+            for (int k = 0; k < leftSize; ++k) {
+                struct TreeNode *node = malloc(sizeof(struct TreeNode));
+                node->val = i;
+                node->left = leftTrees[k];
+                node->right = NULL;
+                result[index++] = node;
+            }
+            free(leftTrees);
+        }else{
+            size += rightSize*leftSize;
+            result = realloc(result, sizeof(struct TreeNode**)*size);
+            for (int j = 0; j < rightSize; ++j) {
+                for (int k = 0; k < leftSize; ++k) {
+                    struct TreeNode *node = malloc(sizeof(struct TreeNode));
+                    node->val = i;
+                    node->left = leftTrees[k];
+                    node->right = rightTrees[j];
+                    result[index++] = node;
+                }
+            }
+            free(rightTrees);
+            free(leftTrees);
+        }
+    }
+    
+    *returnSize = size;
+    return result;
+}
+
+struct TreeNode** generateTrees(int n, int* returnSize){
+    *returnSize = 0;
+    return generateTreesHelper(1, n, returnSize);
 }

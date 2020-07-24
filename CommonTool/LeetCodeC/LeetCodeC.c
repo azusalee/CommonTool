@@ -10866,10 +10866,15 @@ int minArray(int* numbers, int numbersSize){
 }
 
 struct TreeNode** generateTreesHelper(int min, int max, int* returnSize){
-    if (min > max) return NULL;
+    if (min > max) {
+        *returnSize = 1;
+        struct TreeNode** result = malloc(sizeof(struct TreeNode**));
+        result[0] = NULL;
+        return result;
+    }
     
     int size = 0;
-    struct TreeNode** result = malloc(sizeof(struct TreeNode**));
+    struct TreeNode** result = malloc(0);
     int index = 0;
     for (int i = min; i <= max; ++i) {
         int rightSize = 0;
@@ -10877,50 +10882,19 @@ struct TreeNode** generateTreesHelper(int min, int max, int* returnSize){
         int leftSize = 0;
         struct TreeNode** leftTrees = generateTreesHelper(min, i-1, &leftSize);
         
-        if (leftSize == 0 && rightSize == 0) {
-            size += 1;
-            struct TreeNode *node = malloc(sizeof(struct TreeNode));
-            node->val = i;
-            node->left = NULL;
-            node->right = NULL;
-            result[index++] = node;
-        }else if (leftSize == 0) {
-            size += rightSize;
-            result = realloc(result, sizeof(struct TreeNode**)*size);
-            for (int j = 0; j < rightSize; ++j) {
-                struct TreeNode *node = malloc(sizeof(struct TreeNode));
-                node->val = i;
-                node->left = NULL;
-                node->right = rightTrees[j];
-                result[index++] = node;
-            }
-            free(rightTrees);
-        }else if (rightSize == 0) {
-            size += leftSize;
-            result = realloc(result, sizeof(struct TreeNode**)*size);
+        size += rightSize*leftSize;
+        result = realloc(result, sizeof(struct TreeNode**)*size);
+        for (int j = 0; j < rightSize; ++j) {
             for (int k = 0; k < leftSize; ++k) {
                 struct TreeNode *node = malloc(sizeof(struct TreeNode));
                 node->val = i;
                 node->left = leftTrees[k];
-                node->right = NULL;
+                node->right = rightTrees[j];
                 result[index++] = node;
             }
-            free(leftTrees);
-        }else{
-            size += rightSize*leftSize;
-            result = realloc(result, sizeof(struct TreeNode**)*size);
-            for (int j = 0; j < rightSize; ++j) {
-                for (int k = 0; k < leftSize; ++k) {
-                    struct TreeNode *node = malloc(sizeof(struct TreeNode));
-                    node->val = i;
-                    node->left = leftTrees[k];
-                    node->right = rightTrees[j];
-                    result[index++] = node;
-                }
-            }
-            free(rightTrees);
-            free(leftTrees);
         }
+        free(rightTrees);
+        free(leftTrees);
     }
     
     *returnSize = size;
@@ -10929,5 +10903,130 @@ struct TreeNode** generateTreesHelper(int min, int max, int* returnSize){
 
 struct TreeNode** generateTrees(int n, int* returnSize){
     *returnSize = 0;
+    if (n == 0) return NULL;
     return generateTreesHelper(1, n, returnSize);
+}
+
+bool isInterleave(char * s1, char * s2, char * s3) {
+    // 动态规划 O(mn)
+    int len1 = strlen(s1);
+    int len2 = strlen(s2);
+    int len3 = strlen(s3);
+    if (len1+len2 != len3) {
+        return false;
+    }
+    bool f[len1+1][len2+1];
+    memset(f, 0, sizeof(f));
+    f[0][0] = true;
+    
+    for (int i = 0; i <= len1; ++i) {
+        for (int j = 0; j <= len2; ++j) {
+            if (i > 0) {
+                f[i][j] |= f[i-1][j] && s1[i-1] == s3[i+j-1];
+            }
+            if (j > 0) {
+                f[i][j] |= f[i][j-1] && s2[j-1] == s3[i+j-1];
+            }
+        }
+    }
+    return f[len1][len2];
+
+    // 递归 (O(2^(m+n)))
+//    while (*s3 != '\0') {
+//        if (*s3 == *s1 && *s3 == *s2) {
+//            return isInterleave(s1+1, s2, s3+1) || isInterleave(s1, s2+1, s3+1);
+//        }else if (*s3 == *s1) {
+//            ++s1;
+//        }else if (*s3 == *s2) {
+//            ++s2;
+//        }else{
+//            return false;
+//        }
+//        
+//        ++s3;
+//    }
+//    
+//    return (*s1 == '\0' && *s2 == '\0');
+}
+
+int calculateMinimumHP(int** dungeon, int dungeonSize, int* dungeonColSize) {
+    
+    int col = dungeonColSize[0];
+    int dp[dungeonSize+1][col+1];
+    memset(dp, 0x3f, sizeof(dp));
+    dp[dungeonSize][col - 1] = dp[dungeonSize - 1][col] = 1;
+    
+    for (int i = dungeonSize-1; i >= 0; --i) {
+        for (int j = col-1; j >= 0; --j) {
+            dp[i][j] = max(min(dp[i+1][j], dp[i][j+1])-dungeon[i][j], 1);
+        }
+    }
+    
+    return dp[0][0];
+}
+
+int LowBit(int x) { return x & (-x); }
+
+void Update(int* c, int n, int pos) {
+    while (pos < n) {
+        c[pos] += 1;
+        pos += LowBit(pos);
+    }
+}
+
+int Query(int* c, int n, int pos) {
+    int ret = 0;
+
+    while (pos > 0) {
+        ret += c[pos];
+        pos -= LowBit(pos);
+    }
+
+    return ret;
+}
+
+int lower_bound(int* a, int n, int x) {
+    int l = 0, r = n;
+    while (l < r) {
+        int mid = (l + r) >> 1;
+        if (a[mid] < x) {
+            l = mid + 1;
+        } else {
+            r = mid;
+        }
+    }
+    return l;
+}
+
+int comp(const void* a, const void* b) { return (*(int*)a - *(int*)b); }
+
+int Discretization(int* a, int* nums, int n) {
+    memcpy(a, nums, sizeof(int) * n);
+    qsort(a, n, sizeof(int), comp);
+    int m = 0;
+    for (int i = 1; i < n; i++) {
+        if (a[i] > a[m]) {
+            a[++m] = a[i];
+        }
+    }
+    return m + 1;
+}
+int* countSmaller(int* nums, int numsSize, int* returnSize) {
+    int* a = (int*)malloc(sizeof(int) * numsSize);
+    int* c = (int*)malloc(sizeof(int) * (numsSize + 1));
+    int* ret = (int*)malloc(sizeof(int) * numsSize);
+    memset(a, 0, sizeof(int) * numsSize);
+    memset(c, 0, sizeof(int) * (numsSize + 1));
+    memset(ret, 0, sizeof(int) * numsSize);
+
+    int m = Discretization(a, nums, numsSize);
+    for (int i = numsSize - 1; i >= 0; --i) {
+        int id = lower_bound(a, m, nums[i]) + 1;
+        ret[i] = Query(c, m + 1, id - 1);
+        Update(c, m + 1, id);
+    }
+    free(a);
+    free(c);
+    *returnSize = numsSize;
+    return ret;
 }

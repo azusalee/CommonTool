@@ -1215,4 +1215,13 @@ int minArray(int* numbers, int numbersSize);
 // 95. 不同的二叉搜索树 II
 struct TreeNode** generateTrees(int n, int* returnSize);
 
+// 97. 交错字符串
+bool isInterleave(char * s1, char * s2, char * s3);
+
+// 174. 地下城游戏
+int calculateMinimumHP(int** dungeon, int dungeonSize, int* dungeonColSize);
+
+// 315. 计算右侧小于当前元素的个数
+int* countSmaller(int* nums, int numsSize, int* returnSize);
+
 #endif /* LeetCodeC_h */

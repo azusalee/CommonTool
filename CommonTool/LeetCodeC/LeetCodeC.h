@@ -1224,4 +1224,19 @@ int calculateMinimumHP(int** dungeon, int dungeonSize, int* dungeonColSize);
 // 315. 计算右侧小于当前元素的个数
 int* countSmaller(int* nums, int numsSize, int* returnSize);
 
+// 329. 矩阵中的最长递增路径
+int longestIncreasingPath(int** matrix, int matrixSize, int* matrixColSize);
+
+// LCP 13. 寻宝
+int minimalSteps(char** maze, int mazeSize);
+
+// 343. 整数拆分
+int integerBreak(int n);
+
+// 312. 戳气球
+int maxCoins(int* nums, int numsSize);
+
+// 面试题 08.03. 魔术索引
+int findMagicIndex(int* nums, int numsSize);
+
 #endif /* LeetCodeC_h */

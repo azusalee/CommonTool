@@ -36,6 +36,12 @@ typedef struct {
     struct ListNode *last;
 } MyQueue;
 
+struct Node {
+    int val;
+    int numNeighbors;
+    struct Node** neighbors;
+};
+
 /// 罗马数字转整数(1~3999) https://leetcode-cn.com/problems/roman-to-integer/
 int romanToInt(char * s);
 
@@ -1238,5 +1244,16 @@ int maxCoins(int* nums, int numsSize);
 
 // 面试题 08.03. 魔术索引
 int findMagicIndex(int* nums, int numsSize);
+
+// 133. 克隆图
+struct Node *cloneGraph(struct Node *s);
+
+// 130. 被围绕的区域
+void solve(char** board, int boardSize, int* boardColSize);
+
+// 93. 复原IP地址
+char ** restoreIpAddresses(char * s, int* returnSize);
+
+
 
 #endif /* LeetCodeC_h */

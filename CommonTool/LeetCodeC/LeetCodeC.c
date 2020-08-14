@@ -11285,3 +11285,120 @@ int findMagicIndex(int* nums, int numsSize){
 //    }
 //    return -1;
 }
+
+struct Node *cloneGraphHelper(struct Node *s, struct Node **hashNode){
+    if (hashNode[s->val] != NULL) {
+        return hashNode[s->val];
+    }
+    struct Node *mutiS = malloc(sizeof(struct Node));
+    mutiS->val = s->val;
+    mutiS->numNeighbors = s->numNeighbors;
+    mutiS->neighbors = malloc(sizeof(struct Node*)*mutiS->numNeighbors);
+    hashNode[mutiS->val] = mutiS;
+    for (int i = 0; i < s->numNeighbors; ++i) {
+        mutiS->neighbors[i] = cloneGraphHelper(s->neighbors[i], hashNode);
+    }
+    
+    return mutiS;
+}
+
+struct Node *cloneGraph(struct Node *s){
+    if (s == NULL) return NULL;
+    
+    struct Node **hashNode = malloc(sizeof(struct Node*)*101);
+    for (int i = 0; i < 101; ++i) {
+        hashNode[i] = NULL;
+    }
+    
+    struct Node *result = cloneGraphHelper(s, hashNode);
+    free(hashNode);
+    return result;
+}
+
+void solveHelper(char** board, int m, int n, int i, int j, int** state){
+    if (state[i][j] == 1 || board[i][j] == 'X') {
+        return;
+    }
+    
+    state[i][j] = 1;
+    if (i > 0) solveHelper(board, m, n, i-1, j, state);
+    if (i < m-1) solveHelper(board, m, n, i+1, j, state);
+    if (j > 0) solveHelper(board, m, n, i, j-1, state);
+    if (j < n-1) solveHelper(board, m, n, i, j+1, state);
+}
+
+void solve(char** board, int boardSize, int* boardColSize){
+    if (boardSize < 3 || boardColSize[0] < 3) return;
+    int m = boardSize;
+    int n = boardColSize[0];
+    
+    int** state = malloc(sizeof(int*)*m);
+    for (int i = 0; i < m; ++i) {
+        state[i] = malloc(sizeof(int)*n);
+        memset(state[i], 0, sizeof(int)*n);
+    }
+    
+    for (int i = 0; i < m; ++i) {
+        solveHelper(board, m, n, i, 0, state);
+        solveHelper(board, m, n, i, n-1, state);
+    }
+    for (int j = 1; j < n-1; ++j) {
+        solveHelper(board, m, n, 0, j, state);
+        solveHelper(board, m, n, m-1, j, state);
+    }
+    
+    --m;--n;
+    for (int i = 1; i < m; ++i) {
+        for (int j = 1; j < n; ++j) {
+            if (state[i][j] == 0) board[i][j] = 'X';
+        }
+    }
+    
+    for (int i = 0; i < boardSize; ++i) {
+        free(state[i]);
+    }
+    free(state);
+}
+
+void restoreIpAddressesHelper(char * s, int sLen, char *prefix, int prefixLen, int leftseg, char** result, int* returnSize) {
+    if (leftseg == 0 && sLen == 0) {
+        char *ipAddress = malloc(sizeof(char)*(prefixLen+1));
+        memcpy(ipAddress, prefix, sizeof(char)*prefixLen);
+        ipAddress[prefixLen] = '\0';
+        result[*returnSize] = ipAddress;
+        (*returnSize) += 1;
+        
+        return;
+    }
+    if (sLen > leftseg*3 || sLen < leftseg) return;
+    
+    int prefixIndex = prefixLen;
+    if (leftseg < 4) prefix[prefixIndex++] = '.';
+    
+    int leftsLen = sLen;
+    int addressValue = 0;
+    while (*s != '\0') {
+        addressValue = addressValue*10+(*s)-'0';
+        if (addressValue > 255) return;
+        prefix[prefixIndex] = *s;
+        ++prefixIndex;
+        --leftsLen;
+        ++s;
+        restoreIpAddressesHelper(s, leftsLen, prefix, prefixIndex, leftseg-1, result, returnSize);
+        if (addressValue == 0) return;
+    }
+    
+}
+
+char ** restoreIpAddresses(char * s, int* returnSize){
+    // C(3,len-1)
+    *returnSize = 0;
+    int sLen = strlen(s);
+    if (sLen < 4 || sLen > 12) return NULL;
+    
+    char** result = malloc(sizeof(char*)*((sLen-1)*(sLen-2)*(sLen-3)/6));
+    char* prefix = malloc(sizeof(char)*(sLen+4));
+    restoreIpAddressesHelper(s, sLen, prefix, 0, 4, result, returnSize);
+    free(prefix);
+    return result;
+}

@@ -26,6 +26,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+//    int b = 100;
+//    int a = -(b < 128);
+//    printf("%d", a);
+//    b = ~a&b;
+//    printf("%d", b);
+    
     int tmpSize;
     int* tmpColumnSizes;
     partition("cdd", &tmpSize, &tmpColumnSizes);

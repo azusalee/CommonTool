@@ -11402,3 +11402,36 @@ char ** restoreIpAddresses(char * s, int* returnSize){
     free(prefix);
     return result;
 }
+
+void recoverTreeInOreder(struct TreeNode* root, int* nums, int* numSize) {
+    if (root == NULL) return;
+    recoverTreeInOreder(root->left, nums, numSize);
+    nums[*numSize] = root->val;
+    ++(*numSize);
+    recoverTreeInOreder(root->right, nums, numSize);
+}
+
+void recoverTreeSearch(struct TreeNode* root, struct TreeNode** node1, struct TreeNode** node2, struct TreeNode** lastNode) {
+    if (root == NULL) return;
+    recoverTreeSearch(root->left, node1, node2, lastNode);
+    if (*lastNode && root->val < (*lastNode)->val) {
+        (*node2) = root;
+        if (*node1) {
+            return;
+        }else{
+            (*node1) = (*lastNode);
+        }
+    }
+    (*lastNode) = root;
+    recoverTreeSearch(root->right, node1, node2, lastNode);
+}
+
+void recoverTree(struct TreeNode* root){
+    struct TreeNode* node1 = NULL;
+    struct TreeNode* lastNode = NULL;
+    struct TreeNode* node2 = NULL;
+    recoverTreeSearch(root, &node1, &node2, &lastNode);
+    int tmpVal = node1->val;
+    node1->val = node2->val;
+    node2->val = tmpVal;
+}

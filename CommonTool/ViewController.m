@@ -31,6 +31,24 @@
 //    printf("%d", a);
 //    b = ~a&b;
 //    printf("%d", b);
+
+    struct TreeNode *node1 = malloc(sizeof(struct TreeNode));
+    node1->val = 1;
+    node1->right = NULL;
+    node1->left = NULL;
+    
+    struct TreeNode *node2 = malloc(sizeof(struct TreeNode));
+    node2->val = 3;
+    node2->right = NULL;
+    node2->left = NULL;
+    node1->left = node2;
+    
+    struct TreeNode *node3 = malloc(sizeof(struct TreeNode));
+    node3->val = 2;
+    node3->right = NULL;
+    node3->left = NULL;
+    node2->right = node3;
+    recoverTree(node1);
     
     int tmpSize;
     int* tmpColumnSizes;

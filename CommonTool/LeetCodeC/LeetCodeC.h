@@ -1254,6 +1254,7 @@ void solve(char** board, int boardSize, int* boardColSize);
 // 93. 复原IP地址
 char ** restoreIpAddresses(char * s, int* returnSize);
 
-
+// 99. 恢复二叉搜索树
+void recoverTree(struct TreeNode* root);
 
 #endif /* LeetCodeC_h */

@@ -11435,3 +11435,160 @@ void recoverTree(struct TreeNode* root){
     node1->val = node2->val;
     node2->val = tmpVal;
 }
+
+int removeBoxes(int* boxes, int boxesSize){
+    int max = 0;
+    
+    
+    return max;
+}
+
+
+int countSubstrings(char * s){
+    int n = strlen(s), ans = 0;
+    for (int i = 0; i < 2 * n - 1; ++i) {
+        int l = i / 2, r = i / 2 + i % 2;
+        while (l >= 0 && r < n && s[l] == s[r]) {
+            --l;
+            ++r;
+            ++ans;
+        }
+    }
+    return ans;
+}
+
+int updateBoardDirR[8] = {-1, 0, 1, -1, 1, -1, 0, 1};
+int updateBoardDirC[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
+void updateBoardHelper(char** board, int boardSize, int* boardColSize, int* click) {
+    if (board[click[0]][click[1]] == 'E') {
+        int count = 0;
+        for (int i = 0; i < 8; ++i) {
+            int r = click[0]+updateBoardDirR[i];
+            int c = click[1]+updateBoardDirC[i];
+            if (r >= 0 && r < boardSize && c >= 0 && c < boardColSize[0]) {
+                count += board[r][c] == 'M';
+            }
+        }
+        if (count > 0) {
+            board[click[0]][click[1]] = '0'+count;
+        }else{
+            board[click[0]][click[1]] = 'B';
+            for (int i = 0; i < 8; ++i) {
+                int r = click[0]+updateBoardDirR[i];
+                int c = click[1]+updateBoardDirC[i];
+                if (r >= 0 && r < boardSize && c >= 0 && c < boardColSize[0] && board[r][c] == 'E') {
+                    int nextClick[2] = {r, c};
+                    updateBoardHelper(board, boardSize, boardColSize, nextClick);
+                }
+            }
+        }
+    }
+}
+char** updateBoard(char** board, int boardSize, int* boardColSize, int* click, int clickSize, int* returnSize, int** returnColumnSizes){
+    *returnSize = boardSize;
+    *returnColumnSizes = boardColSize;
+    if (board[click[0]][click[1]] == 'M') {
+        board[click[0]][click[1]] = 'X';
+    }else{
+        updateBoardHelper(board, boardSize, boardColSize, click);
+    }
+    
+    return board;
+}
+
+bool isNumber(char* s){
+    if (*s == '\0') {
+        return false;
+    }
+    while (*s == ' ') {
+        ++s;
+    }
+    if (*s == '+' || *s == '-') {
+        ++s;
+    }
+    bool hasPoint = false;
+    bool hasE = false;
+    bool hasSpace = false;
+    char preChar = '\0';
+    char prepreChar = '\0';
+    while (*s != '\0') {
+        if (*s == ' ') {
+            hasSpace = true;
+            ++s;
+            continue;
+        }else{
+            if (hasSpace) {
+                return false;
+            }
+            if (*s == 'e' || *s == 'E') {
+                if (hasE) {
+                    return false;
+                }
+                if (preChar == '.') {
+                    if (!(prepreChar <= '9' && prepreChar >= '0')){
+                        return false;
+                    }
+                }else if (!(preChar <= '9' && preChar >= '0')) {
+                    return false;
+                }
+                hasE = true;
+                hasPoint = true;
+            }else if (*s == '.') {
+                if (hasPoint) {
+                    return false;
+                }
+                hasPoint = true;
+            }else if (*s == '+' || *s == '-'){
+                if (preChar != 'e' && preChar != 'E') {
+                    return false;
+                }
+            }
+            else if (*s <= '9' && *s >= '0'){
+                
+            }else{
+                return false;
+            }
+        }
+        
+        prepreChar = preChar;
+        preChar = *s;
+        ++s;
+    }
+    if (preChar == '.') {
+        return (prepreChar <= '9' && prepreChar >= '0');
+    }
+    return (preChar <= '9' && preChar >= '0');
+}
+
+bool PredictTheWinner(int* nums, int numsSize){
+    if (numsSize%2 == 0 || numsSize < 2) {
+        return true;
+    }
+    // 单数情况下，先手不一定赢，动态规划，计算最优情况
+    int dp[numsSize][numsSize];
+    for (int i = 0; i < numsSize; i++) {
+        dp[i][i] = nums[i];
+    }
+    for (int i = numsSize - 2; i >= 0; i--) {
+        for (int j = i + 1; j < numsSize; j++) {
+            dp[i][j] = fmax(nums[i] - dp[i + 1][j], nums[j] - dp[i][j - 1]);
+        }
+    }
+    return dp[0][numsSize - 1] >= 0;
+}
+
+void canVisitAllRoomsHelper(int** rooms, int roomsSize, int* roomsColSize, int* inRoom, int roomIndex){
+    if (inRoom[roomIndex] > 0) return;
+    inRoom[roomIndex] = 1;
+    inRoom[roomsSize] += 1;
+    for (int i = 0; i < roomsColSize[roomIndex]; ++i) {
+        canVisitAllRoomsHelper(rooms, roomsSize, roomsColSize, inRoom, rooms[roomIndex][i]);
+    }
+}
+
+bool canVisitAllRooms(int** rooms, int roomsSize, int* roomsColSize){
+    int inRoom[roomsSize+1];
+    memset(inRoom, 0, sizeof(inRoom));
+    canVisitAllRoomsHelper(rooms, roomsSize, roomsColSize, inRoom, 0);
+    return inRoom[roomsSize] == roomsSize;
+}

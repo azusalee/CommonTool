@@ -1257,4 +1257,22 @@ char ** restoreIpAddresses(char * s, int* returnSize);
 // 99. 恢复二叉搜索树
 void recoverTree(struct TreeNode* root);
 
+// 546. 移除盒子(未完成TODO)
+int removeBoxes(int* boxes, int boxesSize);
+
+// 647. 回文子串
+int countSubstrings(char * s);
+
+// 529. 扫雷游戏
+char** updateBoard(char** board, int boardSize, int* boardColSize, int* click, int clickSize, int* returnSize, int** returnColumnSizes);
+
+// 剑指 Offer 20. 表示数值的字符串
+bool isNumber(char* s);
+
+// 486. 预测赢家
+bool PredictTheWinner(int* nums, int numsSize);
+
+// 841. 钥匙和房间
+bool canVisitAllRooms(int** rooms, int roomsSize, int* roomsColSize);
+
 #endif /* LeetCodeC_h */

@@ -11592,3 +11592,147 @@ bool canVisitAllRooms(int** rooms, int roomsSize, int* roomsColSize){
     canVisitAllRoomsHelper(rooms, roomsSize, roomsColSize, inRoom, 0);
     return inRoom[roomsSize] == roomsSize;
 }
+
+bool validPalindromeHelper(char * s, int l, int r){
+    while (l < r) {
+        if (s[l] != s[r]) {
+            return false;
+        }else{
+            ++l;
+            --r;
+        }
+    }
+    return true;
+}
+
+char * shortestPalindrome(char * s){
+    int n = strlen(s);
+    int fail[n + 1];
+    memset(fail, -1, sizeof(fail));
+    for (int i = 1; i < n; ++i) {
+        int j = fail[i - 1];
+        if (j != -1 && s[j + 1] != s[i]) {
+            j = fail[j];
+        }
+        if (s[j + 1] == s[i]) {
+            fail[i] = j + 1;
+        }
+    }
+    
+    int best = -1;
+    for (int i = n - 1; i >= 0; --i) {
+        if (best != -1 && s[best + 1] != s[i]) {
+            best = fail[best];
+        }
+        if (s[best + 1] == s[i]) {
+            ++best;
+        }
+    }
+    int ret_len = n - best - 1;
+    char* ret = malloc(sizeof(char) * (ret_len + n + 1));
+    for (int i = 0; i < ret_len; i++) ret[i] = s[n - i - 1];
+    for (int i = 0; i < n; i++) ret[i + ret_len] = s[i];
+    ret[ret_len + n] = 0;
+    return ret;
+}
+
+struct NumFrequent {
+    int val;
+    int count;
+};
+
+int compNumFrequent(struct NumFrequent** a, struct NumFrequent** b) {
+    return (-((*a)->count)+((*b)->count));
+}
+
+int* topKFrequent(int* nums, int numsSize, int k, int* returnSize){
+    /*
+     最优解法是先用hash表，统计每个数的数量，这部分时间复杂度O(n)
+     然后对hash的数量从大到小快速排序，由于只需知道前k大的数，所以每轮快排只需排序一边，
+     直到排出前k大的数即可，这部分时间复杂度为log(k)到klog(k)
+     最终时间复杂度为O(klog(k))+O(n)，其中n>=k
+     额外空间复杂度为O(n)
+     */
+     
+          
+    // 以下是简单的排序解法，时间复杂度是O(nlog(n))，不过这个做法不合题目要求
+    int* result = malloc(sizeof(int)*k);
+    *returnSize = k;
+    
+    qsort(nums, numsSize, sizeof(int), comp);
+    
+    int numCount[numsSize];
+    int numHash[numsSize];
+    memset(numCount, 0, sizeof(numCount));
+    numHash[0] = nums[0];
+    numCount[0] = 1;
+    int index = 0;
+    for (int i = 1; i < numsSize; ++i) {
+        if (nums[i] != nums[i-1]) {
+            ++index;
+            numHash[index] = nums[i];
+        }
+        numCount[index] += 1;
+    }
+    int difNumsCount = index+1;
+    struct NumFrequent** numFres = malloc(sizeof(struct NumFrequent*)*difNumsCount);
+    for (int i = 0; i < difNumsCount; ++i) {
+        numFres[i] = malloc(sizeof(struct NumFrequent));
+        numFres[i]->val = numHash[i];
+        numFres[i]->count = numCount[i];
+    }
+    
+    qsort(numFres, difNumsCount, sizeof(struct NumFrequent), compNumFrequent);
+    
+    for (int i = 0; i < k; ++i) {
+        result[i] = numFres[i]->val;
+    }
+    for (int i = 0; i < difNumsCount; ++i) {
+        free(numFres[i]);
+    }
+    free(numFres);
+    return result;
+}
+
+bool existHelper(char** board, int boardSize, int* boardColSize, char * word, int** use, int i, int j) {
+    if (i < 0 || i >= boardSize || j < 0 || j >= boardColSize[0] || use[i][j] != 0 || board[i][j] != *word) {
+        return false;
+    }
+    use[i][j] = 1;
+    if (word[1] == '\0') {
+        return true;
+    }
+    bool flag = false;
+    flag = existHelper(board, boardSize, boardColSize, word+1, use, i+1, j);
+    if (flag) return true;
+    flag = existHelper(board, boardSize, boardColSize, word+1, use, i-1, j);
+    if (flag) return true;
+    flag = existHelper(board, boardSize, boardColSize, word+1, use, i, j+1);
+    if (flag) return true;
+    flag = existHelper(board, boardSize, boardColSize, word+1, use, i, j-1);
+    if (flag) return true;
+    use[i][j] = 0;
+    
+    return false;
+}
+
+bool exist(char** board, int boardSize, int* boardColSize, char * word){
+    int** use = malloc(sizeof(int*)*boardSize);
+    for (int i = 0; i < boardSize; ++i) {
+        use[i] = malloc(sizeof(int)*boardColSize[0]);
+        memset(use, 0, sizeof(int)*boardColSize[0]);
+    }
+    bool flag = false;
+    for (int i = 0; i < boardSize; ++i) {
+        for (int j = 0; j < boardColSize[0]; ++j) {
+            flag = existHelper(board, boardSize, boardColSize, word, use, i, j);
+            if (flag) break;
+        }
+        if (flag) break;
+    }
+    for (int i = 0; i < boardSize; ++i) {
+        free(use[i]);
+    }
+    free(use);
+    return flag;
+}

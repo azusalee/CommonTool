@@ -31,6 +31,7 @@
 //    printf("%d", a);
 //    b = ~a&b;
 //    printf("%d", b);
+    shortestPalindrome("abac");
 
     struct TreeNode *node1 = malloc(sizeof(struct TreeNode));
     node1->val = 1;

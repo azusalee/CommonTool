@@ -1275,4 +1275,13 @@ bool PredictTheWinner(int* nums, int numsSize);
 // 841. 钥匙和房间
 bool canVisitAllRooms(int** rooms, int roomsSize, int* roomsColSize);
 
+// 214. 最短回文串
+char * shortestPalindrome(char * s);
+
+// 347. 前 K 个高频元素
+int* topKFrequent(int* nums, int numsSize, int k, int* returnSize);
+
+// 79. 单词搜索
+bool exist(char** board, int boardSize, int* boardColSize, char * word);
+
 #endif /* LeetCodeC_h */

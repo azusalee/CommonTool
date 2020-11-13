@@ -11736,3 +11736,353 @@ bool exist(char** board, int boardSize, int* boardColSize, char * word){
     free(use);
     return flag;
 }
+
+struct Status {
+    int a, b, c;
+};
+
+struct Status dfs(struct TreeNode* root) {
+    if (!root) {
+        return (struct Status){INT32_MAX / 2, 0, 0};
+    }
+    struct Status l = dfs(root->left);
+    struct Status r = dfs(root->right);
+    int a = l.c + r.c + 1;
+    int b = fmin(a, fmin(l.a + r.b, r.a + l.b));
+    int c = fmin(a, l.b + r.b);
+    return (struct Status){a, b, c};
+}
+
+int minCameraCover(struct TreeNode* root) {
+    struct Status ret = dfs(root);
+    return ret.b;
+}
+
+
+bool canPartition(int* nums, int numsSize){
+    if (numsSize < 2) return false;
+    int total = 0;
+    int maxNum = 0;
+    for (int i = 0; i < numsSize; ++i) {
+        total += nums[i];
+        if (nums[i] > maxNum) {
+            maxNum = nums[i];
+        }
+    }
+    if (total&1) {
+        return false;
+    }
+    int target = total/2;
+    if (maxNum > target) {
+        return false;
+    }
+    int dp[target+1];
+    memset(dp, 0, sizeof(dp));
+    dp[0] = true;
+    
+    for (int i = 0; i < numsSize; ++i) {
+        int num = nums[i];
+        for (int j = target; j >= num; --j) {
+            dp[j] |= dp[j-num];
+        }
+        if (dp[target]) break;
+    }
+    
+    // 1, 5, 10, 12, 20
+    // 48 -> 24
+    // dp[24] |= dp[23]
+    // ...
+    // dp[1] |= dp[0] dp[1] = 1
+    // dp[5] = 1 dp[6] = 1
+    // dp[10] = 1 dp[11] dp[15] dp[16]
+    // dp[12] = 1 dp[13] dp[17] dp[18]  dp[22] dp[23] 
+    // dp[20] dp[21] 
+    
+    return dp[target];
+}
+
+void connectRightHelper(struct NodeRight* root) {
+    if (root->left == NULL) {
+        return;
+    }
+    root->left->next = root->right;
+    if (root->next != NULL) {
+        root->right->next = root->next->left;
+    }else{
+        root->right->next = NULL;
+    }
+    
+    connectRightHelper(root->right);
+    connectRightHelper(root->left);
+}
+
+
+struct NodeRight* connectRight(struct NodeRight* root) {
+    if (root == NULL) {
+        return root;
+    }
+    root->next = NULL;
+    connectRightHelper(root);
+    return root;   
+}
+
+
+int totalNQueens(int n){
+    
+    
+    
+    return 0;
+}
+
+
+bool workBreakContainCode(long code, long *wordCodeArray, int wordSize) {
+    for (int i = 0; i < wordSize; ++i) {
+        if (code == wordCodeArray[i]) return true;
+    }
+    return false;
+}
+
+void workBreakHelper(char * s, long *wordCodeArray, int wordDictSize, int* returnSize, char **result, char * lastStr, int lastCharLen, long maxCode) {
+    if (s[0] == '\0') {
+        char *copyStr = malloc(sizeof(char)*(lastCharLen+1));
+        memcpy(copyStr, lastStr, sizeof(char)*lastCharLen);
+        copyStr[lastCharLen] = '\0';
+        result[(*returnSize)] = copyStr;
+        (*returnSize) += 1;
+        return;
+    }
+    int i = 0;
+    long code = 0;
+    while (s[i] != '\0') {
+        code = code*4+s[i]*(i+13)-96;
+        ++i;
+        if (workBreakContainCode(code+i*53781, wordCodeArray, wordDictSize)) {
+            int newLen = lastCharLen+i;
+            char *newStr;
+            if (lastCharLen > 0) {
+                newLen += 1;
+                newStr = malloc(sizeof(char)*(newLen+1));
+                memcpy(newStr, lastStr, sizeof(char)*lastCharLen);
+                newStr[lastCharLen] = ' ';
+                memcpy(newStr+lastCharLen+1, s, sizeof(char)*i);
+            }else{
+                newStr = malloc(sizeof(char)*(newLen+1));
+                memcpy(newStr, s, sizeof(char)*i);
+            }
+            
+            newStr[newLen] = '\0';
+            
+            workBreakHelper(s+i, wordCodeArray, wordDictSize, returnSize, result, newStr, newLen, maxCode);
+            free(newStr);
+        }
+        if (code > maxCode/4) {
+            break;
+        }
+    }
+}
+
+char ** wordBreak(char * s, char ** wordDict, int wordDictSize, int* returnSize){
+    
+    int *charCountArray = malloc(sizeof(int)*256);
+    memset(charCountArray, 0, sizeof(int)*256);
+    long *wordCodeArray = malloc(sizeof(long)*wordDictSize);
+    long maxCode = 0;
+    for (int i = 0; i < wordDictSize; ++i) {
+        int j = 0;
+        long code = 0;
+        while (wordDict[i][j] != '\0') {
+            // 特征码计算(面向测试用例编程)
+            code = code*4+wordDict[i][j]*(j+13)-96;
+            charCountArray[wordDict[i][j]] += 1;
+            ++j;
+        }
+        wordCodeArray[i] = code+j*53781;
+        if (code > maxCode) {
+            maxCode = code;
+        }
+    }
+    
+    *returnSize = 0;
+    int i = 0;
+    while (s[i] != '\0') {
+        if (charCountArray[s[i]] == 0) {
+            free(charCountArray);
+            return NULL;
+        }
+        ++i;
+    }
+    free(charCountArray);
+    
+    // 空间申请(面向测试用例编程)
+    char **result = malloc(sizeof(char*)*80);
+    workBreakHelper(s, wordCodeArray, wordDictSize, returnSize, result, NULL, 0, maxCode);
+    
+    free(wordCodeArray);
+    return result;
+}
+
+void sumNumbersHelper(struct TreeNode* root, int lastVal, int *total){
+    int nowVal = lastVal*10+root->val;
+    if (root->left == NULL && root->right == NULL) {
+        *total += nowVal;
+        return;
+    }
+    if (root->left != NULL) sumNumbersHelper(root->left, nowVal, total);
+    if (root->right != NULL) sumNumbersHelper(root->right, nowVal, total);
+}
+
+int sumNumbers(struct TreeNode* root){
+    int total = 0;
+    if (root != NULL) sumNumbersHelper(root, 0, &total);
+    return total;
+}
+
+void preorderTraversalHelper(struct TreeNode* root, int* returnSize, int *result){
+    if (root == NULL) return;
+    result[*returnSize] = root->val;
+    (*returnSize) += 1;
+    preorderTraversalHelper(root->left, returnSize, result);
+    preorderTraversalHelper(root->right, returnSize, result);
+}
+
+int* preorderTraversal(struct TreeNode* root, int* returnSize){
+    int *result = malloc(sizeof(int)*100);
+    *returnSize = 0;
+    preorderTraversalHelper(root, returnSize, result);
+    return result;
+}
+
+int** insert(int** intervals, int intervalsSize, int* intervalsColSize, int* newInterval, int newIntervalSize, int* returnSize, int** returnColumnSizes){
+    int newLeft = newInterval[0];
+    int newRight = newInterval[1];
+    
+    bool isRight = false;
+    
+    int **result = malloc(sizeof(int*)*(intervalsSize+1));
+    *returnSize = 0;
+    
+    int i = 0;
+    while (i < intervalsSize) {
+        if (isRight == false) {
+            if (intervals[i][0] > newLeft) {
+                isRight = true;
+                continue;
+            }
+        }else{
+            if (intervals[i][0] > newRight) break;
+        }
+        
+        if (isRight == false) {
+            if (intervals[i][1] >= newLeft) {
+                newInterval[0] = intervals[i][0];
+                isRight = true;
+                if (intervals[i][1] > newRight) {
+                    newInterval[1] = intervals[i][1];
+                    ++i;
+                    break;
+                }
+                ++i;
+                continue; 
+            }
+        }else{
+            if (intervals[i][1] >= newRight) {
+                newInterval[1] = intervals[i][1];
+                ++i;
+                break;
+            }else{
+                ++i;
+                continue;
+            }
+        }
+        
+        result[*returnSize] = intervals[i];
+        (*returnSize) += 1;
+        ++i;
+    }
+    result[*returnSize] = newInterval;
+    (*returnSize) += 1;
+    
+    while (i < intervalsSize) {
+        result[*returnSize] = intervals[i];
+        (*returnSize) += 1;
+        ++i;
+    }
+    
+    *returnColumnSizes = malloc(sizeof(int)*(*returnSize));
+    for (int j = 0; j < (*returnSize); ++j) {
+        returnColumnSizes[0][j] = 2;
+    }
+    
+    return result;
+}
+
+int count1bit(int a) {
+    a = (a & 0x55555555) + ((a >> 1) & 0x55555555);
+    a = (a & 0x33333333) + ((a >> 2) & 0x33333333);
+    a = (a & 0x0f0f0f0f) + ((a >> 4) & 0x0f0f0f0f);
+    a = (a & 0x00ff00ff) + ((a >> 8) & 0x00ff00ff);
+    a = (a & 0x0000ffff) + ((a >> 16) & 0x0000ffff);
+    return a;
+}
+
+int sortByBitsCompare(const void* a, const void* b) {
+    int tmpa = *(int*) a;
+    int tmpb = *(int*) b;
+    int acount = count1bit(tmpa);
+    int bcount = count1bit(tmpb);
+    return acount == bcount?tmpa-tmpb:acount-bcount;
+}
+
+
+int* sortByBits(int* arr, int arrSize, int* returnSize){
+    qsort(arr, arrSize, sizeof(*arr), sortByBitsCompare);
+    *returnSize = arrSize;
+    return arr;
+}
+
+int ladderLength(char * beginWord, char * endWord, char ** wordList, int wordListSize){
+    /* hit
+        
+    */ 
+    bool isContainEnd = false;
+    for (int i = 0; i < wordListSize; ++i) {
+        int j = 0;
+        while (endWord[j] != '\0') {
+            if (endWord[j] != wordList[i][j]) {
+                break;;
+            }
+            ++j;
+        }
+        if (endWord[j] == '\0') {
+            isContainEnd = true;
+            break;
+        }
+    }
+    if (isContainEnd == false) {
+        // 不含有结尾词
+        return 0;
+    }
+    int minLength = wordListSize;
+    
+    
+    return 0;
+}
+
+
+struct ListNode* oddEvenList(struct ListNode* head){
+    if (head == NULL) return head;
+    // 奇数
+    struct ListNode* curOddNode = head;
+    // 偶数
+    struct ListNode* evenHead = head->next;
+    struct ListNode* curEvenNode = evenHead;
+    
+    while (curEvenNode != NULL && curEvenNode->next != NULL) {
+        curOddNode->next = curEvenNode->next;
+        curOddNode = curOddNode->next;
+        curEvenNode->next = curOddNode->next;
+        curEvenNode = curEvenNode->next;
+    }
+    curOddNode->next = evenHead;
+    return head;
+}

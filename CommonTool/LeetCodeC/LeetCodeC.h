@@ -42,6 +42,13 @@ struct Node {
     struct Node** neighbors;
 };
 
+struct NodeRight {
+  int val;
+  struct NodeRight *left;
+  struct NodeRight *right;
+  struct NodeRight *next;
+};
+
 /// 罗马数字转整数(1~3999) https://leetcode-cn.com/problems/roman-to-integer/
 int romanToInt(char * s);
 
@@ -1283,5 +1290,38 @@ int* topKFrequent(int* nums, int numsSize, int k, int* returnSize);
 
 // 79. 单词搜索
 bool exist(char** board, int boardSize, int* boardColSize, char * word);
+
+// 968. 监控二叉树
+int minCameraCover(struct TreeNode* root);
+
+// 416. 分割等和子集
+bool canPartition(int* nums, int numsSize);
+
+// 116. 填充每个节点的下一个右侧节点指针
+struct NodeRight* connectRight(struct NodeRight* root);
+
+// 52. N皇后 II
+int totalNQueens(int n);
+
+// 140. 单词拆分 II
+char ** wordBreak(char * s, char ** wordDict, int wordDictSize, int* returnSize);
+
+// 129. 求根到叶子节点数字之和
+int sumNumbers(struct TreeNode* root);
+
+// 144. 二叉树的前序遍历
+int* preorderTraversal(struct TreeNode* root, int* returnSize);
+
+// 57. 插入区间
+int** insert(int** intervals, int intervalsSize, int* intervalsColSize, int* newInterval, int newIntervalSize, int* returnSize, int** returnColumnSizes);
+
+// 1356. 根据数字二进制下 1 的数目排序
+int* sortByBits(int* arr, int arrSize, int* returnSize);
+
+// 127. 单词接龙
+int ladderLength(char * beginWord, char * endWord, char ** wordList, int wordListSize);
+
+// 328. 奇偶链表
+struct ListNode* oddEvenList(struct ListNode* head);
 
 #endif /* LeetCodeC_h */

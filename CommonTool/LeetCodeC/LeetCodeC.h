@@ -1324,4 +1324,13 @@ int ladderLength(char * beginWord, char * endWord, char ** wordList, int wordLis
 // 328. 奇偶链表
 struct ListNode* oddEvenList(struct ListNode* head);
 
+// 406. 根据身高重建队列
+int** reconstructQueue(int** people, int peopleSize, int* peopleColSize, int* returnSize, int** returnColumnSizes);
+
+// 134. 加油站
+int canCompleteCircuit(int* gas, int gasSize, int* cost, int costSize);
+
+// 402. 移掉K位数字
+char * removeKdigits(char * num, int k);
+
 #endif /* LeetCodeC_h */

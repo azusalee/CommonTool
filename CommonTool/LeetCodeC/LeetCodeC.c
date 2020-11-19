@@ -12086,3 +12086,83 @@ struct ListNode* oddEvenList(struct ListNode* head){
     curOddNode->next = evenHead;
     return head;
 }
+
+int reconstructQueuecmp(const void* _a, const void* _b) {
+    int *a = *(int**)_a, *b = *(int**)_b;
+    return a[0] == b[0] ? b[1] - a[1] : a[0] - b[0];
+}
+
+int** reconstructQueue(int** people, int peopleSize, int* peopleColSize, int* returnSize, int** returnColumnSizes){
+    qsort(people, peopleSize, sizeof(int*), reconstructQueuecmp);
+    *returnSize = peopleSize;
+    *returnColumnSizes = malloc(sizeof(int)*peopleSize);
+    memset(*returnColumnSizes, 0, sizeof(int) * peopleSize);
+    int **result = malloc(sizeof(int*)*peopleSize);
+    
+    for (int i = 0; i < peopleSize; ++i) {
+        int spaces = people[i][1]+1;
+        for (int j = 0; j < peopleSize; ++j) {
+            if ((*returnColumnSizes)[j] == 0) {
+                --spaces;
+                if (spaces == 0) {
+                    (*returnColumnSizes)[j] = 2;
+                    result[j] = malloc(sizeof(int)*2);
+                    result[j][0] = people[i][0];
+                    result[j][1] = people[i][1];
+                    break;
+                }
+            }
+        }
+    }
+    return result;
+}
+
+int canCompleteCircuit(int* gas, int gasSize, int* cost, int costSize){
+    int start = 0;
+    int leftGas = 0;
+    while (start < gasSize) {
+        leftGas = 0;
+        int i = 0;
+        while (i < gasSize) {
+            int j = (i+start)%gasSize;
+            leftGas = leftGas+gas[j]-cost[j];
+            if (leftGas < 0) {
+                break;
+            }
+            ++i;
+        }
+        if (i == gasSize) return start;
+        start = start+i+1;
+    }
+    
+    return -1;
+}
+
+
+char * removeKdigits(char * num, int k){
+    if (k == 0) return num;
+    int length = (int)strlen(num);
+    if (length == k) return "0";
+    
+    char *result = malloc(sizeof(int)*(length+1));
+    
+    int i = 0;
+    int j = 0;
+    for (; i < length; ++i) {
+        while (j > 0 && result[j-1] > num[i] && k > 0) {
+            --j;
+            --k;
+        }
+        result[j++] = num[i];
+    }
+    j -= k;
+    result[j] = '\0';
+    i = 0;
+    for (; i < j-1; ++i) {
+        if (result[i] != '0') {
+            break;
+        }
+    }
+    
+    return result+i;
+}

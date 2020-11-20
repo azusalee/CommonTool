@@ -1333,4 +1333,7 @@ int canCompleteCircuit(int* gas, int gasSize, int* cost, int costSize);
 // 402. 移掉K位数字
 char * removeKdigits(char * num, int k);
 
+// 147. 对链表进行插入排序
+struct ListNode* insertionSortList(struct ListNode* head);
+
 #endif /* LeetCodeC_h */

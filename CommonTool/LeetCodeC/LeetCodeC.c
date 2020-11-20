@@ -12166,3 +12166,33 @@ char * removeKdigits(char * num, int k){
     
     return result+i;
 }
+
+
+struct ListNode* insertionSortList(struct ListNode* head){
+    if (head == NULL) return NULL;
+    struct ListNode* resultHead = malloc(sizeof(struct ListNode));
+    resultHead->val = 0;
+    resultHead->next = head;
+    struct ListNode* curNode = head->next;
+    struct ListNode* curPre = head;
+    struct ListNode* checkPre = resultHead;
+    
+    while (curNode != NULL) {
+        while (checkPre->next != curNode) {
+            if (curNode->val < checkPre->next->val) {
+                curPre->next = curNode->next;
+                curNode->next = checkPre->next;
+                checkPre->next = curNode;
+                curNode = curPre;
+                break;
+            }else{
+                checkPre = checkPre->next;
+            }
+        }
+        
+        curPre = curNode;
+        curNode = curNode->next;
+        checkPre = resultHead;
+    }
+    return resultHead->next;
+}

@@ -1336,4 +1336,32 @@ char * removeKdigits(char * num, int k);
 // 147. 对链表进行插入排序
 struct ListNode* insertionSortList(struct ListNode* head);
 
+// 452. 用最少数量的箭引爆气球
+int findMinArrowShots(int** points, int pointsSize, int* pointsColSize);
+
+
+// 148. 排序链表
+struct ListNode* sortList(struct ListNode* head);
+
+// 1370. 上升下降字符串
+char * sortString(char * s);
+
+// 767. 重构字符串
+char * reorganizeString(char * S);
+
+// 493. 翻转对
+int reversePairs(int* nums, int numsSize);
+
+// 321. 拼接最大数
+int* maxNumber(int* nums1, int nums1Size, int* nums2, int nums2Size, int k, int* returnSize);
+
+// 842. 将数组拆分成斐波那契序列
+int* splitIntoFibonacci(char * S, int* returnSize);
+
+// 621. 任务调度器
+int leastInterval(char* tasks, int tasksSize, int n);
+
+// 659. 分割数组为连续子序列
+bool isPossible(int* nums, int numsSize);
+
 #endif /* LeetCodeC_h */

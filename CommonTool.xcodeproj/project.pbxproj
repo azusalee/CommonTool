@@ -54,6 +54,20 @@
 			remoteGlobalIDString = 8CC0ABA222BCBBAB001BB84D;
 			remoteInfo = CommonTool;
 		};
+		8CB1E7A3256BC6160088B6F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8CB1E79F256BC6160088B6F1 /* CommonToolExtend.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8CB1E793256BC4530088B6F1;
+			remoteInfo = CommonToolExtend;
+		};
+		8CB1E7AE256BC6800088B6F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8CB1E79F256BC6160088B6F1 /* CommonToolExtend.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8CB1E792256BC4530088B6F1;
+			remoteInfo = CommonToolExtend;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -105,6 +119,7 @@
 		8CA036232362D946007FAEB2 /* CommonToolTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CommonToolTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CA036252362D946007FAEB2 /* CommonToolTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommonToolTests.m; sourceTree = "<group>"; };
 		8CA036272362D946007FAEB2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8CB1E79F256BC6160088B6F1 /* CommonToolExtend.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CommonToolExtend.xcodeproj; path = CommonToolExtend/CommonToolExtend.xcodeproj; sourceTree = "<group>"; };
 		8CC0ABA322BCBBAB001BB84D /* CommonTool.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CommonTool.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CC0ABA622BCBBAB001BB84D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		8CC0ABA722BCBBAB001BB84D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -217,9 +232,18 @@
 			path = CommonToolTests;
 			sourceTree = "<group>";
 		};
+		8CB1E7A0256BC6160088B6F1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8CB1E7A4256BC6160088B6F1 /* CommonToolExtend.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		8CC0AB9A22BCBBAB001BB84D = {
 			isa = PBXGroup;
 			children = (
+				8CB1E79F256BC6160088B6F1 /* CommonToolExtend.xcodeproj */,
 				8CC0ABA522BCBBAB001BB84D /* CommonTool */,
 				8CA036242362D946007FAEB2 /* CommonToolTests */,
 				8C6508C7239662C700484C1C /* notification */,
@@ -443,6 +467,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				8CB1E7AF256BC6800088B6F1 /* PBXTargetDependency */,
 				8C6508CD239662C700484C1C /* PBXTargetDependency */,
 			);
 			name = CommonTool;
@@ -490,6 +515,12 @@
 			mainGroup = 8CC0AB9A22BCBBAB001BB84D;
 			productRefGroup = 8CC0ABA422BCBBAB001BB84D /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 8CB1E7A0256BC6160088B6F1 /* Products */;
+					ProjectRef = 8CB1E79F256BC6160088B6F1 /* CommonToolExtend.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				8CC0ABA222BCBBAB001BB84D /* CommonTool */,
@@ -498,6 +529,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		8CB1E7A4256BC6160088B6F1 /* CommonToolExtend.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CommonToolExtend.framework;
+			remoteRef = 8CB1E7A3256BC6160088B6F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		8C6508C4239662C700484C1C /* Resources */ = {
@@ -586,6 +627,11 @@
 			isa = PBXTargetDependency;
 			target = 8CC0ABA222BCBBAB001BB84D /* CommonTool */;
 			targetProxy = 8CA036282362D946007FAEB2 /* PBXContainerItemProxy */;
+		};
+		8CB1E7AF256BC6800088B6F1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CommonToolExtend;
+			targetProxy = 8CB1E7AE256BC6800088B6F1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

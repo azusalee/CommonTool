@@ -12196,3 +12196,305 @@ struct ListNode* insertionSortList(struct ListNode* head){
     }
     return resultHead->next;
 }
+
+int findMinArrowShotscmp(void* _a, void* _b) {
+    int *a = *(int**)_a, *b = *(int**)_b;
+    return a[1] - b[1];
+}
+
+
+int findMinArrowShots(int** points, int pointsSize, int* pointsColSize){
+    if (pointsSize == 0) return 0;
+    
+    qsort(points, pointsSize, sizeof(int*), findMinArrowShotscmp);
+    int pos = points[0][1];
+    int ans = 1;
+    for (int i = 0; i < pointsSize; ++i) {
+        if (points[i][0] > pos) {
+            pos = points[i][1];
+            ++ans;
+        }
+    }
+    
+    return ans;
+}
+
+struct ListNode* sortList(struct ListNode* head){
+    /*
+    -1 3 4 0 5
+    -1 0 3 4 5
+    1+2+4+8+..+n
+    2^m = n
+    m = log2(n)
+     */
+    
+    return head;
+}
+
+
+char * sortString(char * s){
+    /*
+    abc
+    abccbaabccba
+     */
+    
+    int length = (int)strlen(s);
+    char* result = malloc(sizeof(char)*(length+1));
+    result[length] = '\0';
+    
+    int alphabet[26] = {0};
+    int max = 0;
+    int min = 25;
+    while (*s != '\0') {
+        int i = (*s)-'a';
+        alphabet[i] += 1;
+        if (i > max) max = i;
+        if (i < min) min = i;
+        ++s;
+    }
+    
+    int index = 0;
+    while (index < length) {
+        for (int i = min; i <= max; ++i) {
+            if (alphabet[i] > 0) {
+                result[index++] = i+'a';
+                alphabet[i] -= 1;
+            }
+        }
+        for (int i = max; i >= min; --i) {
+            if (alphabet[i] > 0) {
+                result[index++] = i+'a';
+                alphabet[i] -= 1;
+            }
+        }
+    }
+    return result;
+}
+
+char * reorganizeString(char * S){
+    int length = (int)strlen(S);
+    if (length < 2) return S;
+    
+    int alphabet[26] = {0};
+    int max = 0;
+    int min = 25;
+    int maxcount = 0;
+    while (*S != '\0') {
+        int i = (*S)-'a';
+        alphabet[i] += 1;
+        if (i > max) max = i;
+        if (i < min) min = i;
+        ++S;
+        if (alphabet[i] > maxcount) maxcount = alphabet[i];
+    }
+    if (maxcount > (length + 1) / 2) {
+        return "";
+    }
+    
+    char* result = malloc(sizeof(char)*(length+1));
+    result[length] = '\0';
+    
+    int evenIndex = 0, oddIndex = 1;
+    int halfLength = length / 2;
+    for (int i = min; i <= max; ++i) {
+        char c = i+'a';
+        while (alphabet[i] > 0 && alphabet[i] <= halfLength && oddIndex < length) {
+            result[oddIndex] = c;
+            oddIndex += 2;
+            alphabet[i] -= 1;
+        }
+        while (alphabet[i] > 0) {
+            result[evenIndex] = c;
+            evenIndex += 2;
+            alphabet[i] -= 1;
+        }
+    }
+    
+    return result;
+}
+
+int reversePairsRecursive(int* nums, int left, int right) {
+    if (left == right) {
+        return 0;
+    } else {
+        int mid = (left + right) / 2;
+        int n1 = reversePairsRecursive(nums, left, mid);
+        int n2 = reversePairsRecursive(nums, mid + 1, right);
+        int ret = n1 + n2;
+
+        // 首先统计下标对的数量
+        int i = left;
+        int j = mid + 1;
+        while (i <= mid) {
+            while (j <= right && (long long)nums[i] > 2 * (long long)nums[j]) j++;
+            ret += (j - mid - 1);
+            i++;
+        }
+
+        // 随后合并两个排序数组
+        int sorted[right - left + 1];
+        int p1 = left, p2 = mid + 1;
+        int p = 0;
+        while (p1 <= mid || p2 <= right) {
+            if (p1 > mid) {
+                sorted[p++] = nums[p2++];
+            } else if (p2 > right) {
+                sorted[p++] = nums[p1++];
+            } else {
+                if (nums[p1] < nums[p2]) {
+                    sorted[p++] = nums[p1++];
+                } else {
+                    sorted[p++] = nums[p2++];
+                }
+            }
+        }
+        for (int i = 0; i < right - left + 1; i++) {
+            nums[left + i] = sorted[i];
+        }
+        return ret;
+    }
+}
+
+int reversePairs(int* nums, int numsSize) {
+    if (numsSize == 0) {
+        return 0;
+    }
+    return reversePairsRecursive(nums, 0, numsSize - 1);
+}
+
+int* maxNumber(int* nums1, int nums1Size, int* nums2, int nums2Size, int k, int* returnSize){
+    
+    int bucket[10] = {0};
+    
+//    for (int i = 0; i < nums1Size; ++i) {
+//        bucket[nums1[i]] += 1;
+//    }
+//    
+//    for (int i = 0; i < nums2Size; ++i) {
+//        bucket[nums2[i]] += 1;
+//    }
+    
+    int *result = malloc(sizeof(int)*k);
+    int i = 0, m = 0, n = 0;
+    while (i < k) {
+        if (m >= nums1Size) {
+            result[i++] = nums1[n++];
+        }else if (n >= nums2Size) {
+            result[i++] = nums1[m++];
+        }else{
+            if (nums1[m] > nums2[n]) {
+                result[i++] = nums1[m++];
+            }else{
+                result[i++] = nums1[n++];
+            }
+        }
+    }
+    
+    // 9 3 4 6 5 1 2 5 8 3
+    
+    return result;
+}
+
+
+bool splitIntoFibonacciBacktrack(int* list, int* listSize, char* S, int length, int index, long long sum, int prev) {
+    if (index == length) {
+        return (*listSize) >= 3;
+    }
+    long long curr = 0;
+    for (int i = index; i < length; i++) {
+        if (i > index && S[index] == '0') {
+            break;
+        }
+        curr = curr * 10 + S[i] - '0';
+        if (curr > INT32_MAX) {
+            break;
+        }
+        if ((*listSize) >= 2) {
+            if (curr < sum) {
+                continue;
+            } else if (curr > sum) {
+                break;
+            }
+        }
+        list[(*listSize)++] = curr;
+        if (splitIntoFibonacciBacktrack(list, listSize, S, length, i + 1, prev + curr, curr)) {
+            return true;
+        }
+        (*listSize)--;
+    }
+    return false;
+}
+
+int* splitIntoFibonacci(char * S, int* returnSize){
+    int length = strlen(S);
+    if (length < 3) return NULL;
+    
+    int* result = malloc(sizeof(int)*length);
+    *returnSize = 0;
+    
+    splitIntoFibonacciBacktrack(result, returnSize, S, strlen(S), 0, 0, 0);
+    
+    return result;
+}
+
+int leastInterval(char* tasks, int tasksSize, int n){
+    if (n == 0 || tasksSize == 0) return tasksSize;
+    
+    int taskCount[26] = {0};
+    
+    for (int i = 0; i < tasksSize; ++i) {
+        taskCount[tasks[i]-'A'] += 1;
+    }
+    
+    int maxCount = 0;
+    for (int i = 0; i < 26; ++i) {
+        if (taskCount[i] > maxCount) maxCount = taskCount[i];
+    }
+    
+    int lastOffset = 0;
+    for (int i = 0; i < 26; ++i) {
+        if (taskCount[i] == maxCount) ++lastOffset;
+    }
+    
+    return fmax((maxCount-1)*(n+1)+lastOffset, tasksSize);
+}
+
+
+bool isPossible(int* nums, int numsSize){
+    int n = numsSize;
+    int dp1 = 0;    // 长度为1的子序列数目
+    int dp2 = 0;    // 长度为2的子序列数目
+    int dp3 = 0;    // 长度>=3的子序列数目
+    int idx = 0;
+    int start = 0;  // 起始位置
+    
+    while(idx < n){
+        start = idx;                        // 重新将起始位置赋值
+        int x = nums[idx];
+        while(idx < n && nums[idx] == x){   // 去掉所有和x重复的元素
+            idx++;
+        }
+        int cnt = idx - start;              
+        
+        if(start > 0 && x != nums[start - 1] + 1){  // 对于nums[idx] != nums[idx - 1] + 1，说明当前整数无法加入到以nums[idx-1] 为结尾的序列中
+            if(dp1 + dp2 > 0){                      // 如果 dp1+dp2>0，说明有些长度≤2的序列无法被满足，因此不存在相应的分割方案。
+                return false;
+            }else{                                  // 否则，此前的序列全部作废
+                dp1 = cnt;
+                dp2 = dp3 = 0;
+            }
+        }else{                                      // 对于nums[idx] == nums[idx - 1] + 1，说明当前整数可以加入到所有以nums[idx-1]为结尾的序列中。假设数组中x的数目为cnt：
+            if(dp1 + dp2 > cnt){                    // 首先，根据贪心的策略，我们要尽可能地先把 x 添加到长度≤2 的子序列中，从而尽可能地保证子序列的长度都≥3。如果x的数量不够，说明不存在相应的分割方案。
+                return false;
+            }
+            int left = cnt - dp1 - dp2;             // 此时 还剩下left = cnt -dp1 -dp2个 nums[idx-1](x)
+            int keep = fmin(dp3,left);          // 尽量将余下的left个整数添加到长度≥3的子序列中
+            // 最后，我们更新 dp1,dp2,dp3的取值
+            dp3 = keep + dp2;
+            dp2 = dp1;
+            dp1 = left - keep;                      // 如果还有剩余，才将开启对应数量的新序列。新序列的数目等于left−keep。
+        }
+    }
+    
+    return dp1 == 0 && dp2 == 0;
+}

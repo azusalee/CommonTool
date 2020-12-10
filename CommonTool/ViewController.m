@@ -11,6 +11,7 @@
 #import "LeetCodeC.h"
 #import "CompileSourceParse.h"
 #import "ALLabelCollectionDemoViewController.h"
+#import <CommonToolExtend/CommonToolExtend.h>
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
@@ -32,7 +33,10 @@
 //    b = ~a&b;
 //    printf("%d", b);
     shortestPalindrome("abac");
-
+    MyCommonToolExtendModel *model = [[MyCommonToolExtendModel alloc] init];
+    model.name = @"haha";
+    NSLog(@"%@", model.name);
+    
     struct TreeNode *node1 = malloc(sizeof(struct TreeNode));
     node1->val = 1;
     node1->right = NULL;

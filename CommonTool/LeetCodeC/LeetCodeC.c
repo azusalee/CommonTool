@@ -12498,3 +12498,184 @@ bool isPossible(int* nums, int numsSize){
     
     return dp1 == 0 && dp2 == 0;
 }
+
+
+char * predictPartyVictory(char * senate){
+    int length = strlen(senate);
+    
+    int *banList = malloc(sizeof(int)*length);
+    memset(banList, 0, sizeof(int)*length);
+    
+    int RCount = 0;
+    int DCount = 0;
+    int RBCount = 0;
+    int DBCount = 0;
+    
+    int index = 0;
+    while (index < length) {
+        if (senate[index] == 'R') {
+            ++RCount;
+        }else{
+            ++DCount;
+        }
+        ++index;
+    }
+    
+    index = 0;
+    while (RCount > 0 && DCount > 0) {
+        if (banList[index] == 0) {
+            if (senate[index] == 'R') {
+                if (RBCount == 0) {
+                    ++DBCount;
+                }else{
+                    banList[index] = 1;
+                    --RBCount;
+                    --RCount;
+                }
+            }else{
+                if (DBCount == 0) {
+                    ++RBCount;
+                }else{
+                    banList[index] = 1;
+                    --DBCount;
+                    --DCount;
+                }
+            }
+        }
+        ++index;
+        if (index >= length) index = 0;
+    }
+    
+    free(banList);
+    return RCount>0?"Radiant":"Dire";
+}
+
+
+char *** groupAnagrams(char ** strs, int strsSize, int* returnSize, int** returnColumnSizes){
+    int **code = malloc(sizeof(int*)*strsSize);
+    char ***result = malloc(sizeof(char**)*strsSize);
+    
+    *returnSize = 0;
+    *returnColumnSizes = malloc(sizeof(int)*strsSize);
+    memset(*returnColumnSizes, 0, sizeof(int)*strsSize);
+    
+    for (int i = 0; i < strsSize; ++i) {
+        int *tmpCode = malloc(sizeof(int)*26);
+        memset(tmpCode, 0, sizeof(int)*26);
+        int j = 0;
+        while (strs[i][j] != '\0') {
+            tmpCode[strs[i][j]-'a'] += 1;
+            ++j;
+        }
+        bool isNew = true;
+        // 用hash可以减少下面的计算(10~20倍的运算时间)
+        for (int k = 0; k < *returnSize; ++k) {
+            for (int l = 0; l < 26; ++l) {
+                if (tmpCode[l] != code[k][l]) {
+                    break;
+                }
+                if (l == 25) {
+                    isNew = false;
+                    result[k][(*returnColumnSizes)[k]] = strs[i];
+                    (*returnColumnSizes)[k] += 1;
+                }
+            }
+            if (isNew == false) break;
+        }
+        
+        if (isNew) {
+            result[*returnSize] = malloc(sizeof(char*)*strsSize);
+            result[*returnSize][0] = strs[i];
+            (*returnColumnSizes)[*returnSize] += 1;
+            code[*returnSize] = tmpCode;
+            (*returnSize) += 1;
+        }else{
+            free(tmpCode);
+        }
+    }
+    for (int k = 0; k < *returnSize; ++k) {
+        free(code[k]);
+    }
+    free(code);
+    
+    return result;
+}
+
+
+int monotoneIncreasingDigits(int N){
+    if (N < 10) return N;
+    int tmp = N/10;
+    int last = N%10;
+    int result = 0;
+    int muti = 1;
+    while (tmp > 0) {
+        int num = tmp%10;
+        if (num > last) {
+            num = num-1;
+            last = 9;
+            result = 0.999999999*muti;
+        }
+        result = result+last*muti;
+        muti = muti*10;
+        last = num;
+        tmp = tmp/10;
+    }
+    result = result+last*muti;
+    
+    return result;
+    
+}
+
+int wiggleMaxLength(int* nums, int numsSize){
+    if (numsSize < 2) return numsSize;
+    int last = nums[0]-nums[1];
+    int result = last==0?1:2;
+    for (int i = 2; i < numsSize; ++i) {
+        int now = nums[i-1]-nums[i];
+        if ((last >= 0 && now < 0) || (last <= 0 && now > 0)) {
+            ++result;
+            last = now;
+        }
+    }
+    return result;
+}
+
+int maxProfit3(int* prices, int pricesSize, int fee){
+    int sell = 0;
+    int buy = -prices[0];
+    for (int i = 0; i < pricesSize; ++i) {
+        sell = fmax(sell, buy+prices[i]-fee);
+        buy = fmax(buy, sell-prices[i]);
+    }
+    return sell;
+}
+
+char * removeDuplicateLetters(char * s){
+    int vis[26], num[26];
+    memset(vis, 0, sizeof(vis));
+    memset(num, 0, sizeof(num));
+
+    int n = strlen(s);
+    for (int i = 0; i < n; i++) {
+        num[s[i] - 'a']++;
+    }
+
+    char* stk = malloc(sizeof(char) * 27);
+    int stkTop = 0;
+    for (int i = 0; i < n; i++) {
+        if (!vis[s[i] - 'a']) {
+            while (stkTop > 0 && stk[stkTop - 1] > s[i]) {
+                if (num[stk[stkTop - 1] - 'a'] > 0) {
+                    vis[stk[--stkTop] - 'a'] = 0;
+                } else {
+                    break;
+                }
+            }
+            vis[s[i] - 'a'] = 1;
+            stk[stkTop++] = s[i];
+        }
+        num[s[i] - 'a'] -= 1;
+    }
+    stk[stkTop] = '\0';
+    return stk;
+}

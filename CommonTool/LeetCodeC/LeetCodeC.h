@@ -1364,4 +1364,23 @@ int leastInterval(char* tasks, int tasksSize, int n);
 // 659. 分割数组为连续子序列
 bool isPossible(int* nums, int numsSize);
 
+// 649. Dota2 参议院
+char * predictPartyVictory(char * senate);
+
+
+// 49. 字母异位词分组
+char *** groupAnagrams(char ** strs, int strsSize, int* returnSize, int** returnColumnSizes);
+
+// 738. 单调递增的数字
+int monotoneIncreasingDigits(int N);
+
+// 376. 摆动序列
+int wiggleMaxLength(int* nums, int numsSize);
+
+// 714. 买卖股票的最佳时机含手续费
+int maxProfit3(int* prices, int pricesSize, int fee);
+
+// 316. 去除重复字母
+char * removeDuplicateLetters(char * s);
+
 #endif /* LeetCodeC_h */

@@ -1383,4 +1383,37 @@ int maxProfit3(int* prices, int pricesSize, int fee);
 // 316. 去除重复字母
 char * removeDuplicateLetters(char * s);
 
+// 103. 二叉树的锯齿形层序遍历
+int** zigzagLevelOrder(struct TreeNode* root, int* returnSize, int** returnColumnSizes);
+
+// 188. 买卖股票的最佳时机 IV
+int maxProfit4(int k, int* prices, int pricesSize);
+
+// 85. 最大矩形
+int maximalRectangle(char** matrix, int matrixSize, int* matrixColSize);
+
+// 330. 按要求补齐数组
+int minPatches(int* nums, int numsSize, int n);
+
+// 1202. 交换字符串中的元素
+char * smallestStringWithSwaps(char * s, int** pairs, int pairsSize, int* pairsColSize);
+
+// 1203. 项目管理
+int* sortItems(int n, int m, int* group, int groupSize, int** beforeItems, int beforeItemsSize, int* beforeItemsColSize, int* returnSize);
+
+// 684. 冗余连接
+int* findRedundantConnection(int** edges, int edgesSize, int* edgesColSize, int* returnSize);
+
+// 86. 分隔链表
+struct ListNode* partition2(struct ListNode* head, int x);
+
+// 399. 除法求值
+double* calcEquation(char *** equations, int equationsSize, int* equationsColSize, double* values, int valuesSize, char *** queries, int queriesSize, int* queriesColSize, int* returnSize);
+
+// 547. 省份数量
+int findCircleNum(int** isConnected, int isConnectedSize, int* isConnectedColSize);
+
+// 123. 买卖股票的最佳时机 III
+int maxProfit5(int* prices, int pricesSize);
+
 #endif /* LeetCodeC_h */

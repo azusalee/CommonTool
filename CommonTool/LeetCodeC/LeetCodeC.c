@@ -12679,3 +12679,261 @@ char * removeDuplicateLetters(char * s){
     stk[stkTop] = '\0';
     return stk;
 }
+
+void zigzagLevelOrderHelper(int** result, int level, struct TreeNode* root, int* returnSize, int** returnColumnSizes) {
+    if (root == NULL) return;
+    if (level+1 > *returnSize) {
+        *returnSize = level+1;
+        result[level] = malloc(sizeof(int)*pow(2, level));
+    }
+    zigzagLevelOrderHelper(result, level+1, root->left, returnSize, returnColumnSizes);
+    zigzagLevelOrderHelper(result, level+1, root->right, returnSize, returnColumnSizes);
+    
+    result[level][(*returnColumnSizes)[level]++] = root->val;
+}
+
+int** zigzagLevelOrder(struct TreeNode* root, int* returnSize, int** returnColumnSizes){
+    
+    *returnSize = 0;
+    int** result = malloc(sizeof(int*)*100);
+    *returnColumnSizes = malloc(sizeof(int)*100);
+    memset(*returnColumnSizes, 0, sizeof(int)*100);
+    zigzagLevelOrderHelper(result, 0, root, returnSize, returnColumnSizes);
+    
+    for (int i = 1; i < *returnSize; i += 2) {
+        int left = 0;
+        int right = (*returnColumnSizes)[i]-1;
+        while (left < right) {
+            int tmp = result[i][left];
+            result[i][left++] = result[i][right];
+            result[i][right--] = tmp;
+        }
+    }
+    
+    return result;
+}
+
+int maxProfit4(int k, int* prices, int pricesSize){
+    int n = pricesSize;
+    if (n == 0) {
+        return 0;
+    }
+
+    k = fmin(k, n / 2);
+    int buy[k + 1], sell[k + 1];
+    memset(buy, 0, sizeof(buy));
+    memset(sell, 0, sizeof(sell));
+
+    buy[0] = -prices[0];
+    sell[0] = 0;
+    for (int i = 1; i <= k; ++i) {
+        buy[i] = sell[i] = -9999;
+    }
+
+    for (int i = 1; i < n; ++i) {
+        buy[0] = fmax(buy[0], sell[0] - prices[i]);
+        for (int j = 1; j <= k; ++j) {
+            buy[j] = fmax(buy[j], sell[j] - prices[i]);
+            sell[j] = fmax(sell[j], buy[j - 1] + prices[i]);
+        }
+    }
+    int ret = 0;
+    for (int i = 0; i <= k; i++) {
+        ret = fmax(ret, sell[i]);
+    }
+
+    return ret;
+
+}
+
+
+int maximalRectangle(char** matrix, int matrixSize, int* matrixColSize){
+    
+    int** VCount = malloc(sizeof(int*)*matrixSize);
+    for (int i = 0; i < matrixSize; ++i) {
+        VCount[i] = malloc(sizeof(int)*matrixColSize[i]);
+        memset(VCount[i], 0, sizeof(int)*matrixColSize[i]);
+    }
+    
+    for (int i = matrixSize-1; i >= 0; --i) {
+        for (int j = 0; j < matrixColSize[i]; ++j) {
+            if (matrix[i][j] == '1') {
+                if (i < matrixSize-1) {
+                    VCount[i][j] = VCount[i+1][j]+1;
+                }else{
+                    VCount[i][j] = 1;
+                }
+            }
+        }
+    }
+    
+    int result = 0;
+    for (int i = 0; i < matrixSize; ++i) {
+        for (int j = 0; j < matrixColSize[i]; ++j) {
+            int maxV = VCount[i][j];
+            for (int k = j; k < matrixColSize[i] && maxV > 0; ++k) {
+                if (VCount[i][k] < maxV) maxV = VCount[i][k];
+                result = fmax(result, maxV*(k-j+1));
+            }
+        }
+    }
+    
+    return result;
+}
+
+
+int minPatches(int* nums, int numsSize, int n){
+    int patches = 0;
+    long long x = 1;
+    int index = 0;
+    while (x <= n) {
+        if (index < numsSize && nums[index] <= x) {
+            x += nums[index++];
+        } else {
+            x <<= 1;
+            patches++;
+        }
+    }
+    return patches;
+}
+
+char * smallestStringWithSwaps(char * s, int** pairs, int pairsSize, int* pairsColSize){
+    int length = strlen(s);
+    /*
+    1. 下标分组:把有直接或间接关联的下标分为一组
+    2. 排序:把每组对应的字符单独排序
+    3. 合并:历遍下标，获取下标对应的分组，然后取该分组中最小的字符放入该下标，并删去分组里的该字符
+    4. 完成
+     */
+    
+    
+    return "";
+}
+
+int* sortItems(int n, int m, int* group, int groupSize, int** beforeItems, int beforeItemsSize, int* beforeItemsColSize, int* returnSize){
+    
+    
+    
+    
+    return NULL;
+}
+
+
+int Find(int* parent, int index) {
+    if (parent[index] != index) {
+        parent[index] = Find(parent, parent[index]);
+    }
+    return parent[index];
+}
+
+void Union(int* parent, int index1, int index2) {
+    parent[Find(parent, index1)] = Find(parent, index2);
+}
+
+int* findRedundantConnection(int** edges, int edgesSize, int* edgesColSize, int* returnSize) {
+    int nodesCount = edgesSize;
+    int parent[nodesCount + 1];
+    for (int i = 1; i <= nodesCount; ++i) {
+        parent[i] = i;
+    }
+    for (int i = 0; i < edgesSize; ++i) {
+        int node1 = edges[i][0], node2 = edges[i][1];
+        if (Find(parent, node1) != Find(parent, node2)) {
+            Union(parent, node1, node2);
+        } else {
+            *returnSize = 2;
+            return edges[i];
+        }
+    }
+    *returnSize = 0;
+    return NULL;
+}
+
+struct ListNode* partition2(struct ListNode* head, int x){
+    
+    struct ListNode* smallList = malloc(sizeof(struct ListNode));
+    struct ListNode* bigList = malloc(sizeof(struct ListNode));
+    struct ListNode* smallCur = smallList;
+    struct ListNode* bigCur = bigList;
+    smallList->next = NULL;
+    bigList->next = NULL;
+    
+    while (head != NULL) {
+        if (head->val < x) {
+            smallCur->next = head;
+            smallCur = head;
+        }else{
+            bigCur->next = head;
+            bigCur = head;
+        }
+        head = head->next;
+    }
+    smallCur->next = bigList->next;
+    bigCur->next = NULL;
+    smallCur = smallList->next;
+    free(smallList);
+    free(bigList);
+    
+    return smallCur;
+}
+
+double* calcEquation(char *** equations, int equationsSize, int* equationsColSize, double* values, int valuesSize, char *** queries, int queriesSize, int* queriesColSize, int* returnSize){
+    
+    
+    
+    
+    return NULL;
+}
+
+
+int findCircleNum(int** isConnected, int isConnectedSize, int* isConnectedColSize){
+    int *city = malloc(sizeof(int)*isConnectedSize);
+    for (int i = 0; i < isConnectedSize; ++i) {
+        city[i] = i;
+    }
+    
+    for (int i = 0; i < isConnectedSize; ++i) {
+        for (int j = i+1; j < isConnectedColSize[i]; ++j) {
+            if (isConnected[i][j] == 1) {
+                if (Find(city, i) != Find(city, j)) {
+                    Union(city, i, j);
+                }
+            }
+        }
+    }
+    
+    int count = 0;
+    for (int i = 0; i < isConnectedSize; ++i) {
+        if (city[i] == i) {
+            ++count;
+        }
+    }
+    free(city);
+    
+    return count;
+}
+
+
+int maxProfit5(int* prices, int pricesSize){
+    
+    int buy1 = -prices[0];
+    int buy2 = -prices[0];
+    int sell1 = 0;
+    int sell2 = 0;
+    for (int i = 0; i < pricesSize; ++i) {
+        if (buy1 < -prices[i]) {
+            buy1 = -prices[i];
+        }
+        if (sell1 < buy1+prices[i]) {
+            sell1 = buy1+prices[i];
+        }
+        if (buy2 < sell1-prices[i]) {
+            buy2 = sell1-prices[i];
+        }
+        if (sell2 < buy2+prices[i]) {
+            sell2 = buy2+prices[i];
+        }
+    }
+    
+    return sell2;
+}

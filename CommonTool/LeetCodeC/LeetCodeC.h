@@ -1416,4 +1416,28 @@ int findCircleNum(int** isConnected, int isConnectedSize, int* isConnectedColSiz
 // 123. 买卖股票的最佳时机 III
 int maxProfit5(int* prices, int pricesSize);
 
+// 947. 移除最多的同行或同列石头
+int removeStones(int** stones, int stonesSize, int* stonesColSize);
+
+// 228. 汇总区间
+char ** summaryRanges(int* nums, int numsSize, int* returnSize);
+
+// 1584. 连接所有点的最小费用
+int minCostConnectPoints(int** points, int pointsSize, int* pointsColSize);
+
+// 1631. 最小体力消耗路径
+int minimumEffortPath(int** heights, int heightsSize, int* heightsColSize);
+
+// 424. 替换后的最长重复字符
+int characterReplacement(char * s, int k);
+
+// 778. 水位上升的泳池中游泳
+int swimInWater(int** grid, int gridSize, int* gridColSize);
+
+// 480. 滑动窗口中位数
+double* medianSlidingWindow(int* nums, int numsSize, int k, int* returnSize);
+
+// 1208. 尽可能使字符串相等
+int equalSubstring(char * s, char * t, int maxCost);
+
 #endif /* LeetCodeC_h */

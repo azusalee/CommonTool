@@ -12937,3 +12937,271 @@ int maxProfit5(int* prices, int pricesSize){
     
     return sell2;
 }
+
+int removeStones(int** stones, int stonesSize, int* stonesColSize){
+    
+    int parent[stonesSize];
+    for (int i = 0; i < stonesSize; ++i) {
+        parent[i] = i;
+    }
+    
+    int count = 0;
+    for (int i = 0; i < stonesSize; ++i) {
+        for (int j = i+1; j < stonesSize; ++j) {
+            if ((stones[i][0] == stones[j][0] || stones[i][1] == stones[j][1]) && Find(parent, i) != Find(parent, j)) {
+                Union(parent, i, j);
+                ++count;
+            }
+        }
+    }
+    
+    return count;
+}
+
+char* intToString(int num) {
+    char *str = malloc(sizeof(char)*12);
+    if(num == 0) {
+        str[0] = '0';
+        str[1] = '\0';
+        return str;
+    }
+    int index = 0;
+    int left = 0;
+    if (num < 0) {
+        str[index++] = '-';
+        if (num == -2147483648) {
+            str[index++] = '8';
+            num = -214748364;
+        }
+        num = -num;
+        left = 1;
+    }
+    while (num != 0) {
+        str[index++] = (num%10)+'0';
+        num /= 10;
+    }
+    str[index] = '\0';
+    int right = index-1;
+    while (left < right) {
+        char tmp = str[left];
+        str[left] = str[right];
+        str[right] = tmp;
+        ++left;
+        --right;
+    }
+    
+    return str;
+}
+
+char * createSummaryRanges(int start, int end){
+    char *group = malloc(sizeof(char)*25);
+    int index = 0;
+    char *leftString = intToString(start);
+    int j = 0;
+    while (leftString[j] != '\0') {
+        group[index++] = leftString[j];
+        ++j;
+    }
+    free(leftString);
+    if (start != end) {
+        char *rightString = intToString(end);
+        group[index++] = '-';
+        group[index++] = '>';
+        j = 0;
+        while (rightString[j] != '\0') {
+            group[index++] = rightString[j];
+            ++j;
+        }
+        free(rightString);
+    }
+    group[index] = '\0';
+    return group;
+}
+
+char ** summaryRanges(int* nums, int numsSize, int* returnSize){
+    *returnSize = 0;
+    if (numsSize == 0) return NULL;
+    
+    int count = 1;
+    for (int i = 1; i < numsSize; ++i) {
+        if (nums[i] != nums[i-1]+1) ++count;
+    }
+    char **result = malloc(sizeof(char*)*count);
+    int start = nums[0];
+    for (int i = 1; i < numsSize; ++i) {
+        if (nums[i] != nums[i-1]+1) {
+            result[(*returnSize)++] = createSummaryRanges(start, nums[i-1]);
+            start = nums[i];
+        }
+    }
+    result[(*returnSize)++] = createSummaryRanges(start, nums[numsSize-1]);
+    
+    return result;
+}
+
+int minCostConnectPoints(int** points, int pointsSize, int* pointsColSize){
+    
+    
+    return 0;
+}
+
+
+int minimumEffortPath(int** heights, int heightsSize, int* heightsColSize){
+    
+    /*
+     1 2 1 1 1
+     1 2 1 2 1
+     1 2 1 2 1
+     1 2 1 2 1
+     1 1 1 2 1
+     */
+    
+    
+    
+    int colCount = heightsColSize[0];
+    int result[colCount];
+    for (int i = 0; i < colCount; ++i) {
+        result[i] = 0;
+    }
+    for (int i = 0; i < heightsSize; ++i) {
+        for (int j = 0; j < colCount; ++j) {
+            if (i > 0 && j > 0) {
+                result[j] = fmin(fmax(result[j], abs(heights[i][j]-heights[i-1][j])), fmax(result[j-1], abs(heights[i][j]-heights[i][j-1])));
+            }else if (i > 0) {
+                result[j] = fmax(result[j], abs(heights[i][j]-heights[i-1][j]));
+            }else if (j > 0){
+                result[j] = fmax(result[j-1], abs(heights[i][j]-heights[i][j-1]));
+            }
+        }
+    }
+    
+    return result[colCount-1];
+}
+
+
+int characterReplacement(char * s, int k){
+    int num[26];
+    memset(num, 0, sizeof(num));
+    int n = strlen(s);
+    int maxn = 0;
+    int left = 0, right = 0;
+    while (right < n) {
+        num[s[right] - 'A']++;
+        maxn = fmax(maxn, num[s[right] - 'A']);
+        if (right - left + 1 - maxn > k) {
+            num[s[left] - 'A']--;
+            left++;
+        }
+        right++;
+    }
+    return right - left;
+}
+
+bool isSimilar(char *s1, char *s2) {
+    int difCount = 0;
+    while (*s1 != 0) {
+        if (*s1 != *s2) ++difCount;
+        if (difCount > 2) return false;
+        ++s1;
+        ++s2;
+    }
+    
+    return true;
+}
+
+int numSimilarGroups(char ** strs, int strsSize){
+    int parent[strsSize];
+    for (int i = 0; i < strsSize; ++i) {
+        parent[i] = i;
+    }
+    
+    for (int i = 0; i < strsSize; ++i) {
+        for (int j = i+1; j < strsSize; ++j) {
+            int findi = Find(parent, i);
+            int findj = Find(parent, j);
+            if (findi != findj) {
+                if (isSimilar(strs[i], strs[j])) {
+                    parent[findi] = findj;
+                }
+            }
+        }
+    }
+    
+    int count = 0;
+    for (int i = 0; i < strsSize; ++i) {
+        if (parent[i] == i) ++count;
+    }
+    
+    return count;
+}
+
+int directions_four[4][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+
+int swimInWater(int** grid, int gridSize, int* gridColSize){
+    
+    int count = gridSize*gridSize;
+    
+    int parent[count];
+    for (int i = 0; i < count; ++i) {
+        parent[i] = i;
+    }
+    
+    int idx[count][2];
+    for (int i = 0; i < gridSize; ++i) {
+        for (int j = 0; j < gridSize; ++j) {
+            idx[grid[i][j]][0] = i;
+            idx[grid[i][j]][1] = j;
+        }
+    }
+    
+    for (int threshold = 0; threshold < count; ++threshold) {
+        int i = idx[threshold][0];
+        int j = idx[threshold][1];
+        for (int k = 0; k < 4; ++k) {
+            int ni = i+directions_four[k][0];
+            int nj = j+directions_four[k][1];
+            
+            if (ni > 0 && ni < gridSize && nj > 0 && nj < gridSize && grid[ni][nj] <= threshold) {
+                Union(parent, gridSize*i+j, gridSize*ni+nj);
+            }
+        }
+        if (Find(parent, 0) == Find(parent, count-1)) {
+            return threshold;
+        }
+    }
+    
+    return -1;
+}
+
+double* medianSlidingWindow(int* nums, int numsSize, int k, int* returnSize){
+    // 暴力法，每次移动历遍找出窗口内的中位数O(klog(k))，串口可滑动n-k+1次，最终为O(k(n-k)log(k))
+    
+    
+    
+    return NULL;
+}
+
+int equalSubstring(char * s, char * t, int maxCost){
+    
+    int length = strlen(s);
+    int costList[length];
+    
+    for (int i = 0; i < length; ++i) {
+        costList[i] = abs(s[i]-t[i]);
+    }
+    
+    int left = 0;
+    int right = 0;
+    int curCost = 0;
+    int maxCount = 0;
+    for (int i = 0; i < length; ++i) {
+        curCost += costList[i];
+        while (curCost > maxCost) {
+            curCost -= costList[left++];
+        }
+        ++right;
+        if (right-left > maxCount) maxCount=right-left;
+    }
+    
+    return maxCount;
+}

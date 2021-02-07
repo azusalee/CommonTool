@@ -1440,4 +1440,22 @@ double* medianSlidingWindow(int* nums, int numsSize, int k, int* returnSize);
 // 1208. 尽可能使字符串相等
 int equalSubstring(char * s, char * t, int maxCost);
 
+// 1423. 可获得的最大点数
+int maxScore(int* cardPoints, int cardPointsSize, int k);
+
+// 面试题 16.05. 阶乘尾数
+int trailingZeroes(int n);
+
+// 面试题 10.05. 稀疏数组搜索
+int findString(char** words, int wordsSize, char* s);
+
+// 面试题 16.11. 跳水板
+int* divingBoard(int shorter, int longer, int k, int* returnSize);
+
+// 面试题 16.07. 最大数值 (不得使用if-else或其他比较运算符。)
+int maximum(int a, int b);
+
+// 面试题 16.15. 珠玑妙算
+int* masterMind(char* solution, char* guess, int* returnSize);
+
 #endif /* LeetCodeC_h */

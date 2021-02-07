@@ -13205,3 +13205,141 @@ int equalSubstring(char * s, char * t, int maxCost){
     
     return maxCount;
 }
+
+int maxScore(int* cardPoints, int cardPointsSize, int k){
+    int maxPoint = 0;
+    for (int i = 0; i < k; ++i) {
+        maxPoint += cardPoints[i];
+    }
+    int curPoint = maxPoint;
+    for (int i = k-1; i >= 0; --i) {
+        curPoint = curPoint-cardPoints[i]+cardPoints[cardPointsSize-k+i];
+        if (curPoint > maxPoint) maxPoint = curPoint;
+    }
+
+    return maxPoint;
+}
+
+//int trailingZeroes(int n){
+//    // 要出现0，需要2*5，最终需要计算的是有多少对2和5
+//    // 而在阶乘中5的个数必定小于等于2的个数，最终需要计算5的个数
+//    // 5 1个
+//    // 25 6个
+//    // 125 31个
+//    // 125/5 = 25; 25/5 = 5; 5/5 1; 
+//    
+//    int count = 0;
+//    while (n >= 5) {
+//        n /= 5;
+//        count += n;
+//    }
+//    
+//    return count;
+//}
+
+int findString(char** words, int wordsSize, char* s){
+    //
+//    char* tmpWords[wordsSize];
+//    int tmpCount = 0;
+//    int indexs[wordsSize];
+//    for (int i = 0; i < wordsSize; ++i) {
+//        if (words[i][0] != 0) {
+//            tmpWords[tmpCount] = words[i];
+//            indexs[tmpCount] = i;
+//            ++tmpCount;
+//        }
+//    }
+    
+    int left = 0;
+    int right = wordsSize-1;
+    while (left <= right) {
+        int i = 0;
+        int center = (left+right)/2;
+        int tmp = center;
+        while (center <= right && words[center][0] == '\0' ) {
+            ++center;
+        }
+        if (center > right) {
+            right = tmp-1;
+            continue;
+        }
+        
+        while (s[i] == words[center][i] && s[i] != '\0') {
+            ++i;
+        }
+        if (s[i] == words[center][i] && s[i] == '\0') {
+            return center;
+        }
+        if (s[i] > words[center][i]) {
+            left = center+1;
+        }else{
+            right = tmp-1;
+        }
+    } 
+    
+    return -1;
+}
+
+int* divingBoard(int shorter, int longer, int k, int* returnSize){
+    if (k == 0) {
+        *returnSize = 0;
+        return NULL;
+    }
+    if (shorter == longer) {
+        int *result = malloc(sizeof(int)*(1));
+        *returnSize = 1;
+        result[0] = k*shorter;
+        return result;
+    }
+    
+    int *result = malloc(sizeof(int)*(k+1));
+    *returnSize = k+1;
+    
+    for (int i = 0; i <= k; ++i) {
+        result[i] = shorter*(k-i)+longer*i;
+    }
+    
+    return result;
+}
+
+int maximum(int a, int b){
+    long c = a, d = b;
+    return (labs(c-d)+c+d)/2;
+}
+
+int* masterMind(char* solution, char* guess, int* returnSize){
+    int* result = malloc(sizeof(int)*2);
+    result[0] = 0;
+    result[1] = 0;
+    *returnSize = 2;
+    int Y = 0, R = 0, G = 0, B = 0;
+    int i = 0;
+    while (solution[i] != '\0') {
+        if (solution[i] == guess[i]) {
+            result[0] += 1;
+            ++i;
+            continue;
+        }
+        if (solution[i] == 'Y') {
+            if (Y++ < 0) result[1] += 1;
+        }else if (solution[i] == 'R') {
+            if (R++ < 0) result[1] += 1;
+        }else if (solution[i] == 'G') {
+            if (G++ < 0) result[1] += 1;
+        }else if (solution[i] == 'B') {
+            if (B++ < 0) result[1] += 1;
+        }
+        if (guess[i] == 'Y') {
+            if (Y-- > 0) result[1] += 1;
+        }else if (guess[i] == 'R') {
+            if (R-- > 0) result[1] += 1;
+        }else if (guess[i] == 'G') {
+            if (G-- > 0) result[1] += 1;
+        }else if (guess[i] == 'B') {
+            if (B-- > 0) result[1] += 1;
+        }
+        ++i;
+    }
+    
+    return result;
+}

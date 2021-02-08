@@ -5282,11 +5282,28 @@ bool detectCapitalUse(char * word){
 }
 
 int getSum(int a, int b){
+    /*
+    例
+    a 13 1101
+    b 8 1000
+    第一轮操作
+    a  0101
+    b 10000
+    第二轮操作
+    a 10101
+    b 0
+    进位为0
+    10101 -> 21
+     */
     while (b)
     {
-        unsigned int carry = (unsigned int)(a & b)<<1; // 记录a+b的进位，直到进位为0是退出
+        // 记录a+b的进位，直到进位为0是退出
+        unsigned int carry = (unsigned int)(a & b)<<1;
+        // 异或操作，得出除了进位外的和
         a = a^b;   //结果相加
+        // 把进位值付给b
         b = carry;  //循环
+        // 继续让a+b相加
     }
     return a;
 }
@@ -13343,3 +13360,37 @@ int* masterMind(char* solution, char* guess, int* returnSize){
     
     return result;
 }
+
+
+int maxTurbulenceSize(int* arr, int arrSize){
+    // 
+    if (arrSize < 2) return arrSize;
+    
+    int state = 0;
+    int maxLen = 1;
+    int curLen = 1;
+    for (int i = 1; i < arrSize; ++i) {
+        int nextState = arr[i]-arr[i-1];
+        if ((nextState > 0 && state <= 0) || (nextState < 0 && state >= 0)) {
+            ++curLen;
+        }else if (nextState == 0){
+            curLen = 1;
+        }else{
+            curLen = 2;
+        }
+        if (curLen > maxLen) maxLen = curLen;
+        state = nextState;
+    }
+    
+    return maxLen;
+}
+
+//int missingNumber(int* nums, int numsSize){
+//    int total = numsSize*(numsSize+1)/2;
+//    for (int i = 0; i < numsSize; ++i) {
+//        total -= nums[i];
+//    }
+//    return total;
+//}
+
+

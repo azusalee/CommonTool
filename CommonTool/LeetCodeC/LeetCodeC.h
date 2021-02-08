@@ -1458,4 +1458,12 @@ int maximum(int a, int b);
 // 面试题 16.15. 珠玑妙算
 int* masterMind(char* solution, char* guess, int* returnSize);
 
+// 978. 最长湍流子数组
+int maxTurbulenceSize(int* arr, int arrSize);
+
+// 面试题 17.04. 消失的数字
+int missingNumber(int* nums, int numsSize);
+
+
+
 #endif /* LeetCodeC_h */

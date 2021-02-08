@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8C0C003723614D5C007EA32E /* UIScrollView+ALKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0C003623614D5C007EA32E /* UIScrollView+ALKeyboard.swift */; };
+		8C4C2AE525D128B500968DA2 /* LeetCodeC2.c in Sources */ = {isa = PBXBuildFile; fileRef = 8C4C2AE425D128B500968DA2 /* LeetCodeC2.c */; };
 		8C61BCDA2305082D0011F8E5 /* CompileSourceParse.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C61BCD92305082D0011F8E5 /* CompileSourceParse.m */; };
 		8C61BCDD2305086F0011F8E5 /* sourceString1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8C61BCDC2305086F0011F8E5 /* sourceString1.txt */; };
 		8C61BCDF2305087F0011F8E5 /* sourceString2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8C61BCDE2305087F0011F8E5 /* sourceString2.txt */; };
@@ -105,6 +106,8 @@
 		8C39A03B235852EB006CC5DC /* en-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-HK"; path = "en-HK.lproj/Main.strings"; sourceTree = "<group>"; };
 		8C39A03C235852EB006CC5DC /* en-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-HK"; path = "en-HK.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		8C39A03D235852EB006CC5DC /* en-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-HK"; path = "en-HK.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		8C4C2AE325D128B500968DA2 /* LeetCodeC2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LeetCodeC2.h; sourceTree = "<group>"; };
+		8C4C2AE425D128B500968DA2 /* LeetCodeC2.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = LeetCodeC2.c; sourceTree = "<group>"; };
 		8C61BCD82305082D0011F8E5 /* CompileSourceParse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CompileSourceParse.h; sourceTree = "<group>"; };
 		8C61BCD92305082D0011F8E5 /* CompileSourceParse.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CompileSourceParse.m; sourceTree = "<group>"; };
 		8C61BCDC2305086F0011F8E5 /* sourceString1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = sourceString1.txt; sourceTree = "<group>"; };
@@ -413,6 +416,8 @@
 			children = (
 				8CF75FE822FBDD5F002E9CCE /* LeetCodeC.h */,
 				8CF75FE922FBDD5F002E9CCE /* LeetCodeC.c */,
+				8C4C2AE325D128B500968DA2 /* LeetCodeC2.h */,
+				8C4C2AE425D128B500968DA2 /* LeetCodeC2.c */,
 			);
 			path = LeetCodeC;
 			sourceTree = "<group>";
@@ -600,6 +605,7 @@
 				8C0C003723614D5C007EA32E /* UIScrollView+ALKeyboard.swift in Sources */,
 				8CE4570122D867B7002EA4CF /* NSObject+ALSwizzing.m in Sources */,
 				8CC2069A23FA489F00AD3E2E /* ALLabelCollectionView.m in Sources */,
+				8C4C2AE525D128B500968DA2 /* LeetCodeC2.c in Sources */,
 				8CE4570D22D86856002EA4CF /* UIViewController+AZLTopController.m in Sources */,
 				8CE4570522D867CD002EA4CF /* UIView+ALInController.m in Sources */,
 				8CC0ABB622BCBBAD001BB84D /* main.m in Sources */,

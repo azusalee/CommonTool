@@ -762,7 +762,7 @@ int minCut(char * s){
 
     int f[n];
     for (int i = 0; i < n; ++i) {
-        f[i] = INT_MAX;
+        f[i] = INTMAX_MAX;
     }
     for (int i = 0; i < n; ++i) {
         if (g[0][i]) {
@@ -916,4 +916,230 @@ int calculateHelper(char * s, int *i){
 int calculate(char * s){
     int i = 0;
     return calculateHelper(s, &i);
+}
+
+
+int calculate2(char * s){
+
+    long result = 0;
+    long num = 0;
+    long mutNum = 1;
+    int isMut = 1;
+    int isPlus = 1;
+    
+    int i = 0;
+    while (s[i] != 0) {
+        if (s[i] >= '0' && s[i] <= '9') {
+            num = num*10+s[i]-'0';
+        }else if (s[i] != ' '){
+            if (isMut == 1) {
+                mutNum *= num;
+            }else{
+                mutNum /= num;
+            }
+            num = 0;
+            if (s[i] == '/') {
+                isMut = 0;
+            }else{
+                isMut = 1;
+                if (s[i] != '*') {
+                    if (isPlus == 1) {
+                        result += mutNum;
+                    }else{
+                        result -= mutNum;
+                    }
+                    mutNum = 1;
+                    if (s[i] == '+') {
+                        isPlus = 1;
+                    }else{
+                        isPlus = 0;
+                    }
+                }
+            }
+        }
+        ++i;
+    }
+    
+    if (isMut == 1) {
+        mutNum *= num;
+    }else{
+        mutNum /= num;
+    }
+    num = 0;
+    isMut = 1;
+    if (isPlus == 1) {
+        result += mutNum;
+    }else{
+        result -= mutNum;
+    }
+    
+    return result;
+}
+
+bool isValidSerialization(char * preorder){
+    // #的数量为n, 那么有值的节点为n-1，','的数量为2(n-1)
+    int i = 0;
+    int countnull = -2;
+    int countPoint = 0;
+    while (preorder[i] != 0) {
+        if (preorder[i] == ',') {
+            countPoint += 1;
+        }else if (preorder[i] == '#'){
+            countnull += 2;
+            if (countnull > countPoint || (countnull == countPoint && preorder[i+1] != 0)) {
+                return false;
+            }
+        }
+        ++i;
+    }
+    return countnull == countPoint;
+}
+
+int* nextGreaterElements(int* nums, int numsSize, int* returnSize){
+    *returnSize = numsSize;
+    if (numsSize == 0) {
+        return NULL;
+    }
+    int* ret = malloc(sizeof(int) * numsSize);
+    memset(ret, -1, sizeof(int) * numsSize);
+
+    int stk[numsSize * 2 - 1], top = 0;
+    for (int i = 0; i < numsSize * 2 - 1; i++) {
+        while (top > 0 && nums[stk[top - 1]] < nums[i % numsSize]) {
+            ret[stk[top - 1]] = nums[i % numsSize];
+            top--;
+        }
+        stk[top++] = i % numsSize;
+    }
+    return ret;
+
+}
+
+int largestNumberCmp(char** a, char** b) {
+    int i = 0;
+    int j = 0;
+    // str1 a+b
+    // str2 b+a
+    char *a1 = *a;
+    char *b1 = *b;
+    
+    while (a1[i] != 0 || b1[j] != 0) {
+        if (a1[i] == 0) {
+            a1 = *b;
+            i = 0;
+        }else if (b1[j] == 0) {
+            b1 = *a;
+            j = 0;
+        }
+        if (a1[i] == b1[j]) {
+            
+        }else if (a1[i] > b1[j]){
+            return -1;
+        }else{
+            return 1;
+        }
+        ++i;
+        ++j;
+    }
+    return 0;
+}
+
+char * largestNumber(int* nums, int numsSize){
+    char ** numStrs = malloc(sizeof(char*)*numsSize);
+    int maxNum = 0;
+    int maxLength = 1;
+    for (int i = 0; i < numsSize; ++i) {
+        numStrs[i] = malloc(sizeof(char)*11);
+        int num = nums[i];
+        if (num > maxNum) {
+            maxNum = num;
+        }
+        int index = 0;
+        while (num > 9) {
+            int last = num%10;
+            num /= 10;
+            numStrs[i][index++] = last+'0';
+        }
+        numStrs[i][index] = num+'0';
+        numStrs[i][index+1] = '\0';
+        maxLength += index+1;
+        int left = 0;
+        while (left < index) {
+            char tmp = numStrs[i][left];
+            numStrs[i][left] = numStrs[i][index];
+            numStrs[i][index] = tmp;
+            ++left;
+            --index;
+        }
+    }
+    if (maxNum == 0) {
+        char *result = malloc(sizeof(char)*2);
+        result[0] = '0';
+        result[1] = '\0';
+        return result;
+    }
+    
+    qsort(numStrs, numsSize, sizeof(char*), largestNumberCmp);
+    
+    char *result = malloc(sizeof(char)*maxLength);
+    int index = 0;
+    for (int i = 0; i < numsSize; ++i) {
+        int j = 0;
+        while (numStrs[i][j] != '\0') {
+            result[index++] = numStrs[i][j++];
+        }
+        free(numStrs[i]);
+    }
+    free(numStrs);
+    result[index] = '\0';
+    return result;
+}
+
+/*
+ 群友面试题，计算删除所有卡片所需的最小花费,
+ 有n张卡, 每张卡标有1~n的唯一数字，
+ 只能删最顶端的卡片，
+ 移动卡只能从顶部移到底部或底部移到顶部，
+ 每次移动需要花费卡片上的值
+*/
+int moveCardMinCost(int *nums, int numSize) {
+    // 只有两种操作，从左开始(顶部)或从右开始(底部)
+    // 每次删除后，剩余数组都是一样的，即删除值左边的值都会移到右边(可以看作环形循环)
+    // 那么只需思考每次删除的最小cost即可
+    int totalCost = numSize*(numSize+1)/2; // 所有卡变加起来的数值
+    int cost = 0; // 单次删除cost
+    int result = 0; // 最终结果
+    int j = 0;
+    
+    /*
+    每次删除的的时间复杂度为O(n)
+    要删n个数，所以时间复杂度O(n^2)
+    空间复杂度为O(1)
+     */
+    // 1~n-1，从小到大删除(只剩n的情况下，只有一个数，不用对比，可以跳过)
+    for (int i = 1; i < numSize; ++i) {
+        cost = 0;
+        // 从左历遍
+        while (1) {
+            // 环形
+            if (j == numSize) j = 0;
+            if (nums[j] < i) {
+                // 跳过已经被删除的值
+                ++j;
+                continue;
+            }
+            if (nums[j] == i) {
+                // 总值减去一边值，得到另一边的值，取值较小的一边
+                if (totalCost-cost < cost) {
+                    cost = totalCost-cost;
+                }
+                totalCost -= i;
+                result += cost;
+                break;
+            }
+            cost += nums[j];
+            ++j;
+        }
+    }
+    return result;
 }

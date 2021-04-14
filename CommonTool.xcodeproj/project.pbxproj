@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		8C0C003723614D5C007EA32E /* UIScrollView+ALKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0C003623614D5C007EA32E /* UIScrollView+ALKeyboard.swift */; };
-		8C4C2AE525D128B500968DA2 /* LeetCodeC2.c in Sources */ = {isa = PBXBuildFile; fileRef = 8C4C2AE425D128B500968DA2 /* LeetCodeC2.c */; };
 		8C61BCDA2305082D0011F8E5 /* CompileSourceParse.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C61BCD92305082D0011F8E5 /* CompileSourceParse.m */; };
 		8C61BCDD2305086F0011F8E5 /* sourceString1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8C61BCDC2305086F0011F8E5 /* sourceString1.txt */; };
 		8C61BCDF2305087F0011F8E5 /* sourceString2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8C61BCDE2305087F0011F8E5 /* sourceString2.txt */; };
@@ -605,7 +604,6 @@
 				8C0C003723614D5C007EA32E /* UIScrollView+ALKeyboard.swift in Sources */,
 				8CE4570122D867B7002EA4CF /* NSObject+ALSwizzing.m in Sources */,
 				8CC2069A23FA489F00AD3E2E /* ALLabelCollectionView.m in Sources */,
-				8C4C2AE525D128B500968DA2 /* LeetCodeC2.c in Sources */,
 				8CE4570D22D86856002EA4CF /* UIViewController+AZLTopController.m in Sources */,
 				8CE4570522D867CD002EA4CF /* UIView+ALInController.m in Sources */,
 				8CC0ABB622BCBBAD001BB84D /* main.m in Sources */,

@@ -13,6 +13,7 @@
 #import "ALLabelCollectionDemoViewController.h"
 #import <CommonToolExtend/CommonToolExtend.h>
 
+
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
 @property (weak, nonatomic) IBOutlet UITextField *lat1TextField;
@@ -27,6 +28,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+  
+    
 //    int b = 100;
 //    int a = -(b < 128);
 //    printf("%d", a);

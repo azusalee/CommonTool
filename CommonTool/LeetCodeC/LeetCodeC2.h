@@ -65,4 +65,7 @@ int maxEnvelopes(int** envelopes, int envelopesSize, int* envelopesColSize);
 // 132. 分割回文串 II
 int minCut(char * s);
 
+// 179. 最大数
+char * largestNumber(int* nums, int numsSize);
+
 #endif /* LeetCodeC2_h */

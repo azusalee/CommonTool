@@ -13,6 +13,7 @@
 		8C61BCDF2305087F0011F8E5 /* sourceString2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8C61BCDE2305087F0011F8E5 /* sourceString2.txt */; };
 		8C6508CA239662C700484C1C /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C6508C9239662C700484C1C /* NotificationService.m */; };
 		8C6508CE239662C700484C1C /* notification.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 8C6508C6239662C700484C1C /* notification.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		8C6AB19E2626C7B400043B18 /* LeetCodeC2.c in Sources */ = {isa = PBXBuildFile; fileRef = 8C4C2AE425D128B500968DA2 /* LeetCodeC2.c */; };
 		8C6D795723570E09004FFF4A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8C6D795523570E09004FFF4A /* Localizable.strings */; };
 		8CA036262362D946007FAEB2 /* CommonToolTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CA036252362D946007FAEB2 /* CommonToolTests.m */; };
 		8CC0ABA822BCBBAB001BB84D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC0ABA722BCBBAB001BB84D /* AppDelegate.m */; };
@@ -604,6 +605,7 @@
 				8C0C003723614D5C007EA32E /* UIScrollView+ALKeyboard.swift in Sources */,
 				8CE4570122D867B7002EA4CF /* NSObject+ALSwizzing.m in Sources */,
 				8CC2069A23FA489F00AD3E2E /* ALLabelCollectionView.m in Sources */,
+				8C6AB19E2626C7B400043B18 /* LeetCodeC2.c in Sources */,
 				8CE4570D22D86856002EA4CF /* UIViewController+AZLTopController.m in Sources */,
 				8CE4570522D867CD002EA4CF /* UIView+ALInController.m in Sources */,
 				8CC0ABB622BCBBAD001BB84D /* main.m in Sources */,

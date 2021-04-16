@@ -1143,3 +1143,36 @@ int moveCardMinCost(int *nums, int numSize) {
     }
     return result;
 }
+
+typedef struct Trie {
+    struct Trie* children[26];
+    bool isEnd;
+} Trie;
+
+/** Initialize your data structure here. */
+
+Trie* trieCreate() {
+    struct Trie* obj = malloc(sizeof(struct Trie));
+    //obj->children = malloc(sizeof(<#expression-or-type#>))
+    obj->isEnd = false;
+    return obj;
+}
+
+/** Inserts a word into the trie. */
+void trieInsert(Trie* obj, char * word) {
+  
+}
+
+/** Returns if the word is in the trie. */
+bool trieSearch(Trie* obj, char * word) {
+  
+}
+
+/** Returns if there is any word in the trie that starts with the given prefix. */
+bool trieStartsWith(Trie* obj, char * prefix) {
+  
+}
+
+void trieFree(Trie* obj) {
+    
+}

@@ -1176,3 +1176,236 @@ bool trieStartsWith(Trie* obj, char * prefix) {
 void trieFree(Trie* obj) {
     
 }
+
+// 377. 组合总和 Ⅳ
+int combinationSum4Helper(int* nums, int numsSize, int target, int* cache){
+    if (target == 0) return 1;
+    if (cache[target] != -1) {
+        // 由于会把计算过的taret缓存，所以递归最多不会超过target次(有些target可能不用计算，所以有少于target次的可能)
+        return cache[target];
+    }
+    
+    int count = 0;
+    for (int i = 0; i < numsSize; ++i) {
+//        if (nums[i] > target) {
+//            break;
+//        }
+        if (nums[i] <= target) {
+            count += combinationSum4Helper(nums, numsSize, target-nums[i], cache);
+        }
+    }
+    // 缓存各个target的组合数
+    cache[target] = count;
+    
+    return count;
+}
+
+int combinationSum4(int* nums, int numsSize, int target){
+    int cache[target+1];
+    for (int i = 1; i <= target; ++i) {
+        cache[i] = -1;
+    }
+    // nlog(n)
+    //qsort(nums, numsSize, sizeof(int), compare);
+    
+    // target*n(最坏情况)
+    return combinationSum4Helper(nums, numsSize, target, cache);
+}
+
+// 1011. 在 D 天内送达包裹的能力
+int shipWithinDays(int* weights, int weightsSize, int D){
+    // 题目的意思: 把数组按顺序分割成D组，让各组的合计值的最大值尽量小, 输出这个最小值
+    // C(D, size)种分割方法
+    // 暴力法，把所有可能的分割方法历遍(超时)
+//    if (weightsSize == 0) {
+//        return 0;
+//    }
+//    if (D == 1) {
+//        int cost = 0;
+//        for (int i = 0; i < weightsSize; ++i) {
+//            cost += weights[i];
+//        }
+//        return cost;
+//    }
+//    int cost = 0;
+//    int minMaxCost = 50000000;
+//    for (int i = 0; i < weightsSize; ++i) {
+//        cost += weights[i];
+//        int maxCost = cost;
+//        int nextCost = shipWithinDays(weights+i+1, weightsSize-i-1, D-1);
+//        if (nextCost > maxCost) {
+//            maxCost = nextCost;
+//        }
+//        if (minMaxCost > maxCost) {
+//            minMaxCost = maxCost;
+//        }
+//    }
+//    
+//    return minMaxCost;
+
+    // 二分
+    int left = 0, right = 0;
+    for (int i = 0; i < weightsSize; i++) {
+        left = fmax(left, weights[i]);
+        right += weights[i];
+    }
+    
+    while (left < right) {
+        int mid = (left + right) / 2;
+        // need 为需要运送的天数
+        // cur 为当前这一天已经运送的包裹重量之和
+        int need = 1, cur = 0;
+        for (int i = 0; i < weightsSize; i++) {
+            if (cur + weights[i] > mid) {
+                ++need;
+                cur = 0;
+            }
+            cur += weights[i];
+        }
+        if (need <= D) {
+            // 需要日数少于D, 可以降低运输能力
+            right = mid;
+        } else {
+            // 需要日数大于D, 要增加运输能力
+            left = mid + 1;
+        }
+    }
+    return left;
+
+}
+
+//bool canCrossHelper(int* stones, int stonesSize, int jump, int now){
+//    if (stonesSize == 0) return true;
+//    //[1,2,2,1,2,4,5]
+//    //[1,1,1,1,4,1,2]
+//    //
+//    int i = 0;
+//    while (i < stonesSize) {
+//        if (stones[i] > jump+1+now) {
+//            return false;
+//        }
+//        for (int j = jump+1; j >= jump-1; --j) {
+//            if (stones[i] == j+now) {
+//                bool flag = canCrossHelper(stones+i+1, stonesSize-i-1, j, stones[i]);
+//                if (flag == true) {
+//                    return true;
+//                }
+//            }
+//        }
+//        ++i;
+//    }
+//    return false;
+//}
+
+// 403. 青蛙过河
+bool canCross(int* stones, int stonesSize){
+    // 动态规划(O(n^2))
+    int dp[stonesSize][stonesSize];
+    memset(dp, 0, sizeof(dp));
+    dp[0][0] = true;
+    // 0 1 3 6 10 15
+    for (int i = 1; i < stonesSize; ++i) {
+        if (stones[i] - stones[i - 1] > i) {
+            return false;
+        }
+    }
+    for (int i = 1; i < stonesSize; ++i) {
+        for (int j = i - 1; j >= 0; --j) {
+            int k = stones[i] - stones[j];
+            if (k > j + 1) {
+                break;
+            }
+            dp[i][k] = dp[j][k - 1] || dp[j][k] || dp[j][k + 1];
+            if (i == stonesSize - 1 && dp[i][k]) {
+                return true;
+            }
+        }
+    }
+    return false;
+    
+//    // 暴力递归(超时，指数级复杂度)
+//    if (stones[1] != 1) return false;
+//    int jump = 1;
+//    return canCrossHelper(stones+2, stonesSize-2, jump, 1);
+}
+
+// 368. 最大整除子集
+int* largestDivisibleSubset(int* nums, int numsSize, int* returnSize){
+    int len = numsSize;
+    qsort(nums, numsSize, sizeof(int), compare);
+    
+    
+    // 第 1 步：动态规划找出最大子集的个数、最大子集中的最大整数
+    int dp[len];
+    for (int i = 0; i < len; i++) {
+        dp[i] = 1;
+    }
+    int maxSize = 1;
+    int maxVal = dp[0];
+    for (int i = 1; i < len; i++) {
+        for (int j = 0; j < i; j++) {
+            // 题目中说「没有重复元素」很重要
+            if (nums[i] % nums[j] == 0) {
+                dp[i] = fmax(dp[i], dp[j] + 1);
+            }
+        }
+
+        if (dp[i] > maxSize) {
+            maxSize = dp[i];
+            maxVal = nums[i];
+        }
+    }
+
+    // 第 2 步：倒推获得最大子集
+    int* res = malloc(sizeof(int) * len);
+    *returnSize = 0;
+    if (maxSize == 1) {
+        res[(*returnSize)++] = nums[0];
+        return res;
+    }
+
+    for (int i = len - 1; i >= 0 && maxSize > 0; i--) {
+        if (dp[i] == maxSize && maxVal % nums[i] == 0) {
+            res[(*returnSize)++] = nums[i];
+            maxVal = nums[i];
+            maxSize--;
+        }
+    }
+    return res;
+
+}
+
+// 363. 矩形区域不超过 K 的最大数值和
+int maxSumSubmatrix(int** matrix, int matrixSize, int* matrixColSize, int k){
+    // 共m^2*n^2种组合，暴力法就是m^2*n^2的复杂度
+    int cSize = matrixColSize[0];
+    int rSize = matrixSize;
+    
+    int result = -1000000;
+    
+    int csizes[rSize][cSize];
+    // csizes[r][m][n] = csizes[r][n]-csizes[r][m-1]
+    for (int i = 0; i < rSize; ++i) {
+        csizes[i][0] = matrix[i][0];
+        for (int j = 1; j < cSize; ++j) {
+            csizes[i][j] = csizes[i][j-1]+matrix[i][j];
+        }
+    }
+    
+    for (int c1 = 0; c1 < cSize; ++c1) {
+        for (int c2 = c1; c2 < cSize; ++c2) {
+            for (int r1 = 0; r1 < rSize; ++r1) {
+                int tmp = 0;
+                for (int r2 = r1; r2 < rSize; ++r2) {
+                    tmp += csizes[r2][c2];
+                    if (c1 > 0) tmp -= csizes[r2][c1-1];
+                    if (tmp == k) return k;
+                    if (tmp < k && tmp > result) result = tmp;
+                    
+                }
+            }
+        }
+    }
+    
+    return result;
+}

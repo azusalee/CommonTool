@@ -1409,3 +1409,172 @@ int maxSumSubmatrix(int** matrix, int matrixSize, int* matrixColSize, int k){
     
     return result;
 }
+
+// 91. 解码方法
+int numDecodingsHelper(char * s, int index, int *table){
+    if (s[index] == '0') return 0;
+    if (s[index] == 0) return 1;
+    if (table[index] != -1) return table[index];
+    
+    int count = numDecodingsHelper(s, index+1, table);
+    if (s[index+1] != 0 && (s[index] == '1' || (s[index] == '2' && s[index+1] < '7'))) {
+        count += numDecodingsHelper(s, index+2, table);
+    }
+    table[index] = count;
+    
+    return count;
+}
+
+int numDecodings(char * s){
+    int length = strlen(s);
+    int *table = malloc(sizeof(int)*length);
+    for (int i = 0; i < length; ++i) {
+        table[i] = -1;
+    }
+    int result = numDecodingsHelper(s, 0, table);
+    free(table);
+    return result;
+    
+    // s[i] = s[i-1]+s[i-2]
+}
+
+// 1486. 数组异或操作
+// 模拟O(n)
+//int xorOperation(int n, int start){
+//    int result = 0;
+//    for (int i = 0; i < n; ++i) {
+//        result = result^(start+2*i);
+//    }
+//    return result;
+//}
+// 数学O(1)
+int sumXor(int x) {
+    if (x % 4 == 0) {
+        return x;
+    }
+    if (x % 4 == 1) {
+        return 1;
+    }
+    if (x % 4 == 2) {
+        return x + 1;
+    }
+    return 0;
+}
+
+int xorOperation(int n, int start) {
+    //4i⊕(4i+1)⊕(4i+2)⊕(4i+3)=0
+    // 2*i+start
+    
+    int s = start >> 1, e = n & start & 1;
+    int ret = sumXor(s - 1) ^ sumXor(s + n - 1);
+    return ret << 1 | e;
+}
+
+// 1720. 解码异或后的数组
+int* decode(int* encoded, int encodedSize, int first, int* returnSize){
+    
+    *returnSize = encodedSize+1;
+    
+    int *result = malloc(sizeof(int)*(encodedSize+1));
+    // result[i]^result[i+1] = encoded[i]
+    result[0] = first;
+    for (int i = 1; i < *returnSize; ++i) {
+        result[i] = encoded[i-1]^result[i-1];
+    }
+    
+    return result;
+}
+
+// 740. 删除并获得点数
+int deleteAndEarn(int* nums, int numsSize){
+    qsort(nums, numsSize, sizeof(*nums), compare);
+    /*
+    f(4) = max(f(2), f(1))
+    f(3) = max(f(1), f(0))
+    f(n) = max(f(n-2), f(n-3))
+     */
+     
+    int maxValue = nums[numsSize-1];
+    int f[maxValue+1];
+    memset(f, 0, sizeof(int)*(maxValue+1)); 
+    int lastValue = nums[0];
+    int i = 0;
+    while (i < numsSize) {
+        if (nums[i] == lastValue) {
+            f[nums[i]] += nums[i];
+            ++i;
+        }else if (nums[i] == lastValue+1){
+            if (nums[i] > 2) {
+                f[nums[i]] = fmax(f[nums[i]-2], f[nums[i]-3]);
+            }
+            lastValue = nums[i];
+        }else{
+            f[nums[i]] = fmax(f[lastValue], f[lastValue-1]);
+            if (nums[i] == lastValue+2 && lastValue > 2) {
+                f[lastValue+1] = fmax(f[lastValue-1], f[lastValue-2]);
+            }else{
+                f[nums[i]-1] = f[nums[i]]; 
+            }
+            
+            lastValue = nums[i];
+        }
+    }
+    return fmax(f[maxValue], f[maxValue-1]);
+}
+
+// 1723. 完成所有工作的最短时间
+bool backtrack(int* jobs, int jobsSize, int* workloads, int workloadsSize, int idx, int limit) {
+    if (idx >= jobsSize) {
+        return true;
+    }
+    int cur = jobs[idx];
+    for (int i = 0; i < workloadsSize; i++) {
+        if (workloads[i] + cur <= limit) {
+            workloads[i] += cur;
+            if (backtrack(jobs, jobsSize, workloads, workloadsSize, idx + 1, limit)) {
+                return true;
+            }
+            workloads[i] -= cur;
+        }
+        // 如果当前工人未被分配工作，那么下一个工人也必然未被分配工作
+        // 或者当前工作恰能使该工人的工作量达到了上限
+        // 这两种情况下我们无需尝试继续分配工作
+        if (workloads[i] == 0 || workloads[i] + cur == limit) {
+            break;
+        }
+    }
+    return false;
+}
+
+bool check(int* jobs, int jobsSize, int k, int limit) {
+    int workloads[k];
+    memset(workloads, 0, sizeof(workloads));
+    return backtrack(jobs, jobsSize, workloads, k, 0, limit);
+}
+
+int cmp(int* a, int* b) {
+    return *b - *a;
+}
+
+int accumulate(int* arr, int* arrSize) {
+    int ret = 0;
+    for (int i = 0; i < arrSize; i++) {
+        ret += arr[i];
+    }
+    return ret;
+}
+
+int minimumTimeRequired(int* jobs, int jobsSize, int k) {
+    qsort(jobs, jobsSize, sizeof(int), cmp);
+    int l = jobs[0], r = accumulate(jobs, jobsSize);
+    while (l < r) {
+        int mid = (l + r) >> 1;
+        if (check(jobs, jobsSize, k, mid)) {
+            r = mid;
+        } else {
+            l = mid + 1;
+        }
+    }
+    return l;
+}
+

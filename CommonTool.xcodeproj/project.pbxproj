@@ -30,6 +30,7 @@
 		8CC206A923FA688D00AD3E2E /* ALLabelCollectionDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CC206A723FA688D00AD3E2E /* ALLabelCollectionDemoViewController.xib */; };
 		8CC206AD23FA6E4000AD3E2E /* ALPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC206AC23FA6E4000AD3E2E /* ALPageViewController.m */; };
 		8CC206B123FA6E5900AD3E2E /* ALControllerCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC206B023FA6E5900AD3E2E /* ALControllerCollectionViewCell.m */; };
+		8CDDBFBA26468A1F00D1000C /* leetCodeSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDDBFB926468A1F00D1000C /* leetCodeSwift.swift */; };
 		8CE4570122D867B7002EA4CF /* NSObject+ALSwizzing.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE4570022D867B7002EA4CF /* NSObject+ALSwizzing.m */; };
 		8CE4570522D867CD002EA4CF /* UIView+ALInController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE4570322D867CD002EA4CF /* UIView+ALInController.m */; };
 		8CE4570922D867E5002EA4CF /* NSString+ALHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE4570722D867E5002EA4CF /* NSString+ALHelper.m */; };
@@ -147,6 +148,7 @@
 		8CC206AC23FA6E4000AD3E2E /* ALPageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ALPageViewController.m; sourceTree = "<group>"; };
 		8CC206AF23FA6E5900AD3E2E /* ALControllerCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ALControllerCollectionViewCell.h; sourceTree = "<group>"; };
 		8CC206B023FA6E5900AD3E2E /* ALControllerCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ALControllerCollectionViewCell.m; sourceTree = "<group>"; };
+		8CDDBFB926468A1F00D1000C /* leetCodeSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = leetCodeSwift.swift; sourceTree = "<group>"; };
 		8CE456FF22D867B7002EA4CF /* NSObject+ALSwizzing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ALSwizzing.h"; sourceTree = "<group>"; };
 		8CE4570022D867B7002EA4CF /* NSObject+ALSwizzing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ALSwizzing.m"; sourceTree = "<group>"; };
 		8CE4570322D867CD002EA4CF /* UIView+ALInController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ALInController.m"; sourceTree = "<group>"; };
@@ -418,6 +420,7 @@
 				8CF75FE922FBDD5F002E9CCE /* LeetCodeC.c */,
 				8C4C2AE325D128B500968DA2 /* LeetCodeC2.h */,
 				8C4C2AE425D128B500968DA2 /* LeetCodeC2.c */,
+				8CDDBFB926468A1F00D1000C /* leetCodeSwift.swift */,
 			);
 			path = LeetCodeC;
 			sourceTree = "<group>";
@@ -617,6 +620,7 @@
 				8CC0ABA822BCBBAB001BB84D /* AppDelegate.m in Sources */,
 				8CC206A823FA688D00AD3E2E /* ALLabelCollectionDemoViewController.m in Sources */,
 				8CC206B123FA6E5900AD3E2E /* ALControllerCollectionViewCell.m in Sources */,
+				8CDDBFBA26468A1F00D1000C /* leetCodeSwift.swift in Sources */,
 				8CF75FEA22FBDD5F002E9CCE /* LeetCodeC.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

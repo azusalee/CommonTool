@@ -1578,3 +1578,380 @@ int minimumTimeRequired(int* jobs, int jobsSize, int k) {
     return l;
 }
 
+int leastBricks(int** wall, int wallSize, int* wallColSize){
+    /*
+    -- ---- ---- --
+    ------ -- ---- 
+    -- ------ ---- 
+    -- ----  
+     */
+    return 0;
+}
+
+// 1482. 制作 m 束花所需的最少天数
+// 递归历遍 超时
+//int minDaysHelper(int* bloomDay, int bloomDaySize, int m, int k, int offset, int *maxDayTable) {
+//    if (m == 0) return 0;
+//    if (bloomDaySize-offset < m*k) return -1;
+//    
+//    int minDay = 1000000000;
+//    for (int i = k+offset; i <= bloomDaySize; ++i) {
+//        int day = maxDayTable[i-k];
+//        int nextDay = minDaysHelper(bloomDay, bloomDaySize, m-1, k, i, maxDayTable);
+//        if (nextDay == -1) break;
+//        
+//        day = fmax(day, nextDay);
+//        if (minDay > day) minDay = day;
+//    }
+//    
+//    return minDay;
+//}
+//
+//int minDays(int* bloomDay, int bloomDaySize, int m, int k){
+//    if (bloomDaySize < m*k) return -1;
+//    
+//    int maxDayTable[bloomDaySize];
+//    memset(maxDayTable, 0, sizeof(int)*bloomDaySize);
+//    for (int i = k; i <= bloomDaySize; ++i) {
+//        int day = 0;
+//        if (i > k && maxDayTable[i-k-1] <= bloomDay[i-1]) {
+//            maxDayTable[i-k] = bloomDay[i-1];
+//        }else{
+//            for (int j = i-k; j < i; ++j) {
+//                if (bloomDay[j] > day) {
+//                    day = bloomDay[j];
+//                }
+//            }
+//            maxDayTable[i-k] = day;
+//        }
+//    }
+//    return minDaysHelper(bloomDay, bloomDaySize, m, k, 0, maxDayTable);
+//}
+
+// 二分
+bool canMake(int* bloomDay, int bloomDaySize, int days, int m, int k) {
+    int bouquets = 0;
+    int flowers = 0;
+    int length = bloomDaySize;
+    for (int i = 0; i < length && bouquets < m; i++) {
+        if (bloomDay[i] <= days) {
+            flowers++;
+            if (flowers == k) {
+                bouquets++;
+                flowers = 0;
+            }
+        } else {
+            flowers = 0;
+        }
+    }
+    return bouquets >= m;
+}
+
+int minDays(int* bloomDay, int bloomDaySize, int m, int k) {
+    if (m > bloomDaySize / k) {
+        return -1;
+    }
+    int low = INT_MAX, high = 0;
+    for (int i = 0; i < bloomDaySize; i++) {
+        low = fmin(low, bloomDay[i]);
+        high = fmax(high, bloomDay[i]);
+    }
+    while (low < high) {
+        int days = (high - low) / 2 + low;
+        if (canMake(bloomDay, bloomDaySize, days, m, k)) {
+            high = days;
+        } else {
+            low = days + 1;
+        }
+    }
+    return low;
+}
+
+
+// 1310. 子数组异或查询
+int* xorQueries(int* arr, int arrSize, int** queries, int queriesSize, int* queriesColSize, int* returnSize){
+//    int *result = malloc(sizeof(int)*queriesSize);
+//    memset(result, 0, sizeof(int)*queriesSize);
+//    *returnSize = queriesSize;
+//    // 模拟(超时)
+//    for (int i = 0; i < queriesSize; ++i) {
+//        for (int j = queries[i][0]; j <= queries[i][1]; ++j) {
+//            result[i] ^= arr[j];
+//        }
+//    }
+//    return result;
+    /*
+    l<r, 
+    q(l, r) = q(l, r-1)^arr(r)
+     */
+    int n = arrSize;
+    int xors[n + 1];
+    xors[0] = 0;
+    for (int i = 0; i < n; i++) {
+        xors[i + 1] = xors[i] ^ arr[i];
+    }
+    int m = queriesSize;
+    int* ans = malloc(sizeof(int) * m);
+    *returnSize = m;
+    for (int i = 0; i < m; i++) {
+        ans[i] = xors[queries[i][0]] ^ xors[queries[i][1] + 1];
+    }
+    return ans;
+
+}
+
+// 1738. 找出第 K 大的异或坐标值
+int Partition(int* arr,int low ,int high)
+{
+    int temp = arr[low];
+    while(low < high)
+    {
+        while(low < high && arr[high] >= temp)
+            high--;
+        arr[low] = arr[high];
+        while(low < high && arr[low] <= temp)
+            low++;
+        arr[high] = arr[low];
+    }
+    arr[low] = temp;//确定参考元素的位置
+    return low;
+}
+
+int KthElement(int * arr,int low, int high,int n ,int k)
+{
+    if(low >= high)//边界条件和特殊输入的处理
+        return arr[high];
+    int pos = Partition(arr,low,high);
+    while(pos != n - k)
+    {
+        if(pos > n - k)
+        {
+            high = pos - 1;
+            pos = Partition(arr,low,high);
+        }else{
+            low = pos + 1;
+            pos = Partition(arr,low,high);
+        }
+    }
+    return arr[pos];
+ 
+}
+
+int kthLargestValue(int** matrix, int matrixSize, int* matrixColSize, int k){
+    // f(i,j) = f(i-1,j)^f(i,j-1)^f(i-1,j-1)^m(i,j)
+    int r = matrixSize;
+    int c = matrixColSize[0];
+    int *numArr = malloc(sizeof(int)*r*c);
+    int index = 0;
+    for (int i = 0; i < r; ++i) {
+        for (int j = 0; j < c; ++j) {
+            if (i > 0 && j > 0) {
+                matrix[i][j] = matrix[i-1][j]^matrix[i][j-1]^matrix[i-1][j-1]^matrix[i][j];
+            }else if (i > 0) {
+                matrix[i][j] = matrix[i-1][j]^matrix[i][j];
+            }else if (j > 0){
+                matrix[i][j] = matrix[i][j-1]^matrix[i][j];
+            }
+            numArr[index++] = matrix[i][j];
+        }
+    }
+    
+    int result = KthElement(numArr, 0, index-1, index, k);
+    free(numArr);
+    
+    return result;
+}
+
+
+//int cmp(int* a, int* b) {
+//    return *b - *a;
+//}
+//
+//int kthLargestValue(int** matrix, int matrixSize, int* matrixColSize, int k) {
+//    int m = matrixSize, n = matrixColSize[0];
+//    int pre[m + 1][n + 1];
+//    memset(pre, 0, sizeof(pre));
+//    int results[m * n], resultsSize = 0;
+//    for (int i = 1; i <= m; ++i) {
+//        for (int j = 1; j <= n; ++j) {
+//            pre[i][j] = pre[i - 1][j] ^ pre[i][j - 1] ^ pre[i - 1][j - 1] ^ matrix[i - 1][j - 1];
+//            results[resultsSize++] = pre[i][j];
+//        }
+//    }
+//
+//    qsort(results, resultsSize, sizeof(int), cmp);
+//    return results[k - 1];
+//}
+
+// 1442. 形成两个异或相等数组的三元组数目
+int countTriplets(int* arr, int arrSize){
+    // f(j-1)^f(i-1) == f(k)^f(j-1) i<j<=k
+    // f(i-1) == f(k) k-i个
+    for (int i = 1; i < arrSize; ++i) {
+        arr[i] ^= arr[i-1];
+    }
+    int result = 0;
+    for (int k = 1; k < arrSize; ++k) {
+        if (arr[k] == 0) {
+            result += k;
+        }
+    }
+    for (int i = 1; i < arrSize; ++i) {
+        for (int k = i+1; k < arrSize; ++k) {
+            if (arr[i-1] == arr[k]) {
+                result += k-i;
+            }
+        }
+    }
+    return result;
+}
+
+// 1035. 不相交的线
+int maxUncrossedLines(int* nums1, int nums1Size, int* nums2, int nums2Size){
+    
+    int m = nums1Size, n = nums2Size;
+    int dp[m + 1][n + 1];
+    memset(dp, 0, sizeof(dp));
+    for (int i = 1; i <= m; i++) {
+        int num1 = nums1[i - 1];
+        for (int j = 1; j <= n; j++) {
+            int num2 = nums2[j - 1];
+            if (num1 == num2) {
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+            } else {
+                dp[i][j] = fmax(dp[i - 1][j], dp[i][j - 1]);
+            }
+        }
+    }
+    return dp[m][n];
+}
+
+// 664. 奇怪的打印机
+int strangePrinter(char * s){
+    // abcdefabcdef
+    
+    int n = strlen(s);
+    int f[n][n];
+    for (int i = n - 1; i >= 0; i--) {
+        f[i][i] = 1;
+        for (int j = i + 1; j < n; j++) {
+            if (s[i] == s[j]) {
+                f[i][j] = f[i][j - 1];
+            } else {
+                int minn = n;
+                for (int k = i; k < j; k++) {
+                    minn = fmin(minn, f[i][k] + f[k + 1][j]);
+                }
+                f[i][j] = minn;
+            }
+        }
+    }
+    return f[0][n - 1];
+
+}
+
+// 525. 连续数组
+int findMaxLength(int* nums, int numsSize){
+    /*
+    0 <= i < j < n
+    f[i][i] = 0
+    f[i][j] = f[i][j-1]
+    
+     */
+    int result = 0;
+    // 暴力法O(n^2)
+//    for (int i = 0; i < numsSize; ++i) {
+//    
+//        int count0 = 0;
+//        int count1 = 0;
+//        if (nums[i] == 0) {
+//            ++count0;
+//        }else{
+//            ++count1;
+//        }
+//        for (int j = i+1; j < numsSize; ++j) {
+//            if (nums[j] == 0) {
+//                ++count0;
+//            }else{
+//                ++count1;
+//            }
+//            if (count0 == count1 && count0 > result) {
+//                result = count0;
+//            }
+//        }
+//    }
+
+    /*
+    11110000111100001111
+    
+     */
+    // hash表记录前序O(n), O(n)
+    int tableSize = numsSize*2+1;
+    int table[tableSize];
+    for (int i = 0; i < tableSize; ++i) {
+        table[i] = -2;
+    }
+    int count = numsSize;
+    table[numsSize] = -1;
+    
+    int addNum[2] = {-1, 1};
+    for (int i = 0; i < numsSize; ++i) {
+        count += addNum[nums[i]];
+        if (table[count] != -2) {
+            result = fmax(result, i-table[count]);
+        }else{
+            table[count] = i;
+        }
+    }
+
+    return result;
+}
+
+bool* canEat(int* candiesCount, int candiesCountSize, int** queries, int queriesSize, int* queriesColSize, int* returnSize){
+    bool* result = malloc(sizeof(bool)*queriesSize);
+    *returnSize = queriesSize;
+    
+    long canSumCount[candiesCountSize+1];
+    canSumCount[0] = 0;
+    for (int i = 1; i <= candiesCountSize; ++i) {
+        canSumCount[i] = canSumCount[i-1]+candiesCount[i-1];
+    }
+    
+    for (int i = 0; i < queriesSize; ++i) {
+        int type = queries[i][0];
+        int day = queries[i][1];
+        int dayCap = queries[i][2];
+        
+        long canCount = canSumCount[type];
+        // day日内最多可以吃的糖果
+        long maxCap = (long)dayCap*(day+1);
+        // day日内最少吃day+1颗糖果
+        // 需要在day日内吃掉所有type前的糖果, 且day日前不能吃光所有type的糖果(每天吃1颗的情况下，不会吃光)
+        result[i] = (maxCap > canCount && day < canSumCount[type+1]);
+    }
+    
+    return result;
+}
+
+// 523. 连续的子数组和
+bool checkSubarraySum(int* nums, int numsSize, int k){
+    // k值很大，不能用数组代替
+    int hash[k];
+    
+    for (int i = 0; i < k; ++i) {
+        hash[i] = -2;
+    }
+    hash[0] = -1;
+    long sum = 0;
+    for (int i = 0; i < numsSize; ++i) {
+        sum += nums[i];
+        int num = sum%k;
+        if (hash[num] != -2 && i-hash[num] > 1){
+            return true;
+        }else if (hash[num] == -2) {
+            hash[num] = i;
+        }
+    }
+    
+    return false;
+}

@@ -1955,3 +1955,87 @@ bool checkSubarraySum(int* nums, int numsSize, int k){
     
     return false;
 }
+
+// 1711. 大餐计数
+struct HashTable {
+    int key, val;
+    UT_hash_handle hh;
+};
+
+const int MOD = 1000000007;
+//用哈希表做，以deliciousness的值为key，每个值出现的次数为value
+int countPairs(int* deliciousness, int deliciousnessSize) {
+    int maxVal = 0;
+    for (int i = 0; i < deliciousnessSize; i++) {
+        maxVal = fmax(maxVal, deliciousness[i]);
+    }
+    int maxSum = maxVal * 2;
+    int pairs = 0;
+    struct HashTable *hashTable = NULL, *tmp;
+    int n = deliciousnessSize;
+    for (int i = 0; i < deliciousnessSize; i++) {
+        int val = deliciousness[i];
+        for (int sum = 1; sum <= maxSum; sum <<= 1) {
+            int target = sum - val;
+            HASH_FIND_INT(hashTable, &target, tmp);
+            int count = tmp == NULL ? 0 : tmp->val;
+            pairs = (pairs + count) % MOD;
+        }
+        HASH_FIND_INT(hashTable, &val, tmp);
+        if (tmp == NULL) {
+            tmp = malloc(sizeof(struct HashTable));
+            tmp->key = val, tmp->val = 1;
+            HASH_ADD_INT(hashTable, key, tmp);
+        } else {
+            tmp->val++;
+        }
+    }
+    return pairs;
+}
+
+//bool searchIsIn(long value, long *list, int left, int right) {
+//    while (left <= right) {
+//        int center = (left+right)/2;
+//        if (list[center] == value) {
+//            return true;
+//        }else if (list[center] > value) {
+//            right = center-1;
+//        }else{
+//            left = center+1;
+//        }
+//    }
+//    return false;
+//}
+//
+//int countPairs(int* deliciousness, int deliciousnessSize){
+//    
+//
+//    /*
+//    
+//    O(n^2)，会超时
+//    1 <= deliciousness.length <= 10的5次方
+//    0 <= deliciousness[i] <= 2的20次方
+//    
+//    那么最大合计值为2的21次方，符合的值实际只用22种
+//     */
+//    long answerList[22] = {0};
+//    long answer = 1;
+//    answerList[0] = answer;
+//    for (int i = 1; i < 22; ++i) {
+//        answer *= 2;
+//        answerList[i] = answer;
+//    } 
+//    long count = 0;
+//    for (int i = 0; i < deliciousnessSize; ++i) {
+//        for (int j = i+1; j < deliciousnessSize; ++j) {
+//            long value = deliciousness[i]+deliciousness[j];
+//            if (value != 1 && value%2 == 1) {
+//                continue;
+//            }
+//            if (searchIsIn(value, answerList, 0, 21)) {
+//                ++count;
+//            }
+//        }
+//    }
+//    return count%1000000007;
+//}

@@ -68,4 +68,7 @@ int minCut(char * s);
 // 179. 最大数
 char * largestNumber(int* nums, int numsSize);
 
+// 1044. 最长重复子串
+char * longestDupSubstring(char * s);
+
 #endif /* LeetCodeC2_h */

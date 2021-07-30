@@ -100,3 +100,106 @@ extension Solution {
         return result
     }
 }
+
+
+class Solution {
+
+    func findInsertIndex(value:Int, dArray:[Int]) -> Int {
+        var left = 0
+        var right = dArray.count-1
+        while left < right {
+            let mid = (left+right)/2
+            if dArray[mid] < value {
+                left = mid+1
+            }else{
+                right = mid-1
+            }
+        }
+        if dArray[left] >= value  {
+            return left
+        }else{
+            return left+1
+        }
+    }
+
+    func minOperations(_ target: [Int], _ arr: [Int]) -> Int {
+        var targetIndex:[Int:Int] = [:]
+        var index = 0
+        for intValue in target {
+            targetIndex[intValue] = index
+            index += 1
+        }
+        var arrIndex:[Int] = []
+        for intValue in arr {
+            if let index = targetIndex[intValue] {
+                arrIndex.append(index)
+            }
+        }
+        
+        var dArray:[Int] = []
+        if arrIndex.count > 0 {
+            dArray.append(arrIndex[0])
+        }
+        var i = 1
+        while i < arrIndex.count {
+            let value = arrIndex[i]
+            if value > dArray.last! {
+                // 直接拼在后面
+                dArray.append(value)
+            }else{
+                // 找出不小于value的且最接近value的数(替换)
+                dArray[findInsertIndex(value: value, dArray: dArray)] = value
+            }
+            i += 1
+        }
+        
+        return target.count-dArray.count
+    }
+}
+
+
+class Solution {
+    func restoreArray(_ adjacentPairs: [[Int]]) -> [Int] {
+        var dict:[Int:[Int]] = [:]
+        for pair in adjacentPairs {
+            if dict[pair[0]] != nil {
+                dict[pair[0]]?.append(pair[1])
+            }else{
+                dict[pair[0]] = [pair[1]]
+            }
+            if dict[pair[1]] != nil {
+                dict[pair[1]]?.append(pair[0])
+            }else{
+                dict[pair[1]] = [pair[0]]
+            }
+        }
+        
+        var firstValue:Int = 0
+        for (key, array) in dict {
+            if array.count == 1 {
+                firstValue = key
+                break
+            }
+        }
+        
+        var result:[Int] = [firstValue]
+        var preValue:Int? = firstValue
+        var nextValue:Int? = dict[firstValue]?[0]
+        
+        while nextValue != nil {
+            result.append(nextValue!)
+            if let array = dict[nextValue!] {
+                if array[0] != preValue {
+                    preValue = nextValue
+                    nextValue = array[0]
+                }else if array.count > 1{
+                    preValue = nextValue
+                    nextValue = array[1]
+                }else{
+                    break
+                }
+            }
+        }
+        return result
+    }
+}

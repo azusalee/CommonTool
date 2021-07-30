@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import <CoreLocation/CoreLocation.h>
-#import "LeetCodeC.h"
+#import "LeetCodeC2.h"
 #import "CompileSourceParse.h"
 #import "ALLabelCollectionDemoViewController.h"
 #import <CommonToolExtend/CommonToolExtend.h>
@@ -28,14 +28,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-  
     
 //    int b = 100;
 //    int a = -(b < 128);
 //    printf("%d", a);
 //    b = ~a&b;
 //    printf("%d", b);
-    shortestPalindrome("abac");
+    //shortestPalindrome("abac");
     MyCommonToolExtendModel *model = [[MyCommonToolExtendModel alloc] init];
     model.name = @"haha";
     NSLog(@"%@", model.name);

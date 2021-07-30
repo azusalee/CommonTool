@@ -8,6 +8,8 @@
 
 #import <XCTest/XCTest.h>
 
+
+
 @interface CommonToolTests : XCTestCase
 
 @end
@@ -25,6 +27,8 @@
 - (void)testExample {
     // This is an example of a functional test case.
     // Use XCTAssert and related functions to verify your tests produce the correct results.
+    int resturnSize = 0;
+    removeInvalidParentheses("()())()", &resturnSize);
 }
 
 - (void)testPerformanceExample {

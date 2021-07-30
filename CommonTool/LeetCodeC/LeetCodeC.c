@@ -8002,17 +8002,11 @@ typedef struct {
 }ValuePos;
 
 int compareContainsNearbyDuplicate(const void * a, const void * b){
-    if((*(ValuePos*)a).val >= (*(ValuePos*)b).val){
-        return 1;
-    }else{
-        return -1;
-    }
+    return (*(ValuePos*)a).val - (*(ValuePos*)b).val;
 }
 /// 排序后再对比，复杂度O(nlog(n))
+/// 哈希表，复杂度O(n)
 bool containsNearbyDuplicate(int* nums, int numsSize, int k) {
-    if(0 >= numsSize){
-        return false;
-    }
     ValuePos *vp = (ValuePos*)malloc(sizeof(ValuePos) * numsSize);
     int i;
     for(i=0; i<numsSize; i++){
@@ -8022,11 +8016,11 @@ bool containsNearbyDuplicate(int* nums, int numsSize, int k) {
 
     qsort(vp, numsSize, sizeof(vp[0]), compareContainsNearbyDuplicate);
 
-    for(i=0; i<numsSize-1; i++){
+    for(i = 0; i < numsSize-1; i++){
         if(vp[i].val != vp[i+1].val){
             continue;
         }else{
-            if(abs(vp[i+1].pos - vp[i].pos) <= k){
+            if(vp[i+1].pos - vp[i].pos <= k){
                 return true;
             }
         }

@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <math.h>
 
+// 从小到大排序
 int compare(void* a, void* b) {
     return *(int*) a - *(int*) b;
 }
@@ -2039,3 +2040,556 @@ int countPairs(int* deliciousness, int deliciousnessSize) {
 //    }
 //    return count%1000000007;
 //}
+
+void findNode(struct TreeNode* root, struct TreeNode* target, struct TreeNode** parentTable) {
+    if (root->left != NULL) {
+        parentTable[root->left->val] = root;
+        if (root->left == target) {
+            return;
+        }
+        findNode(root->left, target, parentTable);
+    }
+    if (root->right != NULL) {
+        parentTable[root->right->val] = root;
+        if (root->right == target) {
+            return;
+        }
+        findNode(root->right, target, parentTable);
+    }
+    
+}
+
+void distanceKHelper(struct TreeNode* root, struct TreeNode* preTarget, int k, int distance, int* result, int* returnSize) {
+    if (root == preTarget || root == NULL) {
+        return;
+    }
+    
+    if (distance == k) {
+        result[*returnSize] = root->val;
+        (*returnSize) += 1;
+    }else{
+        distanceKHelper(root->left, preTarget, k, distance+1, result, returnSize);
+        distanceKHelper(root->right, preTarget, k, distance+1, result, returnSize);
+    }
+    
+}
+
+int* distanceK(struct TreeNode* root, struct TreeNode* target, int k, int* returnSize) {
+    
+    struct TreeNode* parentTable[501] = {0};
+    findNode(root, target, parentTable);
+    
+    struct TreeNode* preTarget = NULL;
+    struct TreeNode* curTarget = target;
+    
+    int* result = malloc(sizeof(int)*501);
+    *returnSize = 0;
+    
+    int distance = 0;
+    
+    while (distance <= k && curTarget != 0) {
+        distanceKHelper(curTarget, preTarget, k, distance, result, returnSize);
+        preTarget = curTarget;
+        curTarget = parentTable[curTarget->val];
+        distance += 1;
+    }
+    
+    return result;
+}
+
+int findInsertIndex(int value, int *nums, int length) {
+    int left = 0;
+    int right = length-1;
+    while (left < right) {
+        int mid = (left+right)/2;
+        if (nums[mid] < value) {
+            left = mid+1;
+        }else{
+            right = mid-1;
+        }
+    }
+    if (nums[left] < value) {
+        return left+1;
+    }else{
+        return left;
+    }
+}
+
+
+int lengthOfLIS(int* nums, int numsSize){
+    int dArray[numsSize];
+    int length = 0;
+    if (numsSize > 0) {
+        dArray[0] = nums[0];
+        length = 1;
+    }
+    
+    for (int i = 1; i < numsSize; ++i) {
+        if (nums[i] > dArray[length-1]) {
+            dArray[length++] = nums[i];
+        }else{
+            dArray[findInsertIndex(nums[i], dArray, length)] = nums[i];
+        }
+    }
+    return length;
+}
+
+
+char * maximumTime(char * time){
+    char * result = malloc(sizeof(char)*6);
+    result[5] = '\0';
+    result[2] = ':';
+    
+    if (time[0] != '?') {
+        result[0] = time[0];
+        if (time[1] == '?') {
+            result[1] = (time[0] != '2')?'9':'3';
+        }else{
+            result[1] = time[1];
+        }
+    }else{
+        if (time[1] == '?') {
+            result[0] = '2';
+            result[1] = '3';
+        }else{
+            result[1] = time[1];
+            result[0] = (time[1] < '4')?'2':'1';
+        }
+    }
+    
+    result[3] = (time[3] != '?')?time[3]:'5';
+    result[4] = (time[4] == '?')?time[4]:'9';
+    
+    return result;
+}
+
+bool isCovered(int** ranges, int rangesSize, int* rangesColSize, int left, int right){
+    
+    for (int i = left; i <= right; ++i) {
+        int j = 0;
+        while (ranges[j][0] > i || i > ranges[j][1]) {
+            // 不在范围，找下一个
+            ++j;
+            if (j == rangesSize) {
+                return false;
+            }
+        }
+    }
+    
+    return true;
+}
+
+struct ListNode** splitListToParts(struct ListNode* head, int k, int* returnSize){
+    
+    struct ListNode** result = malloc(sizeof(struct ListNode)*k);
+    int count = 0;
+    struct ListNode* tmp = head;
+    while (tmp) {
+        tmp = tmp->next;
+        count += 1;
+    }
+    int aveNum = count/k;
+    int leftCount = count%k;
+    
+    *returnSize = 0;
+    
+    tmp = head;
+    while (tmp) {
+        result[*returnSize] = tmp;
+        (*returnSize) += 1;
+        int i = 0;
+        int targetNum = aveNum-1;
+        if (leftCount > 0) {
+            leftCount -= 1;
+            targetNum += 1;
+        }
+        while (i < targetNum) {
+            tmp = tmp->next;
+            i += 1;
+        }
+        struct ListNode* nextNode = tmp->next;
+        tmp->next = NULL;
+        tmp = nextNode;
+    }
+    
+    while ((*returnSize) < k) {
+        result[(*returnSize)] = NULL;
+        (*returnSize) += 1;
+    }
+    
+    return result;
+}
+
+// 583. 两个字符串的删除操作
+int minDistance(char * word1, char * word2){
+    int len1 = strlen(word1);
+    int len2 = strlen(word2);
+    
+    int dp[len1+1][len2+1];
+    dp[0][0] = 0;
+    for (int i = 1; i <= len1; ++i) {
+        dp[i][0] = 0;
+    }
+    for (int i = 1; i <= len2; ++i) {
+        dp[0][i] = 0;
+    }
+    for (int i = 1; i <= len1; ++i) {
+        char c1 = word1[i-1];
+        for (int j = 1; j <= len2; ++j) {
+            char c2 = word2[j-1];
+            if (c1 == c2) {
+                dp[i][j] = dp[i-1][j-1]+1;
+            } else {
+                dp[i][j] = fmax(dp[i-1][j], dp[i][j-1]);
+            }
+        }
+    }
+    return len1+len2-dp[len1][len2]*2;
+}
+
+// 58. 最后一个单词的长度
+int lengthOfLastWord(char * s){
+    int count = s[0]==' '?0:1;
+    int i = 1;
+    while (s[i]) {
+        if (s[i] != ' ') {
+            if (s[i-1] == ' ') {
+                count = 1;
+            } else {
+                ++count;
+            }
+        }
+        ++i;
+    }
+    return count;
+}
+
+// 673. 最长递增子序列的个数
+int findNumberOfLIS(int* nums, int numsSize){
+    
+    
+    return 0;
+}
+
+typedef struct WordDictionary {
+    struct WordDictionary *wordList[26];
+    bool isEnd;
+} WordDictionary;
+
+WordDictionary* wordDictionaryCreate() {
+    WordDictionary *obj = malloc(sizeof(WordDictionary));
+    obj->isEnd = false;
+    for (int i = 0; i < 26; ++i) {
+        obj->wordList[i] = NULL;
+    }
+    return obj;
+}
+
+void wordDictionaryAddWord(WordDictionary* obj, char * word) {
+    if (*word == 0) {
+        obj->isEnd = true;
+        return;
+    }
+    int index = (*word)-'a';
+    if (obj->wordList[index] == NULL) {
+        obj->wordList[index] = wordDictionaryCreate();
+    }
+    wordDictionaryAddWord(obj->wordList[index], word+1);
+}
+
+bool wordDictionarySearch(WordDictionary* obj, char * word) {
+    if (*word == '\0') return obj->isEnd;
+    if (*word == '.') {
+        for (int i = 0; i < 26; ++i) {
+            if (obj->wordList[i] != NULL && wordDictionarySearch(obj->wordList[i], word+1)) {
+                return true;
+            }
+        }
+        return false;
+    } else {
+        int index = (*word)-'a';
+        if (obj->wordList[index] == NULL) {
+            return false;
+        } else {
+            return wordDictionarySearch(obj->wordList[index], word+1);
+        }
+    }
+}
+
+void wordDictionaryFree(WordDictionary* obj) {
+    for (int i = 0; i < 26; ++i) {
+        if (obj->wordList[i] != NULL) {
+            wordDictionaryFree(obj->wordList[i]);
+        }
+    }
+    free(obj);
+}
+
+//char ** removeInvalidParentheses(char * s, int* returnSize){
+//    
+//    int i = 0;
+//    int leftCount = 0;
+//    int rightCount = 0;
+//    
+//    int maxLength = strlen(s)+1;
+//    
+//    int resultCount = 0;
+//    
+//    char **resultArray = malloc(sizeof(char*)*100);
+//    
+//    while (s[i] != 0) {
+//        if (s[i] == '(') {
+//            leftCount += 1;
+//        } else if (s[i] == ')') {
+//            rightCount += 1;
+//        }
+//        if (rightCount > leftCount) {
+//            break;
+//        }
+//        ++i;
+//    }
+//    
+//    if (leftCount > rightCount) {
+//        // 从右计算
+//        --i;
+//        leftCount = 0;
+//        rightCount = 0;
+//        while (i >= 0) {
+//            if (s[i] == '(') {
+//                leftCount += 1;
+//            } else if (s[i] == ')') {
+//                rightCount += 1;
+//            }
+//            if (leftCount > rightCount) {
+//                break;
+//            }
+//            --i;
+//        }
+//        // 中途左括号过多, 分割左右两段处理
+//        char *leftString = malloc(sizeof(char)*(i+1));
+//        memcpy(leftString, s, sizeof(char)*i);
+//        leftString[i] = '\0';
+//        
+//        char ** nextArray = removeInvalidParentheses(leftString, returnSize);
+//        int j = i;
+//        int lastLeftIndex = i;
+//        while (j < maxLength-1) {
+//            if (s[j] != '(') {
+//                char *rightString = malloc(sizeof(char)*(maxLength-j));
+//                int k = i;
+//                int index = 0;
+//                while (k < maxLength-1) {
+//                    if (k != lastLeftIndex) {
+//                        rightString[index++] = s[k];
+//                    }
+//                    ++k;
+//                }
+//                rightString[index] = '\0';
+//                
+//                for (int l = 0; l < *returnSize; ++l) {
+//                    char *lString = nextArray[l];
+//                    char *resultString = malloc(sizeof(char)*maxLength);
+//                    int leftLen = strlen(lString);
+//                    strcpy(resultString, lString);
+//                    strcpy(resultString+leftLen, rightString);
+//                    resultArray[resultCount++] = resultString;
+//                }
+//            } else {
+//                lastLeftIndex = j;
+//            }
+//            ++j;
+//        }
+//        
+//    } else if (rightCount > leftCount) {
+//        // 中途右括号过多，分割左右两段处理
+//        char ** nextArray = removeInvalidParentheses(s+i+1, returnSize);
+//        int j = i;
+//        int lastRightIndex = i;
+//        while (j >= 0) {
+//            if (s[j] != ')') {
+//                char *leftString = malloc(sizeof(char)*i);
+//                int k = 0;
+//                int index = 0;
+//                while (k <= i) {
+//                    if (k != lastRightIndex) {
+//                        leftString[index++] = s[k];
+//                    }
+//                    ++k;
+//                }
+//                leftString[index] = '\0';
+//                for (int l = 0; l < *returnSize; ++l) {
+//                    char *nextS = nextArray[l];
+//                    char *resultString = malloc(sizeof(char)*maxLength);
+//                    strcpy(resultString, leftString);
+//                    strcpy(resultString+index, nextS);
+//                    resultArray[resultCount++] = resultString;
+//                }
+//            } else {
+//                lastRightIndex = j;
+//            }
+//            --j;
+//        }
+//    } else {
+//        // 括号都有效，无需删除
+//        char *resultString = malloc(sizeof(char)*maxLength);
+//        strcpy(resultString, s);
+//        resultArray[resultCount++] = resultString;
+//    }
+//    
+//    *returnSize = resultCount;
+//    return resultArray;
+//}
+
+/// 335. 路径交叉
+bool isSelfCrossing(int* distance, int distanceSize){
+    int n = distanceSize;
+    for (int i = 3; i < n; ++i) {
+        // 第 1 类路径交叉的情况
+        if (distance[i] >= distance[i - 2] && distance[i - 1] <= distance[i - 3]) {
+            return true;
+        }
+        
+        // 第 2 类路径交叉的情况
+        if (i == 4 && (distance[3] == distance[1]
+                       && distance[4] >= distance[2] - distance[0])) {
+            return true;
+        }
+        
+        // 第 3 类路径交叉的情况
+        if (i >= 5 && (distance[i - 3] - distance[i - 5] <= distance[i - 1]
+                       && distance[i - 1] <= distance[i - 3]
+                       && distance[i] >= distance[i - 2] - distance[i - 4]
+                       && distance[i - 2] > distance[i - 4])) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+/// 869. 重新排序得到 2 的幂
+bool reorderedPowerOf2(int n){
+    /*
+     1 2 4 6 8 
+     16 32 64
+     128 256 512
+     1024 2048 4096 8192
+     
+     
+     */
+    
+    // 
+}
+
+struct AlphabetTree {
+    int count;
+    int level;
+    char c;
+    struct AlphabetTree *parentTree; 
+    struct AlphabetTree *nextTrees[26];
+};
+
+struct AlphabetTree * createAlphabetTree(char c) {
+    struct AlphabetTree *tree = malloc(sizeof(struct AlphabetTree));
+    tree->count = 0;
+    tree->level = 0;
+    tree->c = c;
+    tree->parentTree = NULL;
+    for (int i = 0; i < 26; ++i) {
+        tree->nextTrees[i] = NULL;
+    }
+    return tree;
+}
+
+// 1044. 最长重复子串
+char * longestDupSubstring(char * s){
+    // 用字母树
+    int length = strlen(s);
+    
+    struct AlphabetTree *trees[26];
+    for (int i = 0; i < 26; ++i) {
+        trees[i] = NULL;
+    }
+    
+    struct AlphabetTree *resultTree = NULL;
+    
+    for (int i = 0; i < length; ++i) {
+        struct AlphabetTree *curTree = trees[s[i]-'a'];
+        if (curTree == NULL) {
+            curTree = createAlphabetTree(s[i]);
+            trees[s[i]-'a'] = curTree;
+        }
+        curTree->count += 1;
+        if (curTree->count > 2) {
+            if (resultTree == NULL) {
+                resultTree = curTree;
+            } else if (curTree->level > resultTree->level) {
+                resultTree = curTree;
+            }
+        }
+        for (int j = i+1; j < length; ++j) {
+            int index = s[j]-'a';
+            struct AlphabetTree *nextTree = curTree->nextTrees[index];
+            if (nextTree == NULL) {
+                nextTree = createAlphabetTree(s[j]);
+                nextTree->parentTree = curTree;
+                nextTree->level = curTree->level+1;
+                curTree->nextTrees[index] = nextTree;
+            }
+            curTree = nextTree;
+            curTree->count += 1;
+            if (curTree->count > 2) {
+                if (resultTree == NULL) {
+                    resultTree = curTree;
+                } else if (curTree->level > resultTree->level) {
+                    resultTree = curTree;
+                }
+            }
+        }
+    }
+    char *resultString;
+    if (resultTree != NULL) {
+        resultString = malloc(sizeof(char)*(resultTree->level+2));
+        int index = resultTree->level;
+        resultString[index+1] = '\0';
+        while (resultTree) {
+            resultString[index] = resultTree->c;
+            index -= 1;
+        }
+        return resultString;
+    } else {
+        resultString = "";
+    }
+    // 要释放所有AlphabetTree
+    
+    return resultString;
+}
+
+// 539. 最小时间差
+int findMinDifference(char ** timePoints, int timePointsSize){
+    if (timePointsSize > 1440) {
+        return 0;
+    }
+    int *timeMinutes = malloc(sizeof(int)*timePointsSize);
+    for (int i = 0; i < timePointsSize; ++i) {
+        int hour = (timePoints[i][0]-'0')*10+(timePoints[i][1]-'0');
+        int minute = (timePoints[i][3]-'0')*10+(timePoints[i][4]-'0');
+        int totalMinute = hour*60+minute;
+        timeMinutes[i] = totalMinute;
+    }
+    // 排序
+    qsort(timeMinutes, timePointsSize, sizeof(*timeMinutes), compare);
+    int minMinute = 1440;
+    for (int i = 1; i < timePointsSize; ++i) {
+        int timeInter = timeMinutes[i]-timeMinutes[i-1];
+        if (timeInter < minMinute) {
+            minMinute = timeInter;
+        }
+    }
+    int lastMinute = 1440+timeMinutes[0]-timeMinutes[timePointsSize-1];
+    if (lastMinute < minMinute) {
+        minMinute = lastMinute;
+    }
+    free(timeMinutes);
+    return minMinute;
+}

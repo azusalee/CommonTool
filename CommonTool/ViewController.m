@@ -28,6 +28,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    //[NSThread new];
+    //[NSRunLoop new];
+    
+    NSOperationQueue *queue = [NSOperationQueue new];
+    [queue addOperation:<#(nonnull NSOperation *)#>]
     
 //    int b = 100;
 //    int a = -(b < 128);

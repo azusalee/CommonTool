@@ -8,6 +8,10 @@
 
 import Foundation
 
+public class MyObject: NSObject {
+    
+}
+
 public class Employee {
     public var id: Int
     public var importance: Int
@@ -16,6 +20,7 @@ public class Employee {
         self.id = id
         self.importance = importance
         self.subordinates = subordinates
+        
     }
 }
 
@@ -201,5 +206,33 @@ class Solution {
             }
         }
         return result
+    }
+}
+
+// 1814
+class Solution1814 {
+    func countNicePairs(_ nums: [Int]) -> Int {
+        
+        var dict: [Int: Int] = [:]
+        
+        var total = 0
+        for num in nums {
+            var rev = 0
+            var tmp = num
+            while tmp > 0 {
+                rev = rev*10+tmp%10
+                tmp = tmp/10
+            }
+            let offset = rev-num
+            if dict[offset] != nil {
+                total += dict[offset]!
+                total %= 1000000007
+                dict[offset]! += 1
+            } else {
+                dict[offset] = 1
+            }
+        }
+        
+        return total
     }
 }

@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		750904F8296FA15800641DD6 /* 1807.c in Sources */ = {isa = PBXBuildFile; fileRef = 750904F7296FA15800641DD6 /* 1807.c */; };
+		75134F262971789E00760ED6 /* RBTree.c in Sources */ = {isa = PBXBuildFile; fileRef = 75134F252971789E00760ED6 /* RBTree.c */; };
+		753BFB46296D0615004ACD62 /* 753.c in Sources */ = {isa = PBXBuildFile; fileRef = 753BFB45296D0615004ACD62 /* 753.c */; };
+		7585157D2974EEC0008BCA5C /* 1813.c in Sources */ = {isa = PBXBuildFile; fileRef = 7585157C2974EEC0008BCA5C /* 1813.c */; };
+		758515802974F860008BCA5C /* 2293.c in Sources */ = {isa = PBXBuildFile; fileRef = 7585157F2974F860008BCA5C /* 2293.c */; };
+		75C19B5F289911FD0050B899 /* LeetCodeC3.c in Sources */ = {isa = PBXBuildFile; fileRef = 75C19B5E289911FD0050B899 /* LeetCodeC3.c */; };
+		75F4F91B297684F500DE2F7F /* 1814.c in Sources */ = {isa = PBXBuildFile; fileRef = 75F4F91A297684F500DE2F7F /* 1814.c */; };
 		8C0C003723614D5C007EA32E /* UIScrollView+ALKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0C003623614D5C007EA32E /* UIScrollView+ALKeyboard.swift */; };
 		8C348B1A272A506B007C94F1 /* testTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C348B19272A506B007C94F1 /* testTarget.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8C348B1D272A506B007C94F1 /* testTarget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C348B17272A506B007C94F1 /* testTarget.framework */; };
@@ -115,6 +122,26 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		750904F6296FA15800641DD6 /* 1807.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = 1807.h; sourceTree = "<group>"; };
+		750904F7296FA15800641DD6 /* 1807.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = 1807.c; sourceTree = "<group>"; };
+		750904FA296FBBC000641DD6 /* utringbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utringbuffer.h; sourceTree = "<group>"; };
+		750904FB296FBBC000641DD6 /* utstack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utstack.h; sourceTree = "<group>"; };
+		750904FC296FBBC000641DD6 /* utstring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utstring.h; sourceTree = "<group>"; };
+		750904FD296FBBC000641DD6 /* uthash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uthash.h; sourceTree = "<group>"; };
+		750904FE296FBBC000641DD6 /* utarray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utarray.h; sourceTree = "<group>"; };
+		750904FF296FBBC000641DD6 /* utlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utlist.h; sourceTree = "<group>"; };
+		75134F242971789E00760ED6 /* RBTree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RBTree.h; sourceTree = "<group>"; };
+		75134F252971789E00760ED6 /* RBTree.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = RBTree.c; sourceTree = "<group>"; };
+		753BFB44296D0615004ACD62 /* 753.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = 753.h; sourceTree = "<group>"; };
+		753BFB45296D0615004ACD62 /* 753.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = 753.c; sourceTree = "<group>"; };
+		7585157B2974EEC0008BCA5C /* 1813.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = 1813.h; sourceTree = "<group>"; };
+		7585157C2974EEC0008BCA5C /* 1813.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = 1813.c; sourceTree = "<group>"; };
+		7585157E2974F860008BCA5C /* 2293.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = 2293.h; sourceTree = "<group>"; };
+		7585157F2974F860008BCA5C /* 2293.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = 2293.c; sourceTree = "<group>"; };
+		75C19B5D289911FD0050B899 /* LeetCodeC3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LeetCodeC3.h; sourceTree = "<group>"; };
+		75C19B5E289911FD0050B899 /* LeetCodeC3.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = LeetCodeC3.c; sourceTree = "<group>"; };
+		75F4F919297684F500DE2F7F /* 1814.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = 1814.h; sourceTree = "<group>"; };
+		75F4F91A297684F500DE2F7F /* 1814.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = 1814.c; sourceTree = "<group>"; };
 		8C0C003523614D5B007EA32E /* CommonTool-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CommonTool-Bridging-Header.h"; sourceTree = "<group>"; };
 		8C0C003623614D5C007EA32E /* UIScrollView+ALKeyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+ALKeyboard.swift"; sourceTree = "<group>"; };
 		8C348B17272A506B007C94F1 /* testTarget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = testTarget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -249,6 +276,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		750904F9296FBBAD00641DD6 /* uthash */ = {
+			isa = PBXGroup;
+			children = (
+				750904FE296FBBC000641DD6 /* utarray.h */,
+				750904FD296FBBC000641DD6 /* uthash.h */,
+				750904FF296FBBC000641DD6 /* utlist.h */,
+				750904FA296FBBC000641DD6 /* utringbuffer.h */,
+				750904FB296FBBC000641DD6 /* utstack.h */,
+				750904FC296FBBC000641DD6 /* utstring.h */,
+			);
+			path = uthash;
+			sourceTree = "<group>";
+		};
 		8C0C003423614D46007EA32E /* Swift */ = {
 			isa = PBXGroup;
 			children = (
@@ -358,6 +398,7 @@
 			children = (
 				8C6508B123965FE200484C1C /* CommonTool.entitlements */,
 				8C0C003523614D5B007EA32E /* CommonTool-Bridging-Header.h */,
+				750904F9296FBBAD00641DD6 /* uthash */,
 				8C61BCDB230508550011F8E5 /* Resources */,
 				8C61BCD7230508090011F8E5 /* Tool */,
 				8CF75FE722FBDD25002E9CCE /* LeetCodeC */,
@@ -507,6 +548,20 @@
 				8CF75FE922FBDD5F002E9CCE /* LeetCodeC.c */,
 				8C4C2AE325D128B500968DA2 /* LeetCodeC2.h */,
 				8C4C2AE425D128B500968DA2 /* LeetCodeC2.c */,
+				75C19B5D289911FD0050B899 /* LeetCodeC3.h */,
+				75C19B5E289911FD0050B899 /* LeetCodeC3.c */,
+				753BFB44296D0615004ACD62 /* 753.h */,
+				753BFB45296D0615004ACD62 /* 753.c */,
+				750904F6296FA15800641DD6 /* 1807.h */,
+				750904F7296FA15800641DD6 /* 1807.c */,
+				7585157B2974EEC0008BCA5C /* 1813.h */,
+				7585157C2974EEC0008BCA5C /* 1813.c */,
+				7585157E2974F860008BCA5C /* 2293.h */,
+				7585157F2974F860008BCA5C /* 2293.c */,
+				75F4F919297684F500DE2F7F /* 1814.h */,
+				75F4F91A297684F500DE2F7F /* 1814.c */,
+				75134F242971789E00760ED6 /* RBTree.h */,
+				75134F252971789E00760ED6 /* RBTree.c */,
 				8CDDBFB926468A1F00D1000C /* leetCodeSwift.swift */,
 			);
 			path = LeetCodeC;
@@ -779,8 +834,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7585157D2974EEC0008BCA5C /* 1813.c in Sources */,
 				8CC0ABAB22BCBBAB001BB84D /* ViewController.m in Sources */,
 				8CC206A323FA4D3500AD3E2E /* ALLabelCollectionCellModel.m in Sources */,
+				753BFB46296D0615004ACD62 /* 753.c in Sources */,
+				758515802974F860008BCA5C /* 2293.c in Sources */,
+				75F4F91B297684F500DE2F7F /* 1814.c in Sources */,
 				8CC206AD23FA6E4000AD3E2E /* ALPageViewController.m in Sources */,
 				8CE4571822D87331002EA4CF /* UINavigationController+AZLPop.m in Sources */,
 				8C0C003723614D5C007EA32E /* UIScrollView+ALKeyboard.swift in Sources */,
@@ -798,8 +857,11 @@
 				8CC0ABA822BCBBAB001BB84D /* AppDelegate.m in Sources */,
 				8CC206A823FA688D00AD3E2E /* ALLabelCollectionDemoViewController.m in Sources */,
 				8CC206B123FA6E5900AD3E2E /* ALControllerCollectionViewCell.m in Sources */,
+				75134F262971789E00760ED6 /* RBTree.c in Sources */,
 				8CDDBFBA26468A1F00D1000C /* leetCodeSwift.swift in Sources */,
+				75C19B5F289911FD0050B899 /* LeetCodeC3.c in Sources */,
 				8CF75FEA22FBDD5F002E9CCE /* LeetCodeC.c in Sources */,
+				750904F8296FA15800641DD6 /* 1807.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
